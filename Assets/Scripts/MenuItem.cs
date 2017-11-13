@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SEPRTest1
+namespace CRGames_game
 {
-    class MenuItem
+    abstract class MenuItem
     {
         // Name of the MenuItem
         String name;
