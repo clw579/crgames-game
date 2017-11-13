@@ -11,11 +11,22 @@ namespace SEPRTest1
         public AIPlayer(int college) : base(college)
         {
 
+
+
+
+
         }
 
         public void populate()
         {
 
         }
+
+        public Boolean updateSuccessful()
+        {
+            return true;
+
+        }
+
     }
 }
