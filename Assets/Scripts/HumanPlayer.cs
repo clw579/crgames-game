@@ -11,7 +11,7 @@ namespace CRGames_game
         int researchPoints = 0;
         bool hasPVC = false;
 
-        public HumanPlayer(int college) : base(college)
+        public HumanPlayer(int college, String name) : base(college , name)
         {
 
         }
