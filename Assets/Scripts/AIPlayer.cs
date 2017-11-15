@@ -7,7 +7,7 @@ namespace CRGames_game
 {
     class AIPlayer : Player
     {
-        public AIPlayer(int college) : base(college)
+        public AIPlayer(int college, String name) : base(college, name)
         {
 
         }

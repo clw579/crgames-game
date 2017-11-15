@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
-namespace CRGames_game
+namespace SEPRTest1
 {
     enum colleges
     {
@@ -19,13 +20,21 @@ namespace CRGames_game
         Wentworth,
     }
 
-    class Program
+    class GameController : MonoBehaviour
     {
         
         static void Main(string[] args)
         {
-            Map map = new Map(128);
-            Console.Out.Write("test");
+			GenerateMap ();
         }
+
+		static void GenerateMap(){
+			Map map = new Map(128);
+			Console.Out.Write("test");
+		}
+
+		static void NextTurn(){
+
+		}
     }
 }
