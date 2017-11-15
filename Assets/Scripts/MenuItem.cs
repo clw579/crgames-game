@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace SEPRTest1
 {
-    class MenuItem
+    abstract class MenuItem
     {
         // Name of the MenuItem
         String name;
