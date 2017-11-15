@@ -22,7 +22,7 @@ namespace SEPRTest1
         Wentworth,
     }
 
-    class GameController : MonoBehaviour
+    class GameManager : MonoBehaviour
     {
         
         static void Main(string[] args)
@@ -36,7 +36,7 @@ namespace SEPRTest1
 		}
 
 		static void NextTurn(){
-
+			
 		}
     }
 }
