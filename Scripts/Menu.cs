@@ -66,5 +66,25 @@ namespace SEPRTest1
             }
             
         }
+
+        // Sets ensures the menu has constraints (+ve below 10 items)
+        public bool menuInRange()
+        {
+            if ((this.size < 10) && (this.size > 0))
+            { 
+                return true; 
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        // TODO: add validation checks for all data processed within this class
+
+
+
+
+
     }
 }
