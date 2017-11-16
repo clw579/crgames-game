@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [System.Serializable]
 public struct HexCoordinates {
-	
 
 	[SerializeField]
 	private int x, z;
@@ -15,15 +12,15 @@ public struct HexCoordinates {
 		}
 	}
 
-	public int Y {
-		get {
-			return -X - Z;
-		}
-	}
-
 	public int Z {
 		get {
 			return z;
+		}
+	}
+
+	public int Y {
+		get {
+			return -X - Z;
 		}
 	}
 
@@ -36,7 +33,7 @@ public struct HexCoordinates {
 		return new HexCoordinates(x - z / 2, z);
 	}
 
-	public static HexCoordinates FromPosition(Vector3 position) {
+	public static HexCoordinates FromPosition (Vector3 position) {
 		float x = position.x / (HexMetrics.innerRadius * 2f);
 		float y = -x;
 
