@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace SEPRTest1
 {
@@ -12,7 +12,7 @@ namespace SEPRTest1
         int researchPoints = 0;
         bool hasPVC = false;
 
-        public HumanPlayer(int college) : base(college)
+        public HumanPlayer(int college ,String name) : base(college, name)
         {
 
         }
