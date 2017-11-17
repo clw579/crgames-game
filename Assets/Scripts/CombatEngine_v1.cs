@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace CombatEngine_v1
+namespace CRGames_game
 {
-    class CombatEngine
+    class CombatEngine_v1
     {
 
         public static void Main(string[] args)
         {
-            CombatEngine myClass = new CombatEngine();
+            CombatEngine_v1 myClass = new CombatEngine_v1();
             myClass.AttackSimulator();
         }
 
@@ -24,7 +25,7 @@ namespace CombatEngine_v1
         double hiddenDamageModifier = 0.4f;  // Just to linearly scale the overall damage dealt per turn
         int turn = 1;
 
-        Random rand = new Random();
+        System.Random rand = new System.Random();
 
         public double randomnessFactor()  // Generates random numbers that follow a normal distribution, got from Wikipedia
         {
