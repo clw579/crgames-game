@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading;
 using UnityEngine;
@@ -24,6 +25,8 @@ namespace SEPRTest1
 
     class GameManager : MonoBehaviour
     {
+		private String savePath = "gamestates.json";
+
 		private int _currentTurn;
 		private int _currentPlayer;
 
@@ -33,10 +36,19 @@ namespace SEPRTest1
 		void Start()
         {
 			GenerateMap ();
+
+			this._players = new Player[1];
+			this._players[0] = new Player((int)colleges.Goodricke, "Tom");
+			
+			SaveGame();
         }
 
 		void GenerateMap(){
 			Map map = new Map(128);
+
+			// TODO map-ish stuff
+
+			this._map = map;
 		}
 
 		/// <summary>
@@ -73,18 +85,32 @@ namespace SEPRTest1
 			Tile_JSON[] tile_json = new Tile_JSON[this._map.getNumberOfTiles()];
 
 			for (int i = 0; i < this._players.Length; i++) {
+				players_json[i] = new Player_JSON();
 				players_json [i].college = this._players [i].GetCollege ();
 				players_json [i].name = this._players [i].GetName ();
+				players_json[i].positionInArray = i;
 			}
 
 			for (int i = 0; i < this._map.getNumberOfTiles(); i++) {
-				tile_json.tileID = i;
-				tile_json.gangStrength = this._map.getGangStrength (this._map.getTileByID (i).getGangStrength ());
-				tile_json.college = this._map.getTileByID (i).getCollege ();
+				tile_json[i] = new Tile_JSON();
+				tile_json[i].tileID = i;
+				tile_json[i].gangStrength = this._map.getGangStrength (this._map.getTileByID(i));
+				tile_json[i].college = this._map.getTileByID (i).getCollege ();
+				tile_json[i].positionInArray = i;
 			}
 
+			map_json.numberOfTiles = tile_json.Length;
+			map_json.tiles = tile_json;
+
+			game_state_json.numberOfPlayers = players_json.Length;
 			game_state_json.map = map_json;
 			game_state_json.players = players_json;
+
+			string save_json = JsonUtility.ToJson(game_state_json);
+
+			string filePath = Path.Combine(Application.dataPath, this.savePath);
+			
+			File.WriteAllText(filePath, save_json); 
 
 			return false;
 		}
