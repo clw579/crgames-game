@@ -25,6 +25,10 @@ namespace SEPRTest1
             generatePVC();
         }
         
+		public Tile getTileByID(int id){
+			return tiles [id];
+		}
+
         // Returns the ID of a given Tile
         public int getTileId(Tile tile) {
             return tile.getID();
@@ -77,5 +81,9 @@ namespace SEPRTest1
             }
             return true;
         }
+
+		public int getNumberOfTiles(){
+			return tiles.Length;
+		}
     }
 }

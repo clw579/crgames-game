@@ -20,6 +20,18 @@ namespace SEPRTest1
             this.college = college;
             this.name = name;
         }
+
+		public void AlertItsMyTurn(){
+
+		}
+
+		public int GetCollege (){
+			return college;
+		}
+
+		public string GetName(){
+			return name;
+		}
     }
 
 
