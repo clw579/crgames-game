@@ -85,5 +85,11 @@ namespace SEPRTest1
 		public int getNumberOfTiles(){
 			return tiles.Length;
 		}
+
+        public void setTile(int id, Tile tile){
+            // TODO search for the array location based on ID,
+            // seeing as IDs may change
+            tiles[id] = tile;
+        }
     }
 }

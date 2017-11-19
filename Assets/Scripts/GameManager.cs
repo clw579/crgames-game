@@ -36,11 +36,6 @@ namespace SEPRTest1
 		void Start()
         {
 			GenerateMap ();
-
-			this._players = new Player[1];
-			this._players[0] = new Player((int)colleges.Goodricke, "Tom");
-			
-			SaveGame();
         }
 
 		void GenerateMap(){
@@ -71,7 +66,33 @@ namespace SEPRTest1
 		/// </summary>
 		/// <returns>Success of loading game.</returns>
 		bool LoadGame(){
-			return false;
+			string filePath = Path.Combine(Application.dataPath, this.savePath);
+			StreamReader reader = new StreamReader(filePath);
+        	string load_json = reader.ReadToEnd();
+        	reader.Close();
+
+			GameState_JSON game_state = JsonUtility.FromJson<GameState_JSON>(load_json);
+
+			Map load_map = new Map(game_state.map.numberOfTiles);
+			
+			for (int i = 0; i < game_state.map.tiles.Length; i++){
+				Tile load_tile = new Tile(game_state.map.tiles[i].tileID);
+				load_tile.setGangStrength(game_state.map.tiles[i].gangStrength);
+				load_tile.setCollege(game_state.map.tiles[i].college);
+				load_map.setTile(game_state.map.tiles[i].positionInArray, load_tile);
+			}
+
+			Player[] load_players = new Player[game_state.numberOfPlayers];
+
+			for (int i = 0; i < game_state.numberOfPlayers; i++){
+				Player load_player = new Player(game_state.players[i].college, game_state.players[i].name);
+				load_players[game_state.players[i].positionInArray] = load_player;
+			}
+
+			this._map = load_map;
+			this._players = load_players;
+
+			return true;
 		}
 
 		/// <summary>
@@ -109,10 +130,10 @@ namespace SEPRTest1
 			string save_json = JsonUtility.ToJson(game_state_json);
 
 			string filePath = Path.Combine(Application.dataPath, this.savePath);
-			
+
 			File.WriteAllText(filePath, save_json); 
 
-			return false;
+			return true;
 		}
 
 		/// <summary>
@@ -120,7 +141,7 @@ namespace SEPRTest1
 		/// </summary>
 		/// <returns>The turn.</returns>
 		void EndTurn(){
-
+			
 		}
     }
 
