@@ -14,56 +14,56 @@ namespace CRGames_game
         // Index of manuItems that the next MenuItem will be inserted into
         int currentIndex = 0;
 
-        // Creates an empty Menu with the given size
-        public Menu(int size)
-        {
-            this.size = size;
-            menuItems = new MenuItem[size];
-        }
+//        // Creates an empty Menu with the given size
+//        public Menu(int size)
+//        {
+//            this.size = size;
+//            menuItems = new MenuItem[size];
+//        }
 
-        // Creates a Menu with the given size containing any MenuItems that are given, as long as they can fit in the given size
-        public Menu(int size, params MenuItem[] items)
-        {
-            this.size = size;
-            menuItems = new MenuItem[size];
-            if (items.Length > size)
-            {
-                throw (new Exception("Size must be greater than or equal to the number of items"));
-            }
-            else
-            {
-                for (int i = 0; i < items.Length; i++)
-                {
-                    menuItems[i] = items[i];
-                }
-            }
-            currentIndex = items.Length;
-        }
+//        // Creates a Menu with the given size containing any MenuItems that are given, as long as they can fit in the given size
+//        public Menu(int size, params MenuItem[] items)
+//        {
+//            this.size = size;
+//            menuItems = new MenuItem[size];
+//            if (items.Length > size)
+//            {
+//                throw (new Exception("Size must be greater than or equal to the number of items"));
+//            }
+//            else
+//            {
+//                for (int i = 0; i < items.Length; i++)
+//                {
+//                    menuItems[i] = items[i];
+//                }
+//            }
+//            currentIndex = items.Length;
+//        }
 
-        // Creates a full Menu with given MenuItems
-        public Menu(params MenuItem[] items)
-        {
-            size = items.Length;
-            for (int i = 0; i < items.Length; i++)
-            {
-                menuItems[i] = items[i];
-            }
-            currentIndex = size;
-        }
+//        // Creates a full Menu with given MenuItems
+//        public Menu(params MenuItem[] items)
+//        {
+//            size = items.Length;
+//            for (int i = 0; i < items.Length; i++)
+//            {
+//                menuItems[i] = items[i];
+//            }
+//            currentIndex = size;
+//        }
 
-        // Adds a MenuItem to the next available location in the Menu. Returns false if the Menu is full
-        public bool addMenuItem(MenuItem item)
-        {
-            if (currentIndex < size) {
-                menuItems[currentIndex] = item;
-                currentIndex += 1;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+//        // Adds a MenuItem to the next available location in the Menu. Returns false if the Menu is full
+//        public bool addMenuItem(MenuItem item)
+//        {
+//            if (currentIndex < size) {
+//                menuItems[currentIndex] = item;
+//                currentIndex += 1;
+//                return true;
+//            }
+//            else
+//            {
+//                return false;
+//            }
             
-        }
-    }
-}
+//        }
+//    }
+//}
