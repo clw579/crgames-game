@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace CRGames_game
 {
@@ -56,7 +57,7 @@ namespace CRGames_game
 
         // Generates a PVC tile in a random location in the map
         public void generatePVC() {
-            Random rng = new Random();
+            System.Random rng = new System.Random();
             int rand = rng.Next(size);
             tiles[rand] = new PVCTile(rand);
         }
