@@ -14,6 +14,8 @@ namespace CRGames_game
         int size;
         // Index of manuItems that the next MenuItem will be inserted into
         int currentIndex = 0;
+    }
+}
 
 //        // Creates an empty Menu with the given size
 //        public Menu(int size)
