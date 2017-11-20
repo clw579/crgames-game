@@ -10,6 +10,8 @@ namespace CRGames_game
     {
         // Name of the MenuItem
         String name;
+    }
+}
 
 //        // Creates a MenuItem with given name
 //        public MenuItem(String itemName)
