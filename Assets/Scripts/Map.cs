@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
+using UnityEngine;
 
-namespace SEPRTest1
+namespace CRGames_game
 {
     public class Map
     {
@@ -57,7 +57,7 @@ namespace SEPRTest1
 
         // Generates a PVC tile in a random location in the map
         public void generatePVC() {
-            Random rng = new Random();
+            System.Random rng = new System.Random();
             int rand = rng.Next(size);
             tiles[rand] = new PVCTile(rand);
         }
