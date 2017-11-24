@@ -34,6 +34,8 @@ public class Map_JSON {
 	public Tile_JSON[] tiles;
 	public int size;
 	public int numberOfTiles;
+	public int width;
+	public int height;
 }
 
 /// <summary>

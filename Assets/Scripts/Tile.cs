@@ -8,12 +8,17 @@ namespace CRGames_game
 {
     public class Tile
     {
+        public int x;
+        public int y;
+
         // Unique identifier, should correspond to index in map
         int tileID;
         // Number of gang members on the tile
         int gangStrength;
         // Corresponding int value of enum college
         int college;
+        // "Real world" tile object
+        GameObject gameObject;
 
         // Creates a tile with the given unique identifier
         public Tile(int id)
@@ -21,6 +26,10 @@ namespace CRGames_game
             tileID = id;
             gangStrength = 0;
             college = 0;
+        }
+
+        public void setTileID(int id){
+            this.tileID = id;
         }
 
         // Returns the id of the tile
@@ -69,6 +78,14 @@ namespace CRGames_game
                 return true;
             }
             
+        }
+
+        public void SetObject(GameObject gob){
+            this.gameObject = gob;
+        }
+
+        public GameObject GetObject(){
+            return this.gameObject;
         }
 
         // Sets the gang strength and college of the tile to 0 but leaves the id untouched
