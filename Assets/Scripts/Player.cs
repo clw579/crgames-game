@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,9 @@ namespace CRGames_game
 {
     class Player
     {
-        int college;
-        String name;
+        private int college;
+        private String name;
+        private ArrayList ownedTiles = new ArrayList();
 
 		public Player(int college){
 
@@ -29,9 +31,15 @@ namespace CRGames_game
 			return college;
 		}
 
-		public string GetName(){
-			return name;
-		}
+        public string GetName()
+        {
+            return name;
+        }
+
+        public ArrayList GetOwnedTiles()
+        {
+            return this.ownedTiles;
+        }
     }
 
 
