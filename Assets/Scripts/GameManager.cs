@@ -26,6 +26,10 @@ namespace SEPRTest1
 
     class GameManager : MonoBehaviour
     {
+		public Sprite[] mapSprites;
+		public int mapWidth;
+		public int mapHeight;
+
 		private String savePath = "gamestates.json";
 
 		private int _currentTurn;
@@ -36,11 +40,12 @@ namespace SEPRTest1
         
 		void Start()
         {
+			mapSprites = Resources.LoadAll<Sprite>("uni_map");
 			GenerateMap ();
         }
 
 		void GenerateMap(){
-			Map map = new Map(128);
+			Map map = new Map(20, 14, mapSprites);
 
 			// TODO map-ish stuff
 
@@ -74,7 +79,7 @@ namespace SEPRTest1
 
 			GameState_JSON game_state = JsonUtility.FromJson<GameState_JSON>(load_json);
 
-			Map load_map = new Map(game_state.map.numberOfTiles);
+			Map load_map = new Map(game_state.map.width, game_state.map.height, mapSprites);
 			
 			for (int i = 0; i < game_state.map.tiles.Length; i++){
 				Tile load_tile = new Tile(game_state.map.tiles[i].tileID);
@@ -123,6 +128,8 @@ namespace SEPRTest1
 
 			map_json.numberOfTiles = tile_json.Length;
 			map_json.tiles = tile_json;
+			map_json.width = mapWidth;
+			map_json.height = mapHeight;
 
 			game_state_json.numberOfPlayers = players_json.Length;
 			game_state_json.map = map_json;
