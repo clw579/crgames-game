@@ -12,12 +12,17 @@ namespace CRGames_game
         Tile[] tiles;
         // Maximum number of tiles the Map can contain
         int size;
+        int width;
+        int height;
 
         // Creates a Map of given size and populates it with Tiles and a random PVCTile
         public Map(int width, int height, Sprite[] sprites)
         {
             this.size = width * height;
             tiles = new Tile[size];
+
+            this.width = width;
+            this.height = height;
 
             GameObject mapPivot = new GameObject();
             mapPivot.name = "Map Pivot";
@@ -48,6 +53,10 @@ namespace CRGames_game
 		public Tile getTileByID(int id){
 			return tiles [id];
 		}
+
+        public Tile getTileAtPosition(int x, int y){
+            return tiles[x + (y * this.width)];
+        }
 
         // Returns the ID of a given Tile
         public int getTileId(Tile tile) {
