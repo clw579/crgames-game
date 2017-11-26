@@ -58,6 +58,8 @@ namespace CRGames_game
                     tile.x = x;
                     tile.y = y;
                     tiles[x + (y * width)] = tile;
+
+                    interact.tile = tile;
                 }
             }
 
