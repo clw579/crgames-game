@@ -115,6 +115,8 @@ namespace SEPRTest1
 				Tile load_tile = new Tile(game_state.map.tiles[i].tileID);
 				load_tile.setGangStrength(game_state.map.tiles[i].gangStrength);
 				load_tile.setCollege(game_state.map.tiles[i].college);
+				load_tile.x = game_state.map.tiles[i].x;
+				load_tile.y = game_state.map.tiles[i].y;
 				load_map.setTile(game_state.map.tiles[i].positionInArray, load_tile);
 			}
 
@@ -130,13 +132,15 @@ namespace SEPRTest1
 			// Finalise loading
 			this._map = load_map;
 			this._players = load_players;
+			this._currentTurn = game_state.currentTurn;
+			this._currentPlayer = game_state.currentPlayer;
 
 			// If we made it this far, loading was successful
 			return true;
 		}
 
 		/// <summary>
-		/// Saves the game.
+		/// Saves the game
 		/// </summary>
 		/// <returns>Success of saving the game.</returns>
 		bool SaveGame(){
@@ -161,6 +165,8 @@ namespace SEPRTest1
 				tile_json[i].gangStrength = this._map.getGangStrength (this._map.getTileByID(i));
 				tile_json[i].college = this._map.getTileByID (i).getCollege ();
 				tile_json[i].positionInArray = i;
+				tile_json[i].x = this._map.getTileByID(i).x;
+				tile_json[i].y = this._map.getTileByID(i).y;
 			}
 
 			// Store Map data as a JSON object
@@ -173,6 +179,8 @@ namespace SEPRTest1
 			game_state_json.numberOfPlayers = players_json.Length;
 			game_state_json.map = map_json;
 			game_state_json.players = players_json;
+			game_state_json.currentTurn = this._currentTurn;
+			game_state_json.currentPlayer = this._currentPlayer;
 
 			// Stringify JSON
 			string save_json = JsonUtility.ToJson(game_state_json);
