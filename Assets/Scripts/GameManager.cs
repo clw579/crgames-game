@@ -26,6 +26,7 @@ namespace SEPRTest1
 
     class GameManager : MonoBehaviour
     {
+		public GameObject tilePrefab;
 		public Sprite[] mapSprites;
 		public int mapWidth;
 		public int mapHeight;
@@ -45,7 +46,7 @@ namespace SEPRTest1
         }
 
 		void GenerateMap(){
-			Map map = new Map(20, 14, mapSprites);
+			Map map = new Map(20, 14, mapSprites, tilePrefab);
 
 			// TODO map-ish stuff
 
@@ -79,7 +80,7 @@ namespace SEPRTest1
 
 			GameState_JSON game_state = JsonUtility.FromJson<GameState_JSON>(load_json);
 
-			Map load_map = new Map(game_state.map.width, game_state.map.height, mapSprites);
+			Map load_map = new Map(game_state.map.width, game_state.map.height, mapSprites, tilePrefab);
 			
 			for (int i = 0; i < game_state.map.tiles.Length; i++){
 				Tile load_tile = new Tile(game_state.map.tiles[i].tileID);
