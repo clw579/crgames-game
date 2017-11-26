@@ -33,6 +33,16 @@ namespace SEPRTest1
 		// Store the Map's width and height
 		public int mapWidth;
 		public int mapHeight;
+		// Gang colours
+		public Color ColourAlcuin;
+		public Color ColourGoodricke;
+		public Color ColourLangwith;
+		public Color ColourConstantine;
+		public Color ColourHalifax;
+		public Color ColourVanbrugh;
+		public Color ColourDerwent;
+		public Color ColourJames;
+		public Color ColourWentworth;
 
 		// Path of the current save file
 		private String savePath = "gamestates.json";
@@ -197,7 +207,7 @@ namespace SEPRTest1
 				lastClickedTile = tile;
 			}else{
 				// Move all of the units on the last clicked Tile to the current Tile
-				if (lastClickedTile.getCollege() == tile.getCollege() || tile.getCollege() == colleges.Unknown){
+				if (lastClickedTile.getCollege() == tile.getCollege() || tile.getCollege() == (int)colleges.Unknown){
 					int strength = tile.getGangStrength();
 					tile.setGangStrength(0);
 					lastClickedTile.setGangStrength(lastClickedTile.getGangStrength() + strength);
