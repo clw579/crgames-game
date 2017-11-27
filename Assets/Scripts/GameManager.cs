@@ -6,9 +6,8 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using UnityEngine;
-using CRGames_game;
 
-namespace SEPRTest1
+namespace CRGames_game
 {
     enum colleges
     {
@@ -75,7 +74,7 @@ namespace SEPRTest1
 		void GenerateMap(){
 			Map map = new Map(48, 27, mapSprites, tilePrefab);
 
-			this._map = map;
+			_map = map;
 		}
 
 		/// <summary>

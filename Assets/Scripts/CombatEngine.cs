@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace CRGames_game
 {
-    class CombatEngine_v1
+    class CombatEngine
     {
 
         public static void Main(string[] args)
         {
-            CombatEngine_v1 myClass = new CombatEngine_v1();
+            CombatEngine myClass = new CombatEngine();
             myClass.AttackSimulator();
         }
 
