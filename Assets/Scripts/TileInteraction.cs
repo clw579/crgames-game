@@ -59,7 +59,7 @@ namespace CRGames_game
 		/// </summary>
 		void OnMouseDown(){
 			Debug.Log(gameObject.name);
-			manager.TileClicked(this.tile);
+			manager.TileClicked(tile);
 		}
 
 		/// <summary>
