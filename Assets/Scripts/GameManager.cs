@@ -102,7 +102,7 @@ namespace CRGames_game
         	reader.Close();
 
 			// Translate the loaded data into a GameState JSON object
-			GameState_JSON gameState = JsonUtility.FromJson<GameState_JSON>(loadJson);
+			GameStateJSON gameState = JsonUtility.FromJson<GameStateJSON>(loadJson);
 
 			// Extract the saved Map from the gameState
 			Map loadMap = new Map(gameState.map.width, gameState.map.height, mapSprites, tilePrefab);
@@ -142,14 +142,14 @@ namespace CRGames_game
 		/// <returns>Success of saving the game.</returns>
 		bool SaveGame(){
 			// Create JSON representations of the data needing to be stored
-			GameState_JSON gameStateJson = new GameState_JSON ();
-			Player_JSON[] playersJson = new Player_JSON[players.Length];
-			Map_JSON mapJson = new Map_JSON ();
-			Tile_JSON[] tileJson = new Tile_JSON[map.getNumberOfTiles()];
+			GameStateJSON gameStateJson = new GameStateJSON ();
+			PlayerJSON[] playersJson = new PlayerJSON[players.Length];
+			MapJSON mapJson = new MapJSON ();
+			TileJSON[] tileJson = new TileJSON[map.getNumberOfTiles()];
 
 			// Save every Player's data as a JSON object
 			for (int i = 0; i < players.Length; i++) {
-				playersJson[i] = new Player_JSON();
+				playersJson[i] = new PlayerJSON();
 				playersJson [i].college = players [i].GetCollege ();
 				playersJson [i].name = players [i].GetName ();
 				playersJson[i].positionInArray = i;
@@ -157,7 +157,7 @@ namespace CRGames_game
 
 			// Store each Tile's data as a JSON object
 			for (int i = 0; i < map.getNumberOfTiles(); i++) {
-				tileJson[i] = new Tile_JSON();
+				tileJson[i] = new TileJSON();
 				tileJson[i].tileID = i;
 				tileJson[i].gangStrength = map.getGangStrength (map.getTileByID(i));
 				tileJson[i].college = map.getTileByID (i).getCollege ();
