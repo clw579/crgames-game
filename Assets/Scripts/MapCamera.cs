@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class MapCamera : MonoBehaviour {
 
+	public float minZoom, maxZoom;
     public float moveSpeed;
     public Camera cam1, cam2;
+
+	float zoom = 1f;
 
     void Start()
     {
@@ -15,8 +18,15 @@ public class MapCamera : MonoBehaviour {
 
     void Update ()
     {
+		float zoomDelta = Input.GetAxis("Mouse ScrollWheel");
+
         float xDelta = Input.GetAxis("Horizontal");
         float yDelta = Input.GetAxis("Vertical");
+
+		if (zoomDelta != 0f) {
+			AdjustZoom(zoomDelta);
+		}
+
         if (xDelta != 0f || yDelta != 0f)
         {
             AdjustPosition(xDelta, yDelta);
@@ -27,6 +37,14 @@ public class MapCamera : MonoBehaviour {
             cam1.enabled = !cam1.enabled;
             cam2.enabled = !cam2.enabled;
         }
+	}
+
+	void AdjustZoom(float delta)
+	{
+		zoom = Mathf.Clamp01(zoom + delta);
+
+		float distance = Mathf.Lerp(minZoom, maxZoom, zoom);
+		cam1.orthographicSize = distance;
 	}
 
     void AdjustPosition(float xDelta, float yDelta)
