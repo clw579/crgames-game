@@ -215,10 +215,12 @@ namespace CRGames_game
 			}else{
 				// Move all of the units on the last clicked Tile to the current Tile
 				if (lastClickedTile.getCollege() == tile.getCollege() || tile.getCollege() == (int)colleges.Unknown){
-					int strength = tile.getGangStrength();
-					tile.setGangStrength(0);
-					lastClickedTile.setGangStrength(lastClickedTile.getGangStrength() + strength);
-					lastClickedTile = null;
+//					int strength = tile.getGangStrength();
+//					tile.setGangStrength(0);
+//					lastClickedTile.setGangStrength(lastClickedTile.getGangStrength() + strength);
+//					lastClickedTile = null;
+					// Why not
+					_map.moveGangMember(lastClickedTile, tile);
 				}else{
 					lastClickedTile = tile;
 				}
