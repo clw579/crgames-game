@@ -14,6 +14,8 @@ public class GameState_JSON {
 	public Map_JSON map = new Map_JSON ();
 	public Player_JSON[] players;
 	public int numberOfPlayers;
+	public int currentTurn;
+	public int currentPlayer;
 }
 
 /// <summary>
@@ -43,6 +45,8 @@ public class Map_JSON {
 /// </summary>
 [System.Serializable]
 public class Tile_JSON {
+	public int x;
+	public int y;
 	public int tileID;
 	public int gangStrength;
 	public int college;
