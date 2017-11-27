@@ -267,8 +267,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1684650020855356, guid: 8b763faed04174ae0b2679e8fad78983, type: 2}
   mapSprites: []
-  mapWidth: 20
-  mapHeight: 14
+  mapWidth: 48
+  mapHeight: 28
   ColourAlcuin: {r: 0, g: 0, b: 0, a: 0}
   ColourGoodricke: {r: 0, g: 0, b: 0, a: 0}
   ColourLangwith: {r: 0, g: 0, b: 0, a: 0}

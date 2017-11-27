@@ -73,7 +73,7 @@ namespace SEPRTest1
 		/// Generates the Map object
 		/// </summary>
 		void GenerateMap(){
-			Map map = new Map(20, 14, mapSprites, tilePrefab);
+			Map map = new Map(48, 27, mapSprites, tilePrefab);
 
 			this._map = map;
 		}
