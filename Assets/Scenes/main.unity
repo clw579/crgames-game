@@ -266,9 +266,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9240dac6d534c31bb2aaaaedee734e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilePrefab: {fileID: 1684650020855356, guid: 8b763faed04174ae0b2679e8fad78983, type: 2}
   mapSprites: []
-  mapWidth: 0
-  mapHeight: 0
+  mapWidth: 20
+  mapHeight: 14
+  ColourAlcuin: {r: 0, g: 0, b: 0, a: 0}
+  ColourGoodricke: {r: 0, g: 0, b: 0, a: 0}
+  ColourLangwith: {r: 0, g: 0, b: 0, a: 0}
+  ColourConstantine: {r: 0, g: 0, b: 0, a: 0}
+  ColourHalifax: {r: 0, g: 0, b: 0, a: 0}
+  ColourVanbrugh: {r: 0, g: 0, b: 0, a: 0}
+  ColourDerwent: {r: 0, g: 0, b: 0, a: 0}
+  ColourJames: {r: 0, g: 0, b: 0, a: 0}
+  ColourWentworth: {r: 0, g: 0, b: 0, a: 0}
 --- !u!81 &1077766580
 AudioListener:
   m_ObjectHideFlags: 0
