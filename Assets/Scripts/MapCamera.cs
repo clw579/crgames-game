@@ -43,7 +43,7 @@ public class MapCamera : MonoBehaviour {
 	{
 		zoom = Mathf.Clamp01(zoom + delta);
 
-		float distance = Mathf.Lerp(minZoom, maxZoom, zoom);
+		float distance = Mathf.Lerp(maxZoom, minZoom, zoom);
 		cam1.orthographicSize = distance;
 	}
 
