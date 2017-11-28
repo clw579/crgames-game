@@ -10,9 +10,9 @@ public class JSONObjects {
 /// Game state JSON Representation.
 /// </summary>
 [System.Serializable]
-public class GameState_JSON {
-	public Map_JSON map = new Map_JSON ();
-	public Player_JSON[] players;
+public class GameStateJSON {
+	public MapJSON map = new MapJSON ();
+	public PlayerJSON[] players;
 	public int numberOfPlayers;
 	public int currentTurn;
 	public int currentPlayer;
@@ -22,7 +22,7 @@ public class GameState_JSON {
 /// Player JSON Representation.
 /// </summary>
 [System.Serializable]
-public class Player_JSON {
+public class PlayerJSON {
 	public int college;
 	public string name;
 	public int positionInArray;
@@ -32,8 +32,8 @@ public class Player_JSON {
 /// Map JSON Representation.
 /// </summary>
 [System.Serializable]
-public class Map_JSON {
-	public Tile_JSON[] tiles;
+public class MapJSON {
+	public TileJSON[] tiles;
 	public int size;
 	public int numberOfTiles;
 	public int width;
@@ -44,7 +44,7 @@ public class Map_JSON {
 /// Tile JSON Representation.
 /// </summary>
 [System.Serializable]
-public class Tile_JSON {
+public class TileJSON {
 	public int x;
 	public int y;
 	public int tileID;

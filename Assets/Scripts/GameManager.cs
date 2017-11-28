@@ -47,14 +47,14 @@ namespace CRGames_game
 		private String savePath = "gamestates.json";
 
 		// The current turn number
-		private int _currentTurn;
+		private int currentTurn;
 		// The index of the current Player
-		private int _currentPlayer;
+		private int currentPlayer;
 
 		// Array of Players in the game
-		private Player[] _players;
+		private Player[] players;
 		// The Map
-		private Map _map;
+		private Map map;
 
 		// The tile that was last clicked on, needed for movement and such things
 		private Tile lastClickedTile = null;
@@ -72,24 +72,22 @@ namespace CRGames_game
 		/// Generates the Map object
 		/// </summary>
 		void GenerateMap(){
-			Map map = new Map(48, 27, mapSprites, tilePrefab);
-
-			_map = map;
+			map = new Map(48, 27, mapSprites, tilePrefab);
 		}
 
 		/// <summary>
 		/// Moves the game to the next turn.
 		/// </summary>
 		void NextTurn(){
-			this._currentTurn++;
+			currentTurn++;
 
-			this._currentPlayer++;
+			currentPlayer++;
 
-			if (this._currentPlayer > this._players.Length) {
-				this._currentPlayer = 0;
+			if (currentPlayer > players.Length) {
+				currentPlayer = 0;
 			}
 
-			_players [this._currentPlayer].AlertItsMyTurn ();
+			players [currentPlayer].AlertItsMyTurn ();
 		}
 
 		/// <summary>
@@ -98,41 +96,41 @@ namespace CRGames_game
 		/// <returns>Success of loading game.</returns>
 		bool LoadGame(){
 			// Read the save game file (currently only allows for one saved game)
-			string filePath = Path.Combine(Application.dataPath, this.savePath);
+			string filePath = Path.Combine(Application.dataPath, savePath);
 			StreamReader reader = new StreamReader(filePath);
-        	string load_json = reader.ReadToEnd();
+        	string loadJson = reader.ReadToEnd();
         	reader.Close();
 
 			// Translate the loaded data into a GameState JSON object
-			GameState_JSON game_state = JsonUtility.FromJson<GameState_JSON>(load_json);
+			GameStateJSON gameState = JsonUtility.FromJson<GameStateJSON>(loadJson);
 
-			// Extract the saved Map from the game_state
-			Map load_map = new Map(game_state.map.width, game_state.map.height, mapSprites, tilePrefab);
+			// Extract the saved Map from the gameState
+			Map loadMap = new Map(gameState.map.width, gameState.map.height, mapSprites, tilePrefab);
 			
 			// Initialise each Tile in the saved Map
-			for (int i = 0; i < game_state.map.tiles.Length; i++){
-				Tile load_tile = new Tile(game_state.map.tiles[i].tileID);
-				load_tile.setGangStrength(game_state.map.tiles[i].gangStrength);
-				load_tile.setCollege(game_state.map.tiles[i].college);
-				load_tile.x = game_state.map.tiles[i].x;
-				load_tile.y = game_state.map.tiles[i].y;
-				load_map.setTile(game_state.map.tiles[i].positionInArray, load_tile);
+			for (int i = 0; i < gameState.map.tiles.Length; i++){
+				Tile loadTile = new Tile(gameState.map.tiles[i].tileID);
+				loadTile.setGangStrength(gameState.map.tiles[i].gangStrength);
+				loadTile.setCollege(gameState.map.tiles[i].college);
+				loadTile.x = gameState.map.tiles[i].x;
+				loadTile.y = gameState.map.tiles[i].y;
+				loadMap.setTile(gameState.map.tiles[i].positionInArray, loadTile);
 			}
 
 			// Create an array of Players to store the loaded Player values
-			Player[] load_players = new Player[game_state.numberOfPlayers];
+			Player[] loadPlayers = new Player[gameState.numberOfPlayers];
 
 			// Initialise each saved Player
-			for (int i = 0; i < game_state.numberOfPlayers; i++){
-				Player load_player = new Player(game_state.players[i].college, game_state.players[i].name);
-				load_players[game_state.players[i].positionInArray] = load_player;
+			for (int i = 0; i < gameState.numberOfPlayers; i++){
+				Player loadPlayer = new Player(gameState.players[i].college, gameState.players[i].name);
+				loadPlayers[gameState.players[i].positionInArray] = loadPlayer;
 			}
 
 			// Finalise loading
-			this._map = load_map;
-			this._players = load_players;
-			this._currentTurn = game_state.currentTurn;
-			this._currentPlayer = game_state.currentPlayer;
+			map = loadMap;
+			players = loadPlayers;
+			currentTurn = gameState.currentTurn;
+			currentPlayer = gameState.currentPlayer;
 
 			// If we made it this far, loading was successful
 			return true;
@@ -144,51 +142,51 @@ namespace CRGames_game
 		/// <returns>Success of saving the game.</returns>
 		bool SaveGame(){
 			// Create JSON representations of the data needing to be stored
-			GameState_JSON game_state_json = new GameState_JSON ();
-			Player_JSON[] players_json = new Player_JSON[this._players.Length];
-			Map_JSON map_json = new Map_JSON ();
-			Tile_JSON[] tile_json = new Tile_JSON[this._map.getNumberOfTiles()];
+			GameStateJSON gameStateJson = new GameStateJSON ();
+			PlayerJSON[] playersJson = new PlayerJSON[players.Length];
+			MapJSON mapJson = new MapJSON ();
+			TileJSON[] tileJson = new TileJSON[map.getNumberOfTiles()];
 
 			// Save every Player's data as a JSON object
-			for (int i = 0; i < this._players.Length; i++) {
-				players_json[i] = new Player_JSON();
-				players_json [i].college = this._players [i].GetCollege ();
-				players_json [i].name = this._players [i].GetName ();
-				players_json[i].positionInArray = i;
+			for (int i = 0; i < players.Length; i++) {
+				playersJson[i] = new PlayerJSON();
+				playersJson [i].college = players [i].GetCollege ();
+				playersJson [i].name = players [i].GetName ();
+				playersJson[i].positionInArray = i;
 			}
 
 			// Store each Tile's data as a JSON object
-			for (int i = 0; i < this._map.getNumberOfTiles(); i++) {
-				tile_json[i] = new Tile_JSON();
-				tile_json[i].tileID = i;
-				tile_json[i].gangStrength = this._map.getGangStrength (this._map.getTileByID(i));
-				tile_json[i].college = this._map.getTileByID (i).getCollege ();
-				tile_json[i].positionInArray = i;
-				tile_json[i].x = this._map.getTileByID(i).x;
-				tile_json[i].y = this._map.getTileByID(i).y;
+			for (int i = 0; i < map.getNumberOfTiles(); i++) {
+				tileJson[i] = new TileJSON();
+				tileJson[i].tileID = i;
+				tileJson[i].gangStrength = map.getGangStrength (map.getTileByID(i));
+				tileJson[i].college = map.getTileByID (i).getCollege ();
+				tileJson[i].positionInArray = i;
+				tileJson[i].x = map.getTileByID(i).x;
+				tileJson[i].y = map.getTileByID(i).y;
 			}
 
 			// Store Map data as a JSON object
-			map_json.numberOfTiles = tile_json.Length;
-			map_json.tiles = tile_json;
-			map_json.width = mapWidth;
-			map_json.height = mapHeight;
+			mapJson.numberOfTiles = tileJson.Length;
+			mapJson.tiles = tileJson;
+			mapJson.width = mapWidth;
+			mapJson.height = mapHeight;
 
 			// Store game state related values as JSON
-			game_state_json.numberOfPlayers = players_json.Length;
-			game_state_json.map = map_json;
-			game_state_json.players = players_json;
-			game_state_json.currentTurn = this._currentTurn;
-			game_state_json.currentPlayer = this._currentPlayer;
+			gameStateJson.numberOfPlayers = playersJson.Length;
+			gameStateJson.map = mapJson;
+			gameStateJson.players = playersJson;
+			gameStateJson.currentTurn = currentTurn;
+			gameStateJson.currentPlayer = currentPlayer;
 
 			// Stringify JSON
-			string save_json = JsonUtility.ToJson(game_state_json);
+			string saveJson = JsonUtility.ToJson(gameStateJson);
 			
 			// Build the path to the save file
-			string filePath = Path.Combine(Application.dataPath, this.savePath);
+			string filePath = Path.Combine(Application.dataPath, savePath);
 
 			// Write the JSON string to the save file
-			File.WriteAllText(filePath, save_json); 
+			File.WriteAllText(filePath, saveJson); 
 
 
 			// If we made it this far, saving was successful
