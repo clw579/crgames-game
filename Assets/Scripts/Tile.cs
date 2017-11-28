@@ -13,11 +13,11 @@ namespace CRGames_game
         public int y;
 
         // Unique identifier, should correspond to index in map
-        int tileID;
+        private int tileID;
         // Number of gang members on the tile
-        int gangStrength;
+        private int gangStrength;
         // Corresponding int value of enum college
-        int college;
+        private int college;
         // "Real world" tile object
         GameObject gameObject;
 

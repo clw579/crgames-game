@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 namespace CRGames_game
 {
@@ -11,7 +13,9 @@ namespace CRGames_game
     {
         private int college;
         private String name;
-        private ArrayList ownedTiles = new ArrayList();
+        private List<Tile> ownedTiles;
+        private int noOfGangMembers;
+       
 
 		public Player(int college){
 
@@ -21,9 +25,13 @@ namespace CRGames_game
         {
             this.college = college;
             this.name = name;
+            this.ownedTiles = new List<Tile>() ;
+            noOfGangMembers = 0;
         }
 
-		public void AlertItsMyTurn(){
+       
+
+        public void AlertItsMyTurn(){
 
 		}
 
@@ -36,10 +44,33 @@ namespace CRGames_game
             return name;
         }
 
-        public ArrayList GetOwnedTiles()
+        public List<Tile> GetOwnedTiles()
         {
-            return this.ownedTiles;
+            return ownedTiles;
         }
+
+        public void AddOwnedTiles(Tile tile)
+        {
+            ownedTiles.Add(tile);
+        }
+
+        public int GetNumberOfGangMembers()
+        {
+            return noOfGangMembers;
+        }
+
+    
+
+    
+        public int allocateGangMembers()
+        {
+            this.noOfGangMembers += ownedTiles.Count;
+            return noOfGangMembers;
+             
+
+        }
+
+
     }
 
 
