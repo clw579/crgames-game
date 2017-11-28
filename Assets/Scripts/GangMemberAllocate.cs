@@ -21,11 +21,11 @@ namespace CRGames_game
 
 
 
-        public int calculateMembers()
+        public int CalculateMembers()
         {
-            int noOfGangMembers = aPlayer.GetOwnedTiles().Count; 
+            int noOfGangMembers = aPlayer.GetOwnedTiles().Count;
             
-            return 0;
+            return noOfGangMembers;
         }
 
 

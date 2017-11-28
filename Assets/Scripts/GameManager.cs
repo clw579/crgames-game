@@ -52,12 +52,16 @@ namespace CRGames_game
 		private int _currentPlayer;
 
 		// Array of Players in the game
-		private Player[] _players;
+		private Player[] _players = new Player[10];
+        private List<Player> _players1 = new List<Player>();     // a dynamic list version of players, its easier to use
 		// The Map
 		private Map _map;
 
 		// The tile that was last clicked on, needed for movement and such things
 		private Tile lastClickedTile = null;
+
+        public GameObject GUIManager;
+        private UIManager UIManagerScript;
         
 		void Start()
         {
@@ -66,6 +70,36 @@ namespace CRGames_game
 
 			// Display the Map
 			GenerateMap ();
+
+            // get access to scripts from the UI manager
+            UIManagerScript = GUIManager.GetComponent<UIManager>();
+
+            _currentPlayer = 0; // sets inital player to player 1
+            _currentTurn = 1;   //sets the inital turn to 1
+
+
+
+
+
+            _players1.Add(new Player(1, "Sally"));  // tests to be removed
+            _players1[0].AddOwnedTiles(new Tile(1));
+            _players1[0].AddOwnedTiles(new Tile(2));
+
+
+            _players1.Add(new Player(2, "Bob"));
+            _players1[1].AddOwnedTiles(new Tile(3));
+            _players1[1].AddOwnedTiles(new Tile(4));
+
+            //sets the first player and number of gang members when the game starts
+
+            UIManagerScript.updateGangMembers(_players1[_currentPlayer].GetNumberOfGangMembers().ToString(), _players1[_currentPlayer].GetName());
+
+
+        }
+
+        void Update()
+        {
+           
         }
 
 		/// <summary>
@@ -199,9 +233,25 @@ namespace CRGames_game
 		/// Ends the turn.
 		/// </summary>
 		/// <returns>The turn.</returns>
-		void EndTurn(){
-			
-		}
+		public void EndTurn(){
+
+            _players1[_currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
+
+            if (_currentPlayer < _players1.Count -1)  // rotates around the current players
+            {
+                _currentPlayer += 1;
+            }
+            else
+            {
+                _currentPlayer = 0;
+            }
+            // loads the new player gang members by calling the update gang memebers function in the UI manager
+            UIManagerScript.updateGangMembers(_players1[_currentPlayer].GetNumberOfGangMembers().ToString(), _players1[_currentPlayer].GetName());
+
+            
+
+
+        }
 
 		/// <summary>
 		/// Works out what to do when a tile has been clicked on (e.g. move, attack);
