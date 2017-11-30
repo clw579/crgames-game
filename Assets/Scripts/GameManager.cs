@@ -25,6 +25,21 @@ namespace CRGames_game
 
     class GameManager : MonoBehaviour
     {
+		// Lookup table for enum colleges
+		private string[] collegeLookupTable = new string[]
+		{
+			"Unknown",
+			"Alcuin",
+			"Goodricke",
+			"Langwith",
+			"Constantine",
+			"Halifax",
+			"Vanbrugh",
+			"Derwent",
+			"James",
+			"Wentworth",
+		};
+
 		// Prefab of the Tile GameObject
 		public GameObject tilePrefab;
 		// Array of Sprites that make up the Map
@@ -60,8 +75,9 @@ namespace CRGames_game
 		// The tile that was last clicked on, needed for movement and such things
 		private Tile lastClickedTile = null;
 
-        public GameObject GUIManager;
-        private UIManager UIManagerScript;
+        //public GameObject GUIManager;
+        //private UIManager UIManagerScript;
+		public UIManager uiManager;
         
 		void Start()
         {
@@ -72,7 +88,7 @@ namespace CRGames_game
 			GenerateMap ();
 
             // get access to scripts from the UI manager
-            UIManagerScript = GUIManager.GetComponent<UIManager>();
+            //UIManagerScript = GUIManager.GetComponent<UIManager>();
 
             currentPlayer = 0; // sets inital player to player 1
             currentTurn = 1;   //sets the inital turn to 1
@@ -92,15 +108,28 @@ namespace CRGames_game
 
             //sets the first player and number of gang members when the game starts
 
-            UIManagerScript.updateGangMembers(players1[currentPlayer].GetNumberOfGangMembers().ToString(), players1[currentPlayer].GetName());
+            //UIManagerScript.updateGangMembers(players1[currentPlayer].GetNumberOfGangMembers().ToString(), players1[currentPlayer].GetName());
 
 
         }
 
         void Update()
         {
-           
+			uiManager.RefreshTileMenu(lastClickedTile, lookupCollege(lastClickedTile.getCollege()));
         }
+
+		/// <summary>
+		/// Returns the string value of a college corresponding to its enum value
+		/// </summary>
+		/// <param name="college">College.</param>
+		public string lookupCollege(int college) {
+			return collegeLookupTable[college];
+		}
+
+		public Tile getLastClickedTile()
+		{
+			return lastClickedTile;
+		}
 
 		/// <summary>
 		/// Generates the Map object
@@ -112,7 +141,7 @@ namespace CRGames_game
 		/// <summary>
 		/// Moves the game to the next turn.
 		/// </summary>
-		void NextTurn(){
+		public void NextTurn(){
 			currentTurn++;
 
 			currentPlayer++;
@@ -244,7 +273,7 @@ namespace CRGames_game
                 currentPlayer = 0;
             }
             // loads the new player gang members by calling the update gang memebers function in the UI manager
-            UIManagerScript.updateGangMembers(players1[currentPlayer].GetNumberOfGangMembers().ToString(), players1[currentPlayer].GetName());
+            //UIManagerScript.updateGangMembers(players1[currentPlayer].GetNumberOfGangMembers().ToString(), players1[currentPlayer].GetName());
 
             
 
