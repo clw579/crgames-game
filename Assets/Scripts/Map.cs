@@ -63,6 +63,8 @@ namespace CRGames_game
                 }
             }
 
+            GameObject.FindGameObjectWithTag("MainCamera").transform.parent.gameObject.GetComponent<MapCamera>().SetMaxCoord(0.75f * width, 0.75f * height);
+
             // Create a PVC tile
             generatePVC();
         }
