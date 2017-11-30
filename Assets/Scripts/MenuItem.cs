@@ -9,43 +9,41 @@ namespace CRGames_game
     abstract class MenuItem
     {
         // Name of the MenuItem
-        String name;
+		String name;
+
+        // Creates a MenuItem with given name
+        public MenuItem(String itemName)
+        {
+            name = itemName;
+        }
+
+        // Placeholder for derived classes
+        public abstract bool handleInput();
+    }
+
+    class SaveMenu : MenuItem
+    {
+        public SaveMenu(String itemName) : base(itemName)
+        {
+            
+        }
+
+        public override bool handleInput()
+        {
+            return false;
+        }
+    }
+
+    class LoadMenu : MenuItem
+    {
+        public LoadMenu(String itemName) : base(itemName)
+        {
+
+        }
+
+        public override bool handleInput()
+        {
+            return false;
+        }
     }
 }
-
-//        // Creates a MenuItem with given name
-//        public MenuItem(String itemName)
-//        {
-//            name = itemName;
-//        }
-
-//        // Placeholder for derived classes
-//        public abstract bool handleInput();
-//    }
-
-//    class SaveMenu : MenuItem
-//    {
-//        public SaveMenu(String itemName) : base(itemName)
-//        {
-            
-//        }
-
-//        public override bool handleInput()
-//        {
-//            return false;
-//        }
-//    }
-
-//    class LoadMenu : MenuItem
-//    {
-//        public LoadMenu(String itemName) : base(itemName)
-//        {
-
-//        }
-
-//        public override bool handleInput()
-//        {
-//            return false;
-//        }
-//    }
-//}
