@@ -80,7 +80,7 @@ namespace CRGames_game
         /// </summary>
         /// <returns>The Tile at the given position</returns>
         public Tile getTileAtPosition(int x, int y){
-            return tiles[x + (y * this.width)];
+            return tiles[x + (y * width)];
         }
 
         /// <summary>
