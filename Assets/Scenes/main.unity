@@ -158,6 +158,8 @@ MonoBehaviour:
   moveSpeed: 10
   cam1: {fileID: 1077766582}
   cam2: {fileID: 548416128}
+  maxX: 0
+  maxY: 0
 --- !u!1 &548416124
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +444,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 742366983}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 453, y: 211.5, z: 0}
+  m_LocalPosition: {x: 460.5, y: 340, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 664292775}
@@ -678,8 +680,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1684650020855356, guid: 55f62910cfe9c49baa0819f573bb2a10, type: 2}
   mapSprites: []
-  mapWidth: 0
-  mapHeight: 0
+  mapWidth: 12
+  mapHeight: 6
   ColourAlcuin: {r: 0, g: 0, b: 0, a: 0}
   ColourGoodricke: {r: 0, g: 0, b: 0, a: 0}
   ColourLangwith: {r: 0, g: 0, b: 0, a: 0}
