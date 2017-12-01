@@ -10,8 +10,8 @@ public class MapCamera : MonoBehaviour {
 
 	float zoom = 1f;
 
-    float maxX;
-    float maxY;
+    public float maxX;
+    public float maxY;
 
     void Start()
     {
@@ -59,7 +59,7 @@ public class MapCamera : MonoBehaviour {
         Vector2 position = transform.localPosition;
         position += direction * distance;
 
-        if (position.x > 0.0f && position.x < maxX && position.y < 0.0f && position.y > maxY){
+        if (position.x > -17.0f && position.x < maxX - 17.0f && position.y < 10.0f && position.y > maxY + 10.0f){
             transform.localPosition = position;
         }        
     }
