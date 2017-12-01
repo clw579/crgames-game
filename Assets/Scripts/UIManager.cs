@@ -17,10 +17,8 @@ namespace CRGames_game
 
 		public void RefreshTileMenu(Tile currentTile, string tileCollege)
 		{
-			if (currentTile != null) {
-				college.text = tileCollege;
-				gangMembers.text = currentTile.getGangStrength().ToString();
-			}
+			college.text = tileCollege;
+			gangMembers.text = currentTile.getGangStrength().ToString();
 		}
     }
 }

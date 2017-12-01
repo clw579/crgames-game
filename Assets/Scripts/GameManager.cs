@@ -115,7 +115,9 @@ namespace CRGames_game
 
         void Update()
         {
-			uiManager.RefreshTileMenu(lastClickedTile, lookupCollege(lastClickedTile.getCollege()));
+			if (lastClickedTile != null) {
+				uiManager.RefreshTileMenu (lastClickedTile, lookupCollege (lastClickedTile.getCollege ()));
+			}
         }
 
 		/// <summary>
