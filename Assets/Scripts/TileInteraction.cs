@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace CRGames_game
 {
@@ -53,14 +54,18 @@ namespace CRGames_game
 					break;
 			}
 		}
-		
-		/// <summary>
-		/// When clicked, report the click to the GameManager
-		/// </summary>
-		void OnMouseDown(){
-			Debug.Log(gameObject.name);
-			manager.TileClicked(tile);
-		}
+
+        /// <summary>
+        /// When clicked, report the click to the GameManager
+        /// </summary>
+        void OnMouseDown()
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                Debug.Log(gameObject.name);
+                manager.TileClicked(tile);
+            }
+        }
 
 		/// <summary>
 		/// Highlight the tile when moused over

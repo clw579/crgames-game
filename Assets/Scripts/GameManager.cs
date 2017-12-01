@@ -274,8 +274,7 @@ namespace CRGames_game
             {
                 currentPlayer = 0;
             }
-            // loads the new player gang members by calling the update gang memebers function in the UI manager
-            //UIManagerScript.updateGangMembers(players1[currentPlayer].GetNumberOfGangMembers().ToString(), players1[currentPlayer].GetName());
+      
 
             
 
