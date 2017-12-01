@@ -137,7 +137,7 @@ namespace CRGames_game
 		/// Generates the Map object
 		/// </summary>
 		void GenerateMap(){
-			map = new Map(12, 6, mapSprites, tilePrefab);
+			map = new Map(24, 13, mapSprites, tilePrefab);
 		}
 
 		/// <summary>
