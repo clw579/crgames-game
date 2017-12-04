@@ -13,7 +13,7 @@ namespace CombatEngine_v1
         }
 
 
-
+        //tst
         double x = 20f;  // Number of gang members of attacking player, feel free to play around with to check outcomes of different battles
         double y = 20f;  // Number of gang members of the defending player
         double levelOfTile = 0f;  // Level of tile being attacked, eg. tiles only give defence bonus, not attack bonus, between level 0-3 otherwise too powerful
