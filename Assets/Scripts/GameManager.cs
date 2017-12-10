@@ -152,7 +152,7 @@ namespace CRGames_game
 				currentPlayer = 0;
 			}
 
-			players [currentPlayer].AlertItsMyTurn ();
+			players1[currentPlayer].AlertItsMyTurn ();
 		}
 
 		/// <summary>
