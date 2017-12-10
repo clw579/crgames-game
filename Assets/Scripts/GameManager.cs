@@ -75,9 +75,11 @@ namespace CRGames_game
 		// The tile that was last clicked on, needed for movement and such things
 		private Tile lastClickedTile = null;
 
-        //public GameObject GUIManager;
-        //private UIManager UIManagerScript;
+		// The UI Canvas
 		public UIManager uiManager;
+
+		// The Combat Engine
+		private CombatEngine combatEngine = new CombatEngine();
         
 		void Start()
         {
@@ -266,41 +268,39 @@ namespace CRGames_game
 
             players1[currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
 
-            if (currentPlayer < players1.Count -1)  // rotates around the current players
-            {
-                currentPlayer += 1;
-            }
-            else
-            {
-                currentPlayer = 0;
-            }
-      
-
-            
-
-
+			if (currentPlayer < players1.Count - 1) {  // rotates around the current players
+				currentPlayer += 1;
+			} else {
+				currentPlayer = 0;
+			}
         }
 
 		/// <summary>
 		/// Works out what to do when a tile has been clicked on (e.g. move, attack);
 		/// </summary>
-		public void TileClicked(Tile tile){
-			Debug.Log("A tile was clicked somewhere");
+		public void TileClicked(Tile tile)
+		{
+			if (lastClickedTile != null){
+				if (tile.getGangStrength() > 0) {
+					Debug.Log(map.getAdjacent(tile));
+				}
+			}
 
-			if (lastClickedTile == null){
-				// TODO Attack
-				lastClickedTile = tile;
-			}else{
-				// Move all of the units on the last clicked Tile to the current Tile
-				if (lastClickedTile.getCollege() == tile.getCollege() || tile.getCollege() == (int)colleges.Unknown){
-//					int strength = tile.getGangStrength();
-//					tile.setGangStrength(0);
-//					lastClickedTile.setGangStrength(lastClickedTile.getGangStrength() + strength);
-//					lastClickedTile = null;
-					// Why not
-					map.moveGangMember(lastClickedTile, tile);
-				}else{
-					lastClickedTile = tile;
+			lastClickedTile = tile;
+		}
+
+		/// <summary>
+		/// Attempts to attack a tile from the last clicked tile.
+		/// </summary>
+		/// <param name="tile">Tile to attack.</param>
+		public void requestAttack(Tile tile)
+		{
+			if (lastClickedTile != null) {
+				if (map.isAdjacent(lastClickedTile, tile)) {
+					int[] newStrengths = new int[2];
+					newStrengths = combatEngine.Attack(lastClickedTile.getGangStrength(), tile.getGangStrength());
+					lastClickedTile.setGangStrength(newStrengths[0]);
+					tile.setGangStrength(newStrengths[1]);
 				}
 			}
 		}

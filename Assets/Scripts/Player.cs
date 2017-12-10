@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace CRGames_game
 {
-    class Player
+    public class Player
     {
         private int college;
         private String name;

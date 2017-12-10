@@ -27,7 +27,7 @@ namespace CRGames_game
         public Tile(int id)
         {
             tileID = id;
-            gangStrength = 0;
+            gangStrength = 30;
             college = 0;
         }
 

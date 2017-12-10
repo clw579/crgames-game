@@ -171,5 +171,40 @@ namespace CRGames_game
             // seeing as IDs may change
             tiles[id] = tile;
         }
+
+		/// <summary>
+		/// Returns an array of tiles adjacent to the location tile.
+		/// </summary>
+		/// <returns>The adjacent tiles.</returns>
+		/// <param name="location">Location.</param>
+		public Tile[] getAdjacent(Tile location)
+		{
+			//TODO fix, only works for diagonals
+			Tile[] adjacents = new Tile[4];
+			int index = 0;
+			for (int x = -1; x < 2; x+=2) {
+				for (int y = -1; y < 2; y+=2) {
+					adjacents[index] = tiles[location.x + x + ((location.y + y) * width)];
+				}
+			}
+			return adjacents;
+		}
+
+		/// <summary>
+		/// Returns whether a destination tile is adjacent to a location tile.
+		/// </summary>
+		/// <returns><c>true</c>, if adjacent, <c>false</c> otherwise.</returns>
+		/// <param name="location">Location.</param>
+		/// <param name="destination">Destination.</param>
+		public bool isAdjacent(Tile location, Tile destination)
+		{
+			//TODO integrate with getAdjacent()
+			if (((location.x == destination.x) && (location.y == destination.y + 1 || location.y == destination.y - 1)) ||
+			    ((location.y == destination.y) && (location.x == destination.x + 1 || location.x == destination.x - 1))) {
+				return true;
+			} else {
+				return false;
+			}
+		}
     }
 }
