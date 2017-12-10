@@ -62,7 +62,6 @@ namespace CRGames_game
         {
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                Debug.Log(gameObject.name);
                 manager.TileClicked(tile);
             }
         }
@@ -70,10 +69,10 @@ namespace CRGames_game
 		/// <summary>
 		/// Highlight the tile when moused over
 		/// </summary>
-		void OnMouseEnter() {
-	        gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
-			gameObject.transform.GetChild(0).gameObject.SetActive(true);
-	    }
+//		void OnMouseEnter() {
+//	        gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+//			gameObject.transform.GetChild(0).gameObject.SetActive(true);
+//	    }
 	    
 		/// <summary>
 		/// Unhighlight when the mouse moves out
@@ -82,5 +81,16 @@ namespace CRGames_game
 	        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
 			gameObject.transform.GetChild(0).gameObject.SetActive(false);
 	    }
+
+		void OnMouseOver()
+		{
+			gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+			gameObject.transform.GetChild(0).gameObject.SetActive(true);
+
+			if (Input.GetMouseButtonDown(1)) 
+				{
+					manager.requestAttack(tile);
+				}
+		}
 	}
 }
