@@ -112,22 +112,17 @@ namespace CRGames_game
             currentPlayer = 0; // sets inital player to player 1
             currentTurn = 1;   //sets the inital turn to 1
 
+            players1.Add(new Player(1, "Sally"));  // tests to be removed
+            players1[0].AddOwnedTiles(new Tile(1, new GameObject()));
+            players1[0].AddOwnedTiles(new Tile(2, new GameObject()));
 
-
-
-
-//            players1.Add(new Player(1, "Sally"));  // tests to be removed
-//            players1[0].AddOwnedTiles(new Tile(1));
-//            players1[0].AddOwnedTiles(new Tile(2));
-//
-//
-//            players1.Add(new Player(2, "Bob"));
-//            players1[1].AddOwnedTiles(new Tile(3));
-//            players1[1].AddOwnedTiles(new Tile(4));
+            players1.Add(new Player(2, "Bob"));
+            players1[1].AddOwnedTiles(new Tile(3, new GameObject()));
+            players1[1].AddOwnedTiles(new Tile(4, new GameObject()));
 
             //sets the first player and number of gang members when the game starts
 
-            //UIManagerScript.updateGangMembers(players1[currentPlayer].GetNumberOfGangMembers().ToString(), players1[currentPlayer].GetName());
+            
 
 
         }
@@ -167,16 +162,20 @@ namespace CRGames_game
 		/// Moves the game to the next turn.
 		/// </summary>
 		public void NextTurn(){
-			currentTurn++;
 
-			currentPlayer++;
+            
 
-			if (currentPlayer > players.Length) {
+
+			if (currentPlayer > players1.Count - 1) {
 				currentPlayer = 0;
 			}
 
-			players1[currentPlayer].AlertItsMyTurn ();
-		}
+            players1[currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
+            players1[currentPlayer].AlertItsMyTurn ();
+
+            currentTurn++;
+            currentPlayer++;
+        }
 
 		/// <summary>
 		/// Loads the game.
@@ -311,17 +310,7 @@ namespace CRGames_game
 		/// Ends the turn.
 		/// </summary>
 		/// <returns>The turn.</returns>
-		public void EndTurn(){
-
-            players1[currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
-
-			if (currentPlayer < players1.Count - 1) {  // rotates around the current players
-				currentPlayer += 1;
-			} else {
-				currentPlayer = 0;
-			}
-        }
-
+	
 		/// <summary>
 		/// Works out what to do when a tile has been clicked on (e.g. move, attack).
 		/// </summary>
