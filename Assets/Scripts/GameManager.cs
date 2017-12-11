@@ -195,12 +195,12 @@ namespace CRGames_game
 			// Extract the saved Map from the gameState
 			Map loadMap = new Map(gameState.map.width, gameState.map.height, mapSprites, tilePrefab);
 
-			combatEngine.SetPVCBonus(gameState.pvcBonus);
-			combatEngine.SetHiddenDamageModifier(gameState.hiddenDamageModifier);
+			combatEngine.SetPVCBonus(gameState.combatEngine.pvcBonus);
+			combatEngine.SetHiddenDamageModifier(gameState.combatEngine.hiddenDamageModifier);
 			
 			// Initialise each Tile in the saved Map
 			for (int i = 0; i < gameState.map.tiles.Length; i++){
-				Tile loadTile = new Tile(gameState.map.tiles[i].tileID, new GameObject()); //TODO Add proper GameObject
+				Tile loadTile = new Tile(gameState.map.tiles[i].tileID, map.tileObjects[gameState.map.tiles[i].x + (gameState.map.tiles[i].y * map.getWidth())]);
 				loadTile.setGangStrength(gameState.map.tiles[i].gangStrength);
 				loadTile.setCollege(gameState.map.tiles[i].college);
 				loadTile.x = gameState.map.tiles[i].x;

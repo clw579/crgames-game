@@ -11,6 +11,8 @@ namespace CRGames_game
         // Store the tile prefab to istantiate
         public GameObject tilePrefab;
 
+        public GameObject[] tileObjects;
+
         // Array of tiles
         Tile[] tiles;
         // Maximum number of tiles the Map can contain
@@ -29,6 +31,7 @@ namespace CRGames_game
             this.height = height;
 
             tiles = new Tile[size];
+            tileObjects = new GameObject[size];
 
             // Create an object to hold all of the map tiles
             GameObject mapPivot = new GameObject();
@@ -58,6 +61,7 @@ namespace CRGames_game
                     tile.x = x;
                     tile.y = y;
                     tiles[x + (y * width)] = tile;
+                    tileObjects[x + (y * width)] = gob;
 
                     interact.tile = tile;
                 }
@@ -224,5 +228,9 @@ namespace CRGames_game
 				return false;
 			}
 		}
+
+        public int getWidth(){
+            return this.width;
+        }
     }
 }
