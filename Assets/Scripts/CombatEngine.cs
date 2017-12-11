@@ -78,11 +78,11 @@ namespace CRGames_game
             return hiddenDamageModifier;
         }
 
-        public double SetPVCBonus(double bonus){
+        public void SetPVCBonus(double bonus){
             pvcBonus = bonus;
         }
 
-        public double SetHiddenDamageModifier(double modifier){
+        public void SetHiddenDamageModifier(double modifier){
             hiddenDamageModifier = modifier;
         }
     }
