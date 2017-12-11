@@ -194,6 +194,9 @@ namespace CRGames_game
 
 			// Extract the saved Map from the gameState
 			Map loadMap = new Map(gameState.map.width, gameState.map.height, mapSprites, tilePrefab);
+
+			combatEngine.SetPVCBonus(gameState.pvcBonus);
+			combatEngine.SetHiddenDamageModifier(gameState.hiddenDamageModifier);
 			
 			// Initialise each Tile in the saved Map
 			for (int i = 0; i < gameState.map.tiles.Length; i++){
@@ -207,11 +210,20 @@ namespace CRGames_game
 
 			// Create an array of Players to store the loaded Player values
 			Player[] loadPlayers = new Player[gameState.numberOfPlayers];
-
+			players1 = new List<Player>();
+			
 			// Initialise each saved Player
 			for (int i = 0; i < gameState.numberOfPlayers; i++){
 				Player loadPlayer = new Player(gameState.players[i].college, gameState.players[i].name);
 				loadPlayers[gameState.players[i].positionInArray] = loadPlayer;
+				players1.Add(loadPlayer);
+			}
+
+			for (int i = 0; i < gameState.collegeColours.Length; i++){
+				collegeColours[i].r = gameState.collegeColours[i].r;
+				collegeColours[i].g = gameState.collegeColours[i].g;
+				collegeColours[i].b = gameState.collegeColours[i].b;
+				collegeColours[i].a = gameState.collegeColours[i].a;
 			}
 
 			// Finalise loading
@@ -234,6 +246,11 @@ namespace CRGames_game
 			PlayerJSON[] playersJson = new PlayerJSON[players.Length];
 			MapJSON mapJson = new MapJSON ();
 			TileJSON[] tileJson = new TileJSON[map.getNumberOfTiles()];
+			ColourJSON[] colourJson = new ColourJSON[collegeColours.Length];
+			CombatEngineJSON combatEngineJson = new CombatEngineJSON();
+
+			combatEngineJson.pvcBonus = combatEngine.GetPVCBonus();
+			combatEngineJson.hiddenDamageModifier = combatEngine.GetHiddenDamageModifier();
 
 			// Save every Player's data as a JSON object
 			for (int i = 0; i < players.Length; i++) {
@@ -254,6 +271,13 @@ namespace CRGames_game
 				tileJson[i].y = map.getTileByID(i).y;
 			}
 
+			for (int i = 0; i < collegeColours.Length; i++){
+				colourJson[i].r = collegeColours[i].r;
+				colourJson[i].g = collegeColours[i].g;
+				colourJson[i].b = collegeColours[i].b;
+				colourJson[i].a = collegeColours[i].a;
+			}
+
 			// Store Map data as a JSON object
 			mapJson.numberOfTiles = tileJson.Length;
 			mapJson.tiles = tileJson;
@@ -264,6 +288,8 @@ namespace CRGames_game
 			gameStateJson.numberOfPlayers = playersJson.Length;
 			gameStateJson.map = mapJson;
 			gameStateJson.players = playersJson;
+			gameStateJson.combatEngine = combatEngineJson;
+			gameStateJson.collegeColours = colourJson;
 			gameStateJson.currentTurn = currentTurn;
 			gameStateJson.currentPlayer = currentPlayer;
 

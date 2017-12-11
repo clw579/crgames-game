@@ -69,5 +69,21 @@ namespace CRGames_game
 //            Console.WriteLine("y = " + y);
 //            Console.WriteLine();
         }
+
+        public double GetPVCBonus(){
+            return pvcBonus;
+        }
+
+        public double GetHiddenDamageModifier(){
+            return hiddenDamageModifier;
+        }
+
+        public double SetPVCBonus(double bonus){
+            pvcBonus = bonus;
+        }
+
+        public double SetHiddenDamageModifier(double modifier){
+            hiddenDamageModifier = modifier;
+        }
     }
 }

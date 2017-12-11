@@ -13,6 +13,8 @@ public class JSONObjects {
 public class GameStateJSON {
 	public MapJSON map = new MapJSON ();
 	public PlayerJSON[] players;
+	public ColourJSON[] collegeColours;
+	public CombatEngineJSON combatEngine;
 	public int numberOfPlayers;
 	public int currentTurn;
 	public int currentPlayer;
@@ -51,4 +53,24 @@ public class TileJSON {
 	public int gangStrength;
 	public int college;
 	public int positionInArray;
+}
+
+/// <summary>
+/// Colour JSON Representation
+/// </summary>
+[System.Serializable]
+public class ColourJSON {
+	public float r;
+	public float g;
+	public float b;
+	public float a;
+}
+
+/// <summary>
+/// Combat Engine Representation
+/// </summary>
+[System.Serializable]
+public class CombatEngineJSON {
+	public double pvcBonus;
+	public double hiddenDamageModifier;
 }
