@@ -58,6 +58,9 @@ namespace CRGames_game
 		public Color ColourJames;
 		public Color ColourWentworth;
 
+		// Gang colour array
+		Color[] collegeColours;
+
 		// Path of the current save file
 		private String savePath = "gamestates.json";
 
@@ -86,6 +89,20 @@ namespace CRGames_game
 			// Load the Map Sprites
 			mapSprites = Resources.LoadAll<Sprite>("uni_map");
 
+			// Create an array containing college colours
+			collegeColours = new Color[10] {
+				new Color(255, 255, 255, 1),
+				ColourAlcuin,
+				ColourGoodricke,
+				ColourLangwith,
+				ColourConstantine,
+				ColourHalifax,
+				ColourVanbrugh,
+				ColourDerwent,
+				ColourJames,
+				ColourWentworth,
+			};
+
 			// Display the Map
 			GenerateMap ();
 
@@ -99,14 +116,14 @@ namespace CRGames_game
 
 
 
-            players1.Add(new Player(1, "Sally"));  // tests to be removed
-            players1[0].AddOwnedTiles(new Tile(1));
-            players1[0].AddOwnedTiles(new Tile(2));
-
-
-            players1.Add(new Player(2, "Bob"));
-            players1[1].AddOwnedTiles(new Tile(3));
-            players1[1].AddOwnedTiles(new Tile(4));
+//            players1.Add(new Player(1, "Sally"));  // tests to be removed
+//            players1[0].AddOwnedTiles(new Tile(1));
+//            players1[0].AddOwnedTiles(new Tile(2));
+//
+//
+//            players1.Add(new Player(2, "Bob"));
+//            players1[1].AddOwnedTiles(new Tile(3));
+//            players1[1].AddOwnedTiles(new Tile(4));
 
             //sets the first player and number of gang members when the game starts
 
@@ -128,6 +145,10 @@ namespace CRGames_game
 		/// <param name="college">College.</param>
 		public string lookupCollege(int college) {
 			return collegeLookupTable[college];
+		}
+
+		public Color[] getCollegeColours() {
+			return collegeColours;
 		}
 
 		public Tile getLastClickedTile()
@@ -176,7 +197,7 @@ namespace CRGames_game
 			
 			// Initialise each Tile in the saved Map
 			for (int i = 0; i < gameState.map.tiles.Length; i++){
-				Tile loadTile = new Tile(gameState.map.tiles[i].tileID);
+				Tile loadTile = new Tile(gameState.map.tiles[i].tileID, new GameObject()); //TODO Add proper GameObject
 				loadTile.setGangStrength(gameState.map.tiles[i].gangStrength);
 				loadTile.setCollege(gameState.map.tiles[i].college);
 				loadTile.x = gameState.map.tiles[i].x;
@@ -276,13 +297,29 @@ namespace CRGames_game
         }
 
 		/// <summary>
-		/// Works out what to do when a tile has been clicked on (e.g. move, attack);
+		/// Works out what to do when a tile has been clicked on (e.g. move, attack).
 		/// </summary>
 		public void TileClicked(Tile tile)
 		{
-			if (lastClickedTile != null){
-				if (tile.getGangStrength() > 0) {
-					Debug.Log(map.getAdjacent(tile));
+			// TODO:
+			//Stop colleges from attacking themselves
+			//
+			// Stops highlighting targets from the previously clicked on tile
+			if (lastClickedTile != null) {
+				Tile[] adjacents = map.getAdjacent (lastClickedTile);
+				for (int i = 0; i < 4; i++) {
+					if (adjacents[i] != null) {
+						adjacents[i].resetColor(collegeColours);
+					}
+				}
+			}
+			// Highlights in red the available targets from the clicked on tile
+			if (tile.getGangStrength() > 0) {
+				Tile[] adjacents = map.getAdjacent(tile);
+				for (int i = 0; i < 4; i++) {
+					if (adjacents[i] != null) {
+						adjacents[i].setColor(Color.red);
+					}
 				}
 			}
 

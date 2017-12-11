@@ -54,7 +54,7 @@ namespace CRGames_game
                     TileInteraction interact = gob.AddComponent<TileInteraction>() as TileInteraction;
 
                     // Create a new Tile object to hold the properties of this tile
-                    Tile tile = new Tile(x + (y * width));
+                    Tile tile = new Tile(x + (y * width), gob);
                     tile.x = x;
                     tile.y = y;
                     tiles[x + (y * width)] = tile;
@@ -126,7 +126,7 @@ namespace CRGames_game
         public void generatePVC() {
             System.Random rng = new System.Random();
             int rand = rng.Next(size);
-            PVCTile tile = new PVCTile(tiles[rand].getID());
+			PVCTile tile = new PVCTile(tiles[rand].getID(), tiles[rand].GetObject());
             tile.x = tiles[rand].x;
             tile.y = tiles[rand].y;
             tiles[rand] = tile;
@@ -173,19 +173,37 @@ namespace CRGames_game
         }
 
 		/// <summary>
-		/// Returns an array of tiles adjacent to the location tile.
+		/// Returns an array of tiles adjacent to the location tile. Null elements are outside of the map.
 		/// </summary>
-		/// <returns>The adjacent tiles.</returns>
+		/// <returns>The adjacent tiles, or null.</returns>
 		/// <param name="location">Location.</param>
 		public Tile[] getAdjacent(Tile location)
 		{
-			//TODO fix, only works for diagonals
 			Tile[] adjacents = new Tile[4];
-			int index = 0;
-			for (int x = -1; x < 2; x+=2) {
-				for (int y = -1; y < 2; y+=2) {
-					adjacents[index] = tiles[location.x + x + ((location.y + y) * width)];
-				}
+
+			// Ensures edges do not have adjacent tiles out of bounds
+			if (location.x != 0) {
+				adjacents [0] = tiles [location.x - 1 + (location.y * width)];
+			} else {
+				adjacents [0] = null;
+			}
+
+			if (location.y != 0) {
+				adjacents [1] = tiles [location.x + ((location.y - 1) * width)];
+			} else {
+				adjacents [1] = null;
+			}
+
+			if (location.x != width - 1) {
+				adjacents [2] = tiles [location.x + 1 + (location.y * width)];
+			} else {
+				adjacents [2] = null;
+			}
+
+			if (location.y != height - 1) {
+				adjacents [3] = tiles [location.x + ((location.y + 1) * width)];
+			} else {
+				adjacents [3] = null;
 			}
 			return adjacents;
 		}
