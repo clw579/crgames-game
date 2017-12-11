@@ -13,7 +13,7 @@ namespace CRGames_game
         Map map;
         Player aPlayer;
 
-        GangMemberAllocate(Map map, Player aPlayer)
+        public GangMemberAllocate(Map map, Player aPlayer)
         {
             this.map = map;
             this.aPlayer = aPlayer;

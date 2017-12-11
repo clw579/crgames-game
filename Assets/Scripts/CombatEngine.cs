@@ -6,38 +6,31 @@ namespace CRGames_game
 {
     class CombatEngine
     {
+		// Level of tile being attacked, between 0 - 3 for balance
+        double levelOfTile = 0f;
+		// Currently not used properly
+        bool pvc = false;
+        double pvcBonus = 1f; 
+		// Linearly scale the overall damage dealt per turn
+        double hiddenDamageModifier = 0.4f;
+		System.Random rand = new System.Random();
 
-        public static void Main(string[] args)
+		/// <summary>
+		/// Generates random numbers that follow a normal distribution.
+		/// </summary>
+		/// <returns>A random factor.</returns>
+        public double randomnessFactor()  // 
         {
-            CombatEngine myClass = new CombatEngine();
-            myClass.AttackSimulator();
-        }
-
-
-
-        double x = 20f;  // Number of gang members of attacking player, feel free to play around with to check outcomes of different battles
-        double y = 20f;  // Number of gang members of the defending player
-        double levelOfTile = 0f;  // Level of tile being attacked, eg. tiles only give defence bonus, not attack bonus, between level 0-3 otherwise too powerful
-        bool pvc = false;  // Currently not used properly, will be fixed soon, ignore for now
-        double pvcBonus = 1f; // not used
-        double xdamage;
-        double ydamage;
-        double hiddenDamageModifier = 0.4f;  // Just to linearly scale the overall damage dealt per turn
-        int turn = 1;
-
-        System.Random rand = new System.Random();
-
-        public double randomnessFactor()  // Generates random numbers that follow a normal distribution, got from Wikipedia
-        {
-
+			
             double a = 1.0 - rand.NextDouble();
             double b = 1.0 - rand.NextDouble();
+			// Mean of the distribution
             double randStdNormal = Math.Sqrt(-2.0 * Math.Log(a)) * Math.Sin(2.0 * Math.PI * b);
-            double randValue = 1 + 0.2 * randStdNormal; //First number gives the mean of the distribution, the second number gives the variance, 
-            //play around with these 2 to adjust the magnitude of randomness
+			// Variance of the distribution
+            double randValue = 1 + 0.2 * randStdNormal;
             return randValue;
         }
-
+			
         public void hasPvc()
         {
             if (pvc)
@@ -46,45 +39,51 @@ namespace CRGames_game
             }
         }
 
-        public void Attack()
+		/// <summary>
+		/// Resolves a turn of conflict between an attacker and a defender.
+		/// </summary>
+		/// <param name="attack">Attacker number of gang members.</param>
+		/// <param name="defend">Defender number of gang members.</param>
+		public int[] Attack(int attack, int defend)
         {
 
-            double rfx = randomnessFactor();
-            double rfy = randomnessFactor();
-            xdamage = Math.Ceiling(x * rfx * (1 / (1 + (0.15 * levelOfTile))) * pvcBonus * hiddenDamageModifier);
-            ydamage = Math.Ceiling(y * rfy * pvcBonus * hiddenDamageModifier);
+            double randomAttack = randomnessFactor();
+            double randomDefend = randomnessFactor();
+			double attackDamage = Math.Ceiling(attack * randomAttack * (1 / (1 + (0.15 * levelOfTile))) * pvcBonus * hiddenDamageModifier);
+            double defendDamage = Math.Ceiling(defend * randomDefend * pvcBonus * hiddenDamageModifier);
 
-            x -= ydamage;
-            y -= xdamage;
+			// Calculates the attacker and defender remaining gang members as a double
+			double resultAttack = (double)attack - defendDamage;
+			double resultDefend = (double)defend - attackDamage;
 
-            if (x < 0)
-            {
-                x = 0;
-            }
+			// Sets attacker and defender gang members either to 0 if the remaining is below 0 or rounds down to the nearest integer
+			attack = (resultAttack < 0) ? 0 : (int)resultAttack;
+			defend = (resultDefend < 0) ? 0 : (int)resultDefend;
 
-            if (y < 0)
-            {
-                y = 0;
-            }
+			return new int[] { attack, defend };
 
-            Console.WriteLine("Turn number " + turn);
-            Console.WriteLine("RandomnessFactor_x " + rfx);
-            Console.WriteLine("RandomnessFactor_y " + rfy);
-            Console.WriteLine("x = " + x);
-            Console.WriteLine("y = " + y);
-            Console.WriteLine();
+//            Console.WriteLine("Turn number " + turn);
+//            Console.WriteLine("RandomnessFactor_x " + rfx);
+//            Console.WriteLine("RandomnessFactor_y " + rfy);
+//            Console.WriteLine("x = " + x);
+//            Console.WriteLine("y = " + y);
+//            Console.WriteLine();
         }
 
-        public void AttackSimulator()
-        {
-            while (x != 0 && y != 0)
-            {
-                hasPvc();
-                Attack();
-                turn += 1;
-            }
-            turn = 1;
+        public double GetPVCBonus(){
+            return pvcBonus;
+        }
+
+        public double GetHiddenDamageModifier(){
+            return hiddenDamageModifier;
+        }
+
+        public double SetPVCBonus(double bonus){
+            pvcBonus = bonus;
+        }
+
+        public double SetHiddenDamageModifier(double modifier){
+            hiddenDamageModifier = modifier;
         }
     }
 }
-

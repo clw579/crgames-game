@@ -24,11 +24,12 @@ namespace CRGames_game
         /// <summary>
         /// Creates a tile with the given unique identifier
         /// </summary>
-        public Tile(int id)
+        public Tile(int id, GameObject gob)
         {
             tileID = id;
-            gangStrength = 0;
-            college = 0;
+			gameObject = gob;
+            gangStrength = 30;
+            college = 1;
         }
 
         /// <summary>
@@ -115,6 +116,14 @@ namespace CRGames_game
         public GameObject GetObject(){
             return this.gameObject;
         }
+
+		public void setColor(Color color) {
+			gameObject.GetComponent<SpriteRenderer>().color = color;;
+		}
+
+		public void resetColor(Color[] collegeColours) {
+			setColor(collegeColours[(int)college]);
+		}
 
         /// <summary>
         /// Sets the gang strength and college of the tile to 0 but leaves the id untouched

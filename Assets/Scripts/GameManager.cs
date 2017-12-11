@@ -58,6 +58,9 @@ namespace CRGames_game
 		public Color ColourJames;
 		public Color ColourWentworth;
 
+		// Gang colour array
+		Color[] collegeColours;
+
 		// Path of the current save file
 		private String savePath = "gamestates.json";
 
@@ -75,14 +78,30 @@ namespace CRGames_game
 		// The tile that was last clicked on, needed for movement and such things
 		private Tile lastClickedTile = null;
 
-        //public GameObject GUIManager;
-        //private UIManager UIManagerScript;
+		// The UI Canvas
 		public UIManager uiManager;
+
+		// The Combat Engine
+		private CombatEngine combatEngine = new CombatEngine();
         
 		void Start()
         {
 			// Load the Map Sprites
 			mapSprites = Resources.LoadAll<Sprite>("uni_map");
+
+			// Create an array containing college colours
+			collegeColours = new Color[10] {
+				new Color(255, 255, 255, 1),
+				ColourAlcuin,
+				ColourGoodricke,
+				ColourLangwith,
+				ColourConstantine,
+				ColourHalifax,
+				ColourVanbrugh,
+				ColourDerwent,
+				ColourJames,
+				ColourWentworth,
+			};
 
 			// Display the Map
 			GenerateMap ();
@@ -97,14 +116,14 @@ namespace CRGames_game
 
 
 
-            players1.Add(new Player(1, "Sally"));  // tests to be removed
-            players1[0].AddOwnedTiles(new Tile(1));
-            players1[0].AddOwnedTiles(new Tile(2));
-
-
-            players1.Add(new Player(2, "Bob"));
-            players1[1].AddOwnedTiles(new Tile(3));
-            players1[1].AddOwnedTiles(new Tile(4));
+//            players1.Add(new Player(1, "Sally"));  // tests to be removed
+//            players1[0].AddOwnedTiles(new Tile(1));
+//            players1[0].AddOwnedTiles(new Tile(2));
+//
+//
+//            players1.Add(new Player(2, "Bob"));
+//            players1[1].AddOwnedTiles(new Tile(3));
+//            players1[1].AddOwnedTiles(new Tile(4));
 
             //sets the first player and number of gang members when the game starts
 
@@ -126,6 +145,10 @@ namespace CRGames_game
 		/// <param name="college">College.</param>
 		public string lookupCollege(int college) {
 			return collegeLookupTable[college];
+		}
+
+		public Color[] getCollegeColours() {
+			return collegeColours;
 		}
 
 		public Tile getLastClickedTile()
@@ -171,10 +194,13 @@ namespace CRGames_game
 
 			// Extract the saved Map from the gameState
 			Map loadMap = new Map(gameState.map.width, gameState.map.height, mapSprites, tilePrefab);
+
+			combatEngine.SetPVCBonus(gameState.pvcBonus);
+			combatEngine.SetHiddenDamageModifier(gameState.hiddenDamageModifier);
 			
 			// Initialise each Tile in the saved Map
 			for (int i = 0; i < gameState.map.tiles.Length; i++){
-				Tile loadTile = new Tile(gameState.map.tiles[i].tileID);
+				Tile loadTile = new Tile(gameState.map.tiles[i].tileID, new GameObject()); //TODO Add proper GameObject
 				loadTile.setGangStrength(gameState.map.tiles[i].gangStrength);
 				loadTile.setCollege(gameState.map.tiles[i].college);
 				loadTile.x = gameState.map.tiles[i].x;
@@ -184,11 +210,20 @@ namespace CRGames_game
 
 			// Create an array of Players to store the loaded Player values
 			Player[] loadPlayers = new Player[gameState.numberOfPlayers];
-
+			players1 = new List<Player>();
+			
 			// Initialise each saved Player
 			for (int i = 0; i < gameState.numberOfPlayers; i++){
 				Player loadPlayer = new Player(gameState.players[i].college, gameState.players[i].name);
 				loadPlayers[gameState.players[i].positionInArray] = loadPlayer;
+				players1.Add(loadPlayer);
+			}
+
+			for (int i = 0; i < gameState.collegeColours.Length; i++){
+				collegeColours[i].r = gameState.collegeColours[i].r;
+				collegeColours[i].g = gameState.collegeColours[i].g;
+				collegeColours[i].b = gameState.collegeColours[i].b;
+				collegeColours[i].a = gameState.collegeColours[i].a;
 			}
 
 			// Finalise loading
@@ -211,6 +246,11 @@ namespace CRGames_game
 			PlayerJSON[] playersJson = new PlayerJSON[players.Length];
 			MapJSON mapJson = new MapJSON ();
 			TileJSON[] tileJson = new TileJSON[map.getNumberOfTiles()];
+			ColourJSON[] colourJson = new ColourJSON[collegeColours.Length];
+			CombatEngineJSON combatEngineJson = new CombatEngineJSON();
+
+			combatEngineJson.pvcBonus = combatEngine.GetPVCBonus();
+			combatEngineJson.hiddenDamageModifier = combatEngine.GetHiddenDamageModifier();
 
 			// Save every Player's data as a JSON object
 			for (int i = 0; i < players.Length; i++) {
@@ -231,6 +271,13 @@ namespace CRGames_game
 				tileJson[i].y = map.getTileByID(i).y;
 			}
 
+			for (int i = 0; i < collegeColours.Length; i++){
+				colourJson[i].r = collegeColours[i].r;
+				colourJson[i].g = collegeColours[i].g;
+				colourJson[i].b = collegeColours[i].b;
+				colourJson[i].a = collegeColours[i].a;
+			}
+
 			// Store Map data as a JSON object
 			mapJson.numberOfTiles = tileJson.Length;
 			mapJson.tiles = tileJson;
@@ -241,6 +288,8 @@ namespace CRGames_game
 			gameStateJson.numberOfPlayers = playersJson.Length;
 			gameStateJson.map = mapJson;
 			gameStateJson.players = playersJson;
+			gameStateJson.combatEngine = combatEngineJson;
+			gameStateJson.collegeColours = colourJson;
 			gameStateJson.currentTurn = currentTurn;
 			gameStateJson.currentPlayer = currentPlayer;
 
@@ -266,41 +315,55 @@ namespace CRGames_game
 
             players1[currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
 
-            if (currentPlayer < players1.Count -1)  // rotates around the current players
-            {
-                currentPlayer += 1;
-            }
-            else
-            {
-                currentPlayer = 0;
-            }
-      
-
-            
-
-
+			if (currentPlayer < players1.Count - 1) {  // rotates around the current players
+				currentPlayer += 1;
+			} else {
+				currentPlayer = 0;
+			}
         }
 
 		/// <summary>
-		/// Works out what to do when a tile has been clicked on (e.g. move, attack);
+		/// Works out what to do when a tile has been clicked on (e.g. move, attack).
 		/// </summary>
-		public void TileClicked(Tile tile){
-			Debug.Log("A tile was clicked somewhere");
+		public void TileClicked(Tile tile)
+		{
+			// TODO:
+			//Stop colleges from attacking themselves
+			//
+			// Stops highlighting targets from the previously clicked on tile
+			if (lastClickedTile != null) {
+				Tile[] adjacents = map.getAdjacent (lastClickedTile);
+				for (int i = 0; i < 4; i++) {
+					if (adjacents[i] != null) {
+						adjacents[i].resetColor(collegeColours);
+					}
+				}
+			}
+			// Highlights in red the available targets from the clicked on tile
+			if (tile.getGangStrength() > 0) {
+				Tile[] adjacents = map.getAdjacent(tile);
+				for (int i = 0; i < 4; i++) {
+					if (adjacents[i] != null) {
+						adjacents[i].setColor(Color.red);
+					}
+				}
+			}
 
-			if (lastClickedTile == null){
-				// TODO Attack
-				lastClickedTile = tile;
-			}else{
-				// Move all of the units on the last clicked Tile to the current Tile
-				if (lastClickedTile.getCollege() == tile.getCollege() || tile.getCollege() == (int)colleges.Unknown){
-//					int strength = tile.getGangStrength();
-//					tile.setGangStrength(0);
-//					lastClickedTile.setGangStrength(lastClickedTile.getGangStrength() + strength);
-//					lastClickedTile = null;
-					// Why not
-					map.moveGangMember(lastClickedTile, tile);
-				}else{
-					lastClickedTile = tile;
+			lastClickedTile = tile;
+		}
+
+		/// <summary>
+		/// Attempts to attack a tile from the last clicked tile.
+		/// </summary>
+		/// <param name="tile">Tile to attack.</param>
+		public void requestAttack(Tile tile)
+		{
+			if (lastClickedTile != null) {
+				if (map.isAdjacent(lastClickedTile, tile)) {
+					int[] newStrengths = new int[2];
+					newStrengths = combatEngine.Attack(lastClickedTile.getGangStrength(), tile.getGangStrength());
+					lastClickedTile.setGangStrength(newStrengths[0]);
+					tile.setGangStrength(newStrengths[1]);
 				}
 			}
 		}

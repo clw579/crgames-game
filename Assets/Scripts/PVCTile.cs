@@ -8,7 +8,7 @@ namespace CRGames_game
 {
     class PVCTile : Tile
     {
-        public PVCTile(int id) : base(id)
+		public PVCTile(int id, GameObject gob) : base(id, gob)
         {
 
         }

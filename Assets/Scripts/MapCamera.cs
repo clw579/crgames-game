@@ -42,6 +42,10 @@ public class MapCamera : MonoBehaviour {
         }
 	}
 
+	/// <summary>
+	/// Adjusts the zoom of the cmaera by changing its orthographic size.
+	/// </summary>
+	/// <param name="delta">Delta - change in zoom value.</param>
 	void AdjustZoom(float delta)
 	{
 		zoom = Mathf.Clamp01(zoom + delta);
@@ -50,6 +54,11 @@ public class MapCamera : MonoBehaviour {
 		cam1.orthographicSize = distance;
 	}
 
+	/// <summary>
+	/// Adjusts the position of the camera.
+	/// </summary>
+	/// <param name="xDelta">X delta - change in x value.</param>
+	/// <param name="yDelta">Y delta - change in y value.</param>
     void AdjustPosition(float xDelta, float yDelta)
     {
         Vector2 direction = new Vector2(xDelta, yDelta).normalized;
@@ -64,6 +73,11 @@ public class MapCamera : MonoBehaviour {
         }        
     }
 
+	/// <summary>
+	/// Limits the maximum coordinates.
+	/// </summary>
+	/// <param name="x">The x coordinate.</param>
+	/// <param name="y">The y coordinate.</param>
     public void SetMaxCoord(float x, float y){
         maxX = x;
         maxY = -y;
