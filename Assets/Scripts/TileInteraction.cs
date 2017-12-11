@@ -22,7 +22,7 @@ namespace CRGames_game
 
 		// Update is called once per frame
 		void Update () {
-			
+			tile.resetColor(manager.getCollegeColours());
 		}
 
         /// <summary>
