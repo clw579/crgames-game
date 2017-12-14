@@ -106,23 +106,24 @@ namespace CRGames_game
 			// Display the Map
 			GenerateMap ();
 
-            // get access to scripts from the UI manager
-            //UIManagerScript = GUIManager.GetComponent<UIManager>();
-
             currentPlayer = 0; // sets inital player to player 1
             currentTurn = 1;   //sets the inital turn to 1
 
             players1.Add(new Player(1, "Sally"));  // tests to be removed
-            players1[0].AddOwnedTiles(new Tile(1, new GameObject()));
-            players1[0].AddOwnedTiles(new Tile(2, new GameObject()));
+            players1[0].AddOwnedTiles(map.getTileAtPosition(0,0));
+            players1[0].AddOwnedTiles(map.getTileAtPosition(1, 0));
+
 
             players1.Add(new Player(2, "Bob"));
-            players1[1].AddOwnedTiles(new Tile(3, new GameObject()));
-            players1[1].AddOwnedTiles(new Tile(4, new GameObject()));
+            players1[1].AddOwnedTiles(map.getTileAtPosition(2, 0));
+            players1[1].AddOwnedTiles(map.getTileAtPosition(2, 1));
 
             //sets the first player and number of gang members when the game starts
 
-            
+            // set intial UI elements for the first player
+            uiManager.initialiseUI(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());
+
+
 
 
         }
@@ -163,18 +164,20 @@ namespace CRGames_game
 		/// </summary>
 		public void NextTurn(){
 
-            
+            currentTurn++;
+            currentPlayer++;
 
-
-			if (currentPlayer > players1.Count - 1) {
+            if (currentPlayer > players1.Count - 1) {
 				currentPlayer = 0;
 			}
 
             players1[currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
             players1[currentPlayer].AlertItsMyTurn ();
 
-            currentTurn++;
-            currentPlayer++;
+            uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());
+            
+
+       
         }
 
 		/// <summary>
