@@ -44,6 +44,8 @@ namespace CRGames_game
 		public GameObject tilePrefab;
 		// Array of Sprites that make up the Map
 		public Sprite[] mapSprites;
+		// Sprite to use to represent gang members
+		public Sprite gangMemberSprite;
 		// Store the Map's width and height
 		public int mapWidth;
 		public int mapHeight;
@@ -155,7 +157,7 @@ namespace CRGames_game
 		/// Generates the Map object
 		/// </summary>
 		void GenerateMap(){
-			map = new Map(24, 13, mapSprites, tilePrefab);
+			map = new Map(24, 13, mapSprites, tilePrefab, gangMemberSprite);
 		}
 
 		/// <summary>
@@ -192,7 +194,7 @@ namespace CRGames_game
 			GameStateJSON gameState = JsonUtility.FromJson<GameStateJSON>(loadJson);
 
 			// Extract the saved Map from the gameState
-			Map loadMap = new Map(gameState.map.width, gameState.map.height, mapSprites, tilePrefab);
+			Map loadMap = new Map(gameState.map.width, gameState.map.height, mapSprites, tilePrefab, gangMemberSprite);
 
 			combatEngine.SetPVCBonus(gameState.combatEngine.pvcBonus);
 			combatEngine.SetHiddenDamageModifier(gameState.combatEngine.hiddenDamageModifier);

@@ -12,6 +12,7 @@ namespace CRGames_game
         public GameObject tilePrefab;
 
         public GameObject[] tileObjects;
+        public Sprite gangMemberSprite;
 
         // Array of tiles
         Tile[] tiles;
@@ -21,11 +22,12 @@ namespace CRGames_game
         int height;
         
         // Creates a Map of given size and populates it with Tiles and a random PVCTile
-        public Map(int width, int height, Sprite[] sprites, GameObject tilePrefab)
+        public Map(int width, int height, Sprite[] sprites, GameObject tilePrefab, Sprite memberSprite)
         {   
             // Initialise the map
             this.tilePrefab = tilePrefab;
             this.size = width * height;
+            this.gangMemberSprite = memberSprite;
             
             this.width = width;
             this.height = height;
@@ -55,6 +57,8 @@ namespace CRGames_game
                     
                     // Add the interaction script to the tile
                     TileInteraction interact = gob.AddComponent<TileInteraction>() as TileInteraction;
+                    // Set the sprite to use for gang members
+                    interact.SetGangMemberSprite(gangMemberSprite);
 
                     // Create a new Tile object to hold the properties of this tile
                     Tile tile = new Tile(x + (y * width), gob);
