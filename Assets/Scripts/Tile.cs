@@ -29,7 +29,7 @@ namespace CRGames_game
             tileID = id;
 			gameObject = gob;
             gangStrength = 0;
-            college = 1;
+            //college = 1;
         }
 
         /// <summary>
@@ -118,6 +118,7 @@ namespace CRGames_game
         }
 
 		public void setColor(Color color) {
+        
 			gameObject.GetComponent<SpriteRenderer>().color = color;;
 		}
 
