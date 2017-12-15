@@ -15,7 +15,7 @@ namespace CRGames_game
 		// The renderer attached to this tile
 		SpriteRenderer myRenderer;
 		// The gang member sprite
-		Sprite gangMemberSprite;
+        GameObject gangMemberSprite;
 		// Array of gang members displayed on tile
 		List<GameObject> myGangMembers = new List<GameObject>();
 
@@ -45,15 +45,26 @@ namespace CRGames_game
 		}
 
 		void CreateGangMember(){
-			GameObject member = new GameObject();
-			SpriteRenderer rend = member.AddComponent<SpriteRenderer>() as SpriteRenderer;
-			rend.sprite = gangMemberSprite;
 
-			member.transform.position = new Vector3(UnityEngine.Random.Range(transform.position.x - 0.25f, transform.position.x + 0.25f), UnityEngine.Random.Range(transform.position.y - 0.25f, transform.position.y + 0.25f), -5.0f);
+            // assign the gangmember to the gangMember sprite
+            GameObject member = gangMemberSprite;
 
-			member.transform.parent = transform;
+            // assgin the spriteRender and animtor components
+            SpriteRenderer rend = member.GetComponent<SpriteRenderer>() as SpriteRenderer;
+            Animator anim = member.GetComponent<Animator>() as Animator;
 
-			myGangMembers.Add(member);
+			
+            // move the poisiton on the sprites
+            member.transform.position = new Vector3(UnityEngine.Random.Range(transform.position.x - 0.25f, transform.position.x + 0.25f), UnityEngine.Random.Range(transform.position.y - 0.25f, transform.position.y + 0.25f), -5.0f);
+
+            // instiate the sprites to appear on the map
+            Instantiate(member);
+            
+            // play the gangMembers animation
+            anim.Play("gooseAnimation", -1, 0.0f);
+
+            //update the gangmembers
+            myGangMembers.Add(member);
 		}
 
         /// <summary>
@@ -86,8 +97,9 @@ namespace CRGames_game
 				}
 		}
 
-		public void SetGangMemberSprite(Sprite member){
-			this.gangMemberSprite = member;
+		public void SetGangMemberSprite(GameObject gangMemberSprite){
+	
+            this.gangMemberSprite = gangMemberSprite;
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace CRGames_game
         {
             tileID = id;
 			gameObject = gob;
-            gangStrength = 5;
+            gangStrength = 0;
             college = 1;
         }
 

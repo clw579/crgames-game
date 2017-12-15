@@ -45,9 +45,10 @@ namespace CRGames_game
 		// Array of Sprites that make up the Map
 		public Sprite[] mapSprites;
 		// Sprite to use to represent gang members
-		public Sprite gangMemberSprite;
-		// Store the Map's width and height
-		public int mapWidth;
+
+        public GameObject gangMemberSprite;
+        // Store the Map's width and height
+        public int mapWidth;
 		public int mapHeight;
 		// Gang colours
 		public Color ColourAlcuin;
@@ -115,10 +116,16 @@ namespace CRGames_game
             players1[0].AddOwnedTiles(map.getTileAtPosition(0,0));
             players1[0].AddOwnedTiles(map.getTileAtPosition(1, 0));
 
+            // set player 1 gang members
+            map.getTileAtPosition(0, 0).setGangStrength(2);
+
 
             players1.Add(new Player(2, "Bob"));
             players1[1].AddOwnedTiles(map.getTileAtPosition(2, 0));
             players1[1].AddOwnedTiles(map.getTileAtPosition(2, 1));
+
+            // set player2 gangmembers
+            map.getTileAtPosition(2, 0).setGangStrength(2);
 
             //sets the first player and number of gang members when the game starts
 
