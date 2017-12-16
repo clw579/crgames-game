@@ -91,10 +91,7 @@ namespace CRGames_game
         /// </summary>
         void OnMouseDown()
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
-            {
-                manager.TileClicked(tile);
-            }
+            
         }
 	    
 		/// <summary>
@@ -110,10 +107,14 @@ namespace CRGames_game
 			gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
 			gameObject.transform.GetChild(0).gameObject.SetActive(true);
 
-			if (Input.GetMouseButtonDown(1)) 
-				{
+			if (!EventSystem.current.IsPointerOverGameObject())
+            {
+				if(Input.GetMouseButtonDown(1)){
 					manager.requestAttack(tile);
+				}else if (Input.GetMouseButtonDown(0)){
+					manager.TileClicked(tile);
 				}
+            }
 		}
 
 		public void SetGangMemberSprite(GameObject gangMemberSprite){
