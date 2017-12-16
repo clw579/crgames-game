@@ -16,9 +16,12 @@ namespace CRGames_game
 		SpriteRenderer myRenderer;
 		// The gang member sprite
         GameObject gangMemberSprite;
-		// Array of gang members displayed on tile
-		List<GameObject> myGangMembers = new List<GameObject>();
+		// Gang member displayed on tile
+		GameObject myGangMember;
+		// Whether the gang member has been shown
 		bool memberShown = false;
+		// The tile's text object
+		GameObject textObject;
 
 		void Start(){
 			// Find the GameManager
@@ -32,6 +35,8 @@ namespace CRGames_game
 			{
 				if (child.gameObject.tag == "Label"){
 					child.gameObject.SetActive(false);
+					
+					textObject = child.gameObject;
 				}
 			}
 		}
@@ -40,14 +45,9 @@ namespace CRGames_game
 		void Update () {
 			tile.resetColor(manager.getCollegeColours());
 
-			if (tile.getGangStrength() > myGangMembers.Count){
-				foreach (Transform child in transform)
-				{
-					if (child.gameObject.tag == "Label"){
-						child.gameObject.SetActive(true);
-						child.gameObject.GetComponent<TextMesh>().text = tile.getGangStrength().ToString();
-					}
-				}
+			if (tile.getGangStrength() > 0){
+				textObject.SetActive(true);
+				textObject.GetComponent<TextMesh>().text = tile.getGangStrength().ToString();
 
 				if (!memberShown){
 					CreateGangMember();
@@ -56,21 +56,11 @@ namespace CRGames_game
 				}
 			}
 
-			if (tile.getGangStrength() < myGangMembers.Count){
-				if (tile.getGangStrength() == 0){
-					foreach (Transform child in transform)
-					{
-						if (child.gameObject.tag == "Label"){
-							child.gameObject.SetActive(false);
-						}
-					}
-				}
+			if (tile.getGangStrength() == 0){
+				textObject.SetActive(false);
 
-				for (int i = 0; i < myGangMembers.Count - tile.getGangStrength(); i++){
-					memberShown = false;
-					Destroy(myGangMembers[0]);
-					myGangMembers.RemoveAt(0);
-				}
+				memberShown = false;
+				Destroy(myGangMember);
 			}
 		}
 
@@ -94,7 +84,7 @@ namespace CRGames_game
             anim.Play("gooseAnimation", -1, 0.0f);
 
             //update the gangmembers
-            myGangMembers.Add(spawnGangMember);
+            myGangMember = spawnGangMember;
 		}
 
         /// <summary>
