@@ -166,6 +166,8 @@ namespace CRGames_game
             players1[currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
             players1[currentPlayer].AlertItsMyTurn ();
 
+			lastClickedTile = null;
+
             uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());
             
 
@@ -315,9 +317,12 @@ namespace CRGames_game
 				Tile[] adjacents = map.getAdjacent (lastClickedTile);
 
 				if (adjacents.Contains(tile)){
-					if(lastClickedTile.getCollege() == tile.getCollege()){
-						tile.setGangStrength(tile.getGangStrength() + 1);
-						lastClickedTile.setGangStrength(lastClickedTile.getGangStrength() - 1);
+					if(lastClickedTile.getCollege() == tile.getCollege() || tile.getCollege() == (int)colleges.Unknown || tile.getGangStrength() == 0){
+						if (tile.getCollege() == (int)colleges.Unknown || tile.getGangStrength() == 0){
+							tile.setCollege(lastClickedTile.getCollege());
+						}
+
+						MoveGangMember(lastClickedTile, tile);
 						
 						lastClickedTile = null;
 					}
@@ -339,6 +344,11 @@ namespace CRGames_game
 
 				lastClickedTile = tile;
 			}
+		}
+
+		void MoveGangMember(Tile from, Tile to){
+			to.setGangStrength(to.getGangStrength() + 1);
+			from.setGangStrength(from.getGangStrength() - 1);
 		}
 
 		/// <summary>
@@ -388,20 +398,6 @@ namespace CRGames_game
             // set player2 gangmembers
             map.getTileAtPosition(2, 0).setGangStrength(2);
             map.getTileAtPosition(2, 1).setGangStrength(2);
-
-
-
-
         }
-
-
-
-
     }
-
-
-
-    public static class GameState {
-
-	}
 }
