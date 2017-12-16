@@ -9,18 +9,18 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1104486746524004}
+  m_RootGameObject: {fileID: 1257604802969988}
   m_IsPrefabParent: 1
---- !u!1 &1104486746524004
+--- !u!1 &1257604802969988
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4126980825480738}
-  - component: {fileID: 212012453651530194}
-  - component: {fileID: 95245647112097814}
+  - component: {fileID: 4604888855636634}
+  - component: {fileID: 212068430687496854}
+  - component: {fileID: 95476213296832702}
   m_Layer: 0
   m_Name: gooseani1_0
   m_TagString: Untagged
@@ -28,34 +28,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4126980825480738
+--- !u!4 &4604888855636634
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1104486746524004}
+  m_GameObject: {fileID: 1257604802969988}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-<<<<<<< HEAD
-<<<<<<< HEAD
-  m_LocalPosition: {x: 1.5992401, y: -0.1646576, z: -5}
-=======
-  m_LocalPosition: {x: 1.3193136, y: -0.91891485, z: -5}
->>>>>>> 22918e5197e5adccb2cb3961818fbfc1a361810e
-=======
-  m_LocalPosition: {x: 1.3193136, y: -0.91891485, z: -5}
->>>>>>> 22918e5197e5adccb2cb3961818fbfc1a361810e
+  m_LocalPosition: {x: 1.6247493, y: -0.9476211, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &95245647112097814
+--- !u!95 &95476213296832702
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1104486746524004}
+  m_GameObject: {fileID: 1257604802969988}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 89bf755bf31c99c44a864197fcf26bdf, type: 2}
@@ -66,12 +58,12 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!212 &212012453651530194
+--- !u!212 &212068430687496854
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1104486746524004}
+  m_GameObject: {fileID: 1257604802969988}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
