@@ -23,6 +23,13 @@ namespace CRGames_game
         Wentworth,
     }
 
+	enum MoveTypes
+	{
+		Invalid,
+		TakeOver,
+		Attack
+	}
+
     class GameManager : MonoBehaviour
     {
 		// Lookup table for enum colleges
@@ -307,25 +314,25 @@ namespace CRGames_game
 		public void TileClicked(Tile tile)
 		{
 			if (lastClickedTile != null) {
-				Tile[] adjacents = map.getAdjacent (lastClickedTile);
+				int move = EvaluateMove(lastClickedTile, tile);
 
-				if (adjacents.Contains(tile)){
-					if(lastClickedTile.getCollege() == tile.getCollege() || tile.getCollege() == (int)colleges.Unknown || tile.getGangStrength() == 0){
-						if (tile.getCollege() == (int)colleges.Unknown || tile.getGangStrength() == 0){
-							tile.setCollege(lastClickedTile.getCollege());
-						}
-
+				switch (move)
+				{
+					case (int)MoveTypes.TakeOver:
 						MoveGangMember(lastClickedTile, tile);
-						
-						lastClickedTile = null;
-					}
-				}
 
-				// Stops highlighting targets from the previously clicked on tile
-				for (int i = 0; i < 4; i++) {
-					if (adjacents[i] != null) {
-						adjacents[i].resetColor(collegeColours);
-					}
+						tile.setCollege(lastClickedTile.getCollege());
+
+						lastClickedTile = null;
+						break;
+					case (int)MoveTypes.Attack:
+						MoveGangMember(lastClickedTile, tile);
+
+						lastClickedTile = null;
+						break;
+					default:
+						lastClickedTile = null;
+						break;
 				}
 			}else if (tile.getGangStrength() > 0 && (tile.getCollege() == (int)colleges.Unknown || tile.getCollege() == players1[currentPlayer].GetCollege())) { // Highlights in red the available targets from the clicked on tile
 				Tile[] adjacents = map.getAdjacent(tile);
@@ -356,6 +363,31 @@ namespace CRGames_game
 					newStrengths = combatEngine.Attack(lastClickedTile.getGangStrength(), tile.getGangStrength());
 					lastClickedTile.setGangStrength(newStrengths[0]);
 					tile.setGangStrength(newStrengths[1]);
+					lastClickedTile = null;
+				}
+			}
+		}
+
+		int EvaluateMove(Tile from, Tile to){
+			// If moving to an empty tile, TakeOver
+			// If moving to occupied, Attack
+
+			Tile[] adjacents = map.getAdjacent (from);
+
+			if (adjacents.Contains(to)){
+				if (to.getGangStrength() == 0){
+					return (int)MoveTypes.TakeOver;
+				}else{
+					return (int)MoveTypes.Attack;
+				}
+			}else{
+				return (int)MoveTypes.Invalid;
+			}
+
+			// Stops highlighting targets from the previously clicked on tile
+			for (int i = 0; i < 4; i++) {
+				if (adjacents[i] != null) {
+					adjacents[i].resetColor(collegeColours);
 				}
 			}
 		}
