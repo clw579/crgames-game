@@ -66,25 +66,24 @@ namespace CRGames_game
 
 		void CreateGangMember(){
 
-            // assign the gangmember to the gangMember sprite
-            GameObject member = gangMemberSprite;
+            // Instantiate a copy of the gang member sprite
+            GameObject member = Instantiate<GameObject>(gangMemberSprite) as GameObject;
 
             // assgin the spriteRender and animtor components
             SpriteRenderer rend = member.GetComponent<SpriteRenderer>() as SpriteRenderer;
             Animator anim = member.GetComponent<Animator>() as Animator;
 
-			
-            // move the poisiton on the sprites
-            member.transform.position = new Vector3(UnityEngine.Random.Range(transform.position.x - 0.25f, transform.position.x + 0.25f), UnityEngine.Random.Range(transform.position.y - 0.25f, transform.position.y + 0.25f), -5.0f);
+			// Set gang member's parent to the tile
+			member.transform.parent = transform;
 
-            // instiate the sprites to appear on the map
-            GameObject spawnGangMember = Instantiate(member);
+            // move the poisiton on the sprites
+            member.transform.localPosition = new Vector3(0.0f, -0.1f, -5.0f);
             
             // play the gangMembers animation
             anim.Play("gooseAnimation", -1, 0.0f);
 
             //update the gangmembers
-            myGangMember = spawnGangMember;
+            myGangMember = member;
 		}
 
         /// <summary>
@@ -92,10 +91,7 @@ namespace CRGames_game
         /// </summary>
         void OnMouseDown()
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
-            {
-                manager.TileClicked(tile);
-            }
+            
         }
 	    
 		/// <summary>
@@ -111,10 +107,14 @@ namespace CRGames_game
 			gameObject.transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
 			gameObject.transform.GetChild(0).gameObject.SetActive(true);
 
-			if (Input.GetMouseButtonDown(1)) 
-				{
+			if (!EventSystem.current.IsPointerOverGameObject())
+            {
+				if(Input.GetMouseButtonDown(1)){
 					manager.requestAttack(tile);
+				}else if (Input.GetMouseButtonDown(0)){
+					manager.TileClicked(tile);
 				}
+            }
 		}
 
 		public void SetGangMemberSprite(GameObject gangMemberSprite){

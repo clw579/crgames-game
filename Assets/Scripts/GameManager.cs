@@ -166,6 +166,8 @@ namespace CRGames_game
             players1[currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
             players1[currentPlayer].AlertItsMyTurn ();
 
+			lastClickedTile = null;
+
             uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());
             
 
@@ -311,29 +313,42 @@ namespace CRGames_game
 		/// </summary>
 		public void TileClicked(Tile tile)
 		{
-			// TODO:
-			//Stop colleges from attacking themselves
-			//
-			// Stops highlighting targets from the previously clicked on tile
 			if (lastClickedTile != null) {
 				Tile[] adjacents = map.getAdjacent (lastClickedTile);
+
+				if (adjacents.Contains(tile)){
+					if(lastClickedTile.getCollege() == tile.getCollege() || tile.getCollege() == (int)colleges.Unknown || tile.getGangStrength() == 0){
+						if (tile.getCollege() == (int)colleges.Unknown || tile.getGangStrength() == 0){
+							tile.setCollege(lastClickedTile.getCollege());
+						}
+
+						MoveGangMember(lastClickedTile, tile);
+						
+						lastClickedTile = null;
+					}
+				}
+
+				// Stops highlighting targets from the previously clicked on tile
 				for (int i = 0; i < 4; i++) {
 					if (adjacents[i] != null) {
 						adjacents[i].resetColor(collegeColours);
 					}
 				}
-			}
-			// Highlights in red the available targets from the clicked on tile
-			if (tile.getGangStrength() > 0) {
+			}else if (tile.getGangStrength() > 0) { // Highlights in red the available targets from the clicked on tile
 				Tile[] adjacents = map.getAdjacent(tile);
 				for (int i = 0; i < 4; i++) {
 					if (adjacents[i] != null) {
 						adjacents[i].setColor(Color.red);
 					}
 				}
-			}
 
-			lastClickedTile = tile;
+				lastClickedTile = tile;
+			}
+		}
+
+		void MoveGangMember(Tile from, Tile to){
+			to.setGangStrength(to.getGangStrength() + 1);
+			from.setGangStrength(from.getGangStrength() - 1);
 		}
 
 		/// <summary>
@@ -342,7 +357,7 @@ namespace CRGames_game
 		/// <param name="tile">Tile to attack.</param>
 		public void requestAttack(Tile tile)
 		{
-			if (lastClickedTile != null) {
+			if (lastClickedTile != null && lastClickedTile.getCollege() != tile.getCollege()) {
 				if (map.isAdjacent(lastClickedTile, tile)) {
 					int[] newStrengths = new int[2];
 					newStrengths = combatEngine.Attack(lastClickedTile.getGangStrength(), tile.getGangStrength());
@@ -383,20 +398,6 @@ namespace CRGames_game
             // set player2 gangmembers
             map.getTileAtPosition(2, 0).setGangStrength(2);
             map.getTileAtPosition(2, 1).setGangStrength(2);
-
-
-
-
         }
-
-
-
-
     }
-
-
-
-    public static class GameState {
-
-	}
 }
