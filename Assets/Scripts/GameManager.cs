@@ -324,11 +324,15 @@ namespace CRGames_game
 						tile.setCollege(lastClickedTile.getCollege());
 
 						lastClickedTile = null;
+
+						tile.resetColor(collegeColours);
 						break;
 					case (int)MoveTypes.Attack:
 						MoveGangMember(lastClickedTile, tile);
 
 						lastClickedTile = null;
+
+						tile.resetColor(collegeColours);
 						break;
 					default:
 						lastClickedTile = null;
@@ -373,6 +377,13 @@ namespace CRGames_game
 			// If moving to occupied, Attack
 
 			Tile[] adjacents = map.getAdjacent (from);
+			
+			// Stops highlighting targets from the previously clicked on tile
+			for (int i = 0; i < 4; i++) {
+				if (adjacents[i] != null) {
+					adjacents[i].resetColor(collegeColours);
+				}
+			}
 
 			if (adjacents.Contains(to)){
 				if (to.getGangStrength() == 0){
@@ -382,13 +393,6 @@ namespace CRGames_game
 				}
 			}else{
 				return (int)MoveTypes.Invalid;
-			}
-
-			// Stops highlighting targets from the previously clicked on tile
-			for (int i = 0; i < 4; i++) {
-				if (adjacents[i] != null) {
-					adjacents[i].resetColor(collegeColours);
-				}
 			}
 		}
 
