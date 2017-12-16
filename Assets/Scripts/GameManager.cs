@@ -367,6 +367,16 @@ namespace CRGames_game
 					newStrengths = combatEngine.Attack(lastClickedTile.getGangStrength(), tile.getGangStrength());
 					lastClickedTile.setGangStrength(newStrengths[0]);
 					tile.setGangStrength(newStrengths[1]);
+
+					Tile[] adjacents = map.getAdjacent (lastClickedTile);
+			
+					// Stops highlighting targets from the previously clicked on tile
+					for (int i = 0; i < 4; i++) {
+						if (adjacents[i] != null) {
+							adjacents[i].resetColor(collegeColours);
+						}
+					}
+
 					lastClickedTile = null;
 				}
 			}
@@ -388,8 +398,10 @@ namespace CRGames_game
 			if (adjacents.Contains(to)){
 				if (to.getGangStrength() == 0){
 					return (int)MoveTypes.TakeOver;
-				}else{
+				}else if(from.getCollege() == to.getCollege()){
 					return (int)MoveTypes.Attack;
+				}else{
+					return (int)MoveTypes.Invalid;
 				}
 			}else{
 				return (int)MoveTypes.Invalid;
