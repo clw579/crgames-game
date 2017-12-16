@@ -58,10 +58,7 @@ namespace CRGames_game
         {
             return noOfGangMembers;
         }
-
-    
-
-    
+        
         public int allocateGangMembers()
         {
             this.noOfGangMembers += ownedTiles.Count;

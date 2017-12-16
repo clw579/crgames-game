@@ -114,10 +114,6 @@ namespace CRGames_game
            
             // set intial UI elements for the first player
             uiManager.initialiseUI(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());
-
-
-
-
         }
 
         void Update()
@@ -168,10 +164,7 @@ namespace CRGames_game
 
 			lastClickedTile = null;
 
-            uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());
-            
-
-       
+            uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());       
         }
 
 		/// <summary>
@@ -334,7 +327,7 @@ namespace CRGames_game
 						adjacents[i].resetColor(collegeColours);
 					}
 				}
-			}else if (tile.getGangStrength() > 0) { // Highlights in red the available targets from the clicked on tile
+			}else if (tile.getGangStrength() > 0 && (tile.getCollege() == (int)colleges.Unknown || tile.getCollege() == players1[currentPlayer].GetCollege())) { // Highlights in red the available targets from the clicked on tile
 				Tile[] adjacents = map.getAdjacent(tile);
 				for (int i = 0; i < 4; i++) {
 					if (adjacents[i] != null) {
