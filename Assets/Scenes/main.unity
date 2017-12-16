@@ -2224,7 +2224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1684650020855356, guid: 55f62910cfe9c49baa0819f573bb2a10, type: 2}
   mapSprites: []
-  gangMemberSprite: {fileID: 1104486746524004, guid: 0415cac408a3d314d9ba91442ef6773e,
+  gangMemberSprite: {fileID: 1257604802969988, guid: 0415cac408a3d314d9ba91442ef6773e,
     type: 2}
   mapWidth: 12
   mapHeight: 6
