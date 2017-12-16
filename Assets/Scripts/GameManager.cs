@@ -109,26 +109,9 @@ namespace CRGames_game
 			// Display the Map
 			GenerateMap ();
 
-            currentPlayer = 0; // sets inital player to player 1
-            currentTurn = 1;   //sets the inital turn to 1
-
-            players1.Add(new Player(1, "Sally"));  // tests to be removed
-            players1[0].AddOwnedTiles(map.getTileAtPosition(0,0));
-            players1[0].AddOwnedTiles(map.getTileAtPosition(1, 0));
-
-            // set player 1 gang members
-            map.getTileAtPosition(0, 0).setGangStrength(2);
-
-
-            players1.Add(new Player(2, "Bob"));
-            players1[1].AddOwnedTiles(map.getTileAtPosition(2, 0));
-            players1[1].AddOwnedTiles(map.getTileAtPosition(2, 1));
-
-            // set player2 gangmembers
-            map.getTileAtPosition(2, 0).setGangStrength(2);
-
-            //sets the first player and number of gang members when the game starts
-
+            // setup placeholders players to test the functioning of the game
+            setupTest();
+           
             // set intial UI elements for the first player
             uiManager.initialiseUI(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());
 
@@ -368,9 +351,52 @@ namespace CRGames_game
 				}
 			}
 		}
+
+
+
+        public void setupTest()
+        {
+            currentPlayer = 0; // sets inital player to player 1
+            currentTurn = 1;   //sets the inital turn to 1
+
+            players1.Add(new Player(1, "Sally"));  // tests to be removed
+            players1[0].AddOwnedTiles(map.getTileAtPosition(0, 0));
+            players1[0].AddOwnedTiles(map.getTileAtPosition(1, 0));
+
+            map.getTileAtPosition(0, 0).setCollege(1);
+            map.getTileAtPosition(1, 0).setCollege(1);
+
+
+            // set player 1 gang members
+            map.getTileAtPosition(0, 0).setGangStrength(2);
+            map.getTileAtPosition(1, 0).setGangStrength(2);
+
+
+
+            players1.Add(new Player(2, "Bob"));
+            players1[1].AddOwnedTiles(map.getTileAtPosition(2, 0));
+            players1[1].AddOwnedTiles(map.getTileAtPosition(2, 1));
+
+            map.getTileAtPosition(2, 0).setCollege(2);
+            map.getTileAtPosition(2, 1).setCollege(2);
+
+            // set player2 gangmembers
+            map.getTileAtPosition(2, 0).setGangStrength(2);
+            map.getTileAtPosition(2, 1).setGangStrength(2);
+
+
+
+
+        }
+
+
+
+
     }
 
-	public static class GameState {
+
+
+    public static class GameState {
 
 	}
 }

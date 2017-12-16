@@ -58,13 +58,13 @@ namespace CRGames_game
             member.transform.position = new Vector3(UnityEngine.Random.Range(transform.position.x - 0.25f, transform.position.x + 0.25f), UnityEngine.Random.Range(transform.position.y - 0.25f, transform.position.y + 0.25f), -5.0f);
 
             // instiate the sprites to appear on the map
-            Instantiate(member);
+            GameObject spawnGangMember = Instantiate(member);
             
             // play the gangMembers animation
             anim.Play("gooseAnimation", -1, 0.0f);
 
             //update the gangmembers
-            myGangMembers.Add(member);
+            myGangMembers.Add(spawnGangMember);
 		}
 
         /// <summary>
