@@ -9,15 +9,18 @@ namespace CRGames_game
     {
 		// Text Elements of UI
 		public Text college, gangMembers, tileLevel, pvc;
-        public Text playersCollege, playersGangMembers, name; 
+        public Text playersCollege, playersGangMembers, name;
+        public GameObject tileMenu, showButton;
 
-		void Update()
+        void Update()
 		{
 			
 		}
 
         public void initialiseUI(string playersCollege, int noOfGangMembers, string name)
         {
+    
+            showButton.SetActive(false);
             this.RefreshCurrentPlayerInfo(playersCollege, noOfGangMembers, name);
         }
 
@@ -38,5 +41,16 @@ namespace CRGames_game
             this.playersGangMembers.text = noOfGangMembers.ToString();
             this.name.text = name;
         }
+
+        public void showTileInfo()
+        {
+            tileMenu.SetActive(true);
+            showButton.SetActive(false);
+           
+            
+        }
+
+
+
     }
 }
