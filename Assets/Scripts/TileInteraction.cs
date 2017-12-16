@@ -18,6 +18,7 @@ namespace CRGames_game
         GameObject gangMemberSprite;
 		// Array of gang members displayed on tile
 		List<GameObject> myGangMembers = new List<GameObject>();
+		bool memberShown = false;
 
 		void Start(){
 			// Find the GameManager
@@ -26,6 +27,13 @@ namespace CRGames_game
 			myRenderer = gameObject.GetComponent<SpriteRenderer>();
 
 			tile.resetColor(manager.getCollegeColours());
+
+			foreach (Transform child in transform)
+			{
+				if (child.gameObject.tag == "Label"){
+					child.gameObject.SetActive(false);
+				}
+			}
 		}
 
 		// Update is called once per frame
@@ -33,11 +41,33 @@ namespace CRGames_game
 			tile.resetColor(manager.getCollegeColours());
 
 			if (tile.getGangStrength() > myGangMembers.Count){
-				CreateGangMember();
+				foreach (Transform child in transform)
+				{
+					if (child.gameObject.tag == "Label"){
+						child.gameObject.SetActive(true);
+						child.gameObject.GetComponent<TextMesh>().text = tile.getGangStrength().ToString();
+					}
+				}
+
+				if (!memberShown){
+					CreateGangMember();
+
+					memberShown = true;
+				}
 			}
 
 			if (tile.getGangStrength() < myGangMembers.Count){
+				if (tile.getGangStrength() == 0){
+					foreach (Transform child in transform)
+					{
+						if (child.gameObject.tag == "Label"){
+							child.gameObject.SetActive(false);
+						}
+					}
+				}
+
 				for (int i = 0; i < myGangMembers.Count - tile.getGangStrength(); i++){
+					memberShown = false;
 					Destroy(myGangMembers[0]);
 					myGangMembers.RemoveAt(0);
 				}
