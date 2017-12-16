@@ -43,8 +43,6 @@ namespace CRGames_game
 
 		// Update is called once per frame
 		void Update () {
-			tile.resetColor(manager.getCollegeColours());
-
 			if (tile.getGangStrength() > 0){
 				textObject.SetActive(true);
 				textObject.GetComponent<TextMesh>().text = tile.getGangStrength().ToString();
