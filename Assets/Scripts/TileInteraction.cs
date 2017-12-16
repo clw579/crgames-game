@@ -114,6 +114,7 @@ namespace CRGames_game
 				}else if (Input.GetMouseButtonDown(0)){
 					manager.TileClicked(tile);
 				}
+            
             }
 		}
 

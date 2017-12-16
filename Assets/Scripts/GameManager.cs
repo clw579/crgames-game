@@ -306,6 +306,9 @@ namespace CRGames_game
 		/// </summary>
 		public void TileClicked(Tile tile)
 		{
+
+            uiManager.showTileInfo();
+
 			if (lastClickedTile != null) {
 				Tile[] adjacents = map.getAdjacent (lastClickedTile);
 
