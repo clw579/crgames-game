@@ -342,7 +342,7 @@ namespace CRGames_game
 		/// <param name="tile">Tile to attack.</param>
 		public void requestAttack(Tile tile)
 		{
-			if (lastClickedTile != null) {
+			if (lastClickedTile != null && lastClickedTile.getCollege() != tile.getCollege()) {
 				if (map.isAdjacent(lastClickedTile, tile)) {
 					int[] newStrengths = new int[2];
 					newStrengths = combatEngine.Attack(lastClickedTile.getGangStrength(), tile.getGangStrength());
