@@ -311,29 +311,34 @@ namespace CRGames_game
 		/// </summary>
 		public void TileClicked(Tile tile)
 		{
-			// TODO:
-			//Stop colleges from attacking themselves
-			//
-			// Stops highlighting targets from the previously clicked on tile
 			if (lastClickedTile != null) {
 				Tile[] adjacents = map.getAdjacent (lastClickedTile);
+
+				if (adjacents.Contains(tile)){
+					if(lastClickedTile.getCollege() == tile.getCollege()){
+						tile.setGangStrength(tile.getGangStrength() + 1);
+						lastClickedTile.setGangStrength(lastClickedTile.getGangStrength() - 1);
+						
+						lastClickedTile = null;
+					}
+				}
+
+				// Stops highlighting targets from the previously clicked on tile
 				for (int i = 0; i < 4; i++) {
 					if (adjacents[i] != null) {
 						adjacents[i].resetColor(collegeColours);
 					}
 				}
-			}
-			// Highlights in red the available targets from the clicked on tile
-			if (tile.getGangStrength() > 0) {
+			}else if (tile.getGangStrength() > 0) { // Highlights in red the available targets from the clicked on tile
 				Tile[] adjacents = map.getAdjacent(tile);
 				for (int i = 0; i < 4; i++) {
 					if (adjacents[i] != null) {
 						adjacents[i].setColor(Color.red);
 					}
 				}
-			}
 
-			lastClickedTile = tile;
+				lastClickedTile = tile;
+			}
 		}
 
 		/// <summary>
