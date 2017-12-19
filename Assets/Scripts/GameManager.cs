@@ -118,6 +118,9 @@ namespace CRGames_game
 
             // setup placeholders players to test the functioning of the game
             setupTest();
+            
+            //sets the inital number of gang members for player1, from here after they are allocated by the nextTurn function
+            players1[currentPlayer].setGangStrength(players1[currentPlayer].GetOwnedTiles().Count);
            
             // set intial UI elements for the first player
             uiManager.initialiseUI(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());
@@ -167,6 +170,8 @@ namespace CRGames_game
             if (currentPlayer > players1.Count - 1) {
 				currentPlayer = 0;
 			}
+
+            
 
             players1[currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
             players1[currentPlayer].AlertItsMyTurn ();
@@ -361,6 +366,46 @@ namespace CRGames_game
 			to.setGangStrength(to.getGangStrength() + 1);
 			from.setGangStrength(from.getGangStrength() - 1);
 		}
+
+
+        public void ReinforceTile(String noOfGangMembers)
+
+        {
+
+            if (getLastClickedTile() == null)
+            {   
+
+                // checks a tile has been clicked on else, show the user a warning
+                uiManager.showTileWarning();
+            }
+
+
+            else
+            {
+
+                // variables holding the previous gangmember strengths
+
+                int previousTileStrength = getLastClickedTile().getGangStrength();
+                int previousPlayersGangMembers = players1[currentPlayer].GetNumberOfGangMembers();
+
+                // try and parse the input and place result in j, if the input is not a valid integer then nothing will happen
+                int j;
+                if (Int32.TryParse(noOfGangMembers, out j))
+                {
+
+                    //checks the player has the right amount of gangmembers
+
+                    if (previousPlayersGangMembers >= j)
+                    {
+                        getLastClickedTile().setGangStrength(j + previousTileStrength);
+                        players1[currentPlayer].setGangStrength(previousPlayersGangMembers - j);
+                    }
+                }
+
+            }
+
+        }
+
 
 		/// <summary>
 		/// Attempts to attack a tile from the last clicked tile.

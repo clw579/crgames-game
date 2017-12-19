@@ -67,6 +67,14 @@ namespace CRGames_game
 
         }
 
+        public void setGangStrength(int noOfGangMembers)
+        {
+            this.noOfGangMembers = noOfGangMembers;
+        }
+        
+      
+        
+
 
     }
 
