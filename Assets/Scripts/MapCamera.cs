@@ -10,13 +10,21 @@ public class MapCamera : MonoBehaviour {
 
 	float zoom = 1f;
 
-    public float maxX;
-    public float maxY;
+	private const float WIDTH = 24.0f;
+	private const float HEIGHT = 13.0f;
+	private const float TILE_SIZE = 0.75f;
+
+	private float maxX = WIDTH * TILE_SIZE + TILE_SIZE / 2;
+	private float maxY = HEIGHT * TILE_SIZE - TILE_SIZE / 2;
+	private float minX = -TILE_SIZE / 2;
+	private float minY = TILE_SIZE / 2;
 
     void Start()
     {
         cam1.enabled = true;
         cam2.enabled = false;
+
+
     }
 
     void Update ()
@@ -66,11 +74,14 @@ public class MapCamera : MonoBehaviour {
         float distance = moveSpeed * damping * Time.deltaTime;
 
         Vector2 position = transform.localPosition;
-        position += direction * distance;
+		position.x = Mathf.Clamp(position.x + direction.x * distance, minX, maxX);
+		position.y = Mathf.Clamp(position.y + direction.y * distance, maxY, minY);
 
-        if (position.x > -17.0f && position.x < maxX - 17.0f && position.y < 10.0f && position.y > maxY + 10.0f){
-            transform.localPosition = position;
-        }        
+		transform.localPosition = position;
+
+//        if (position.x > -17.0f && position.x < maxX - 17.0f && position.y < 10.0f && position.y > maxY + 10.0f){
+//            transform.localPosition = position;
+//        }        
     }
 
 	/// <summary>

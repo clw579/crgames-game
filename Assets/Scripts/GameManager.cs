@@ -344,8 +344,10 @@ namespace CRGames_game
 			}else if (tile.getGangStrength() > 0 && (tile.getCollege() == (int)colleges.Unknown || tile.getCollege() == players1[currentPlayer].GetCollege())) { // Highlights in red the available targets from the clicked on tile
 				Tile[] adjacents = map.getAdjacent(tile);
 				for (int i = 0; i < 4; i++) {
-					if (adjacents[i] != null) {
-						adjacents[i].setColor(Color.red);
+					if (adjacents [i] != null) {
+						if (adjacents[i].getCollege() != tile.getCollege ()) {
+							adjacents [i].setColor (Color.red);
+						}
 					}
 				}
 
