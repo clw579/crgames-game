@@ -159,6 +159,8 @@ namespace CRGames_game
 		/// </summary>
 		public void NextTurn(){
 
+			map.resetColours(collegeColours);
+
             currentTurn++;
             currentPlayer++;
 
@@ -429,8 +431,8 @@ namespace CRGames_game
 
 
             // set player 1 gang members
-            map.getTileAtPosition(0, 0).setGangStrength(2);
-            map.getTileAtPosition(1, 0).setGangStrength(2);
+            map.getTileAtPosition(0, 0).setGangStrength(5);
+            map.getTileAtPosition(1, 0).setGangStrength(5);
 
 
 
@@ -442,8 +444,8 @@ namespace CRGames_game
             map.getTileAtPosition(2, 1).setCollege(2);
 
             // set player2 gangmembers
-            map.getTileAtPosition(2, 0).setGangStrength(2);
-            map.getTileAtPosition(2, 1).setGangStrength(2);
+            map.getTileAtPosition(2, 0).setGangStrength(5);
+            map.getTileAtPosition(2, 1).setGangStrength(5);
         }
     }
 }
