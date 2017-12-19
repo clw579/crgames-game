@@ -2,9 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JSONObjects {
+/*
+	CLASS: GameStateJSON
+	FUNCTION: Represents GameManager in a JSON-friendly format
+ */
 
-}
+/*
+	CLASS: PlayerJSON
+	FUNCTION: Represents Player in a JSON-friendly format
+ */
+
+/*
+	CLASS: MapJSON
+	FUNCTION: Represents Map in a JSON-friendly format
+ */
+
+/*
+	CLASS: TileJSON
+	FUNCTION: Represents Tile in a JSON-friendly format
+ */
+
+/*
+	CLASS: ColourJSON
+	FUNCTION: Represents college colours in a JSON-friendly format
+ */
+
+/*
+	CLASS: CombatEngineJSON
+	FUNCTION: Represents CombatEngine in a JSON-friendly format
+ */
 
 /// <summary>
 /// Game state JSON Representation.
@@ -56,7 +82,7 @@ public class TileJSON {
 }
 
 /// <summary>
-/// Colour JSON Representation
+/// Colour JSON Representation.
 /// </summary>
 [System.Serializable]
 public class ColourJSON {
@@ -67,7 +93,7 @@ public class ColourJSON {
 }
 
 /// <summary>
-/// Combat Engine Representation
+/// Combat Engine Representation.
 /// </summary>
 [System.Serializable]
 public class CombatEngineJSON {
