@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+/*
+    CLASS: Tile
+    FUNCTION: Holds the properties of a tile
+ */
+
 namespace CRGames_game
 {
     public class Tile
