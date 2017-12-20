@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+    CLASS: UIManager
+    FUNCTION: Manages displaying and updating the UI
+ */
+
 namespace CRGames_game
 {
     public class UIManager : MonoBehaviour
@@ -18,10 +23,17 @@ namespace CRGames_game
 			
 		}
 
+        /// <summary>
+        /// Initialises the UI.
+        /// </summary>
+        /// <param name="playersCollege">The name of the college to display.</param>
+        /// <param name="noOfGangMembers">The number of gang members to display.</param>
+        /// <param name="name">The name of the player to display.</param>
         public void initialiseUI(string playersCollege, int noOfGangMembers, string name)
         {
-    
+            // Deactivate the show button
             showButton.SetActive(false);
+            // Update the player's info that is displayed
             this.RefreshCurrentPlayerInfo(playersCollege, noOfGangMembers, name);
         }
 
@@ -36,6 +48,12 @@ namespace CRGames_game
 			gangMembers.text = currentTile.getGangStrength().ToString();
 		}
 
+        /// <summary>
+        /// Refreshes the player info being displayed.
+        /// </summary>
+        /// <param name="playersCollege">The college of the player.</param>
+        /// <param name="noOfGangMembers">The number of gang members that the player owns.</param>
+        /// <param name="name">The name of the player.</param>
         public void RefreshCurrentPlayerInfo(string playersCollege, int noOfGangMembers, string name)
         {
             this.playersCollege.text = playersCollege;
@@ -43,14 +61,18 @@ namespace CRGames_game
             this.name.text = name;
         }
 
+        /// <summary>
+        /// Shows the info of the last tile that was clicked on.
+        /// </summary>
         public void showTileInfo()
         {
             tileMenu.SetActive(true);
             showButton.SetActive(false);
-           
-            
         }
 
+        /// <summary>
+        /// Show the warning tile.
+        /// </summary>
         public void showTileWarning()
         {
    
@@ -58,7 +80,11 @@ namespace CRGames_game
             StartCoroutine(FadeTextToZeroAlpha(2.5f,  noTileWarning.GetComponent<Text>() ));
         }
         
-
+        /// <summary>
+        /// Fade text out over time.
+        /// </summary>
+        /// <param name="t">The time to fade over.</param>
+        /// <param name="i">The text to fade.</param>
         public IEnumerator FadeTextToZeroAlpha(float t, Text i)
         {
             i.color = new Color(i.color.r, i.color.g, i.color.b, 1);

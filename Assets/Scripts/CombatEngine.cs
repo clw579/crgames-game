@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+    CLASS: CombatEngine
+    FUNCTION: Resolves conflicts between two players, based on the number of gang members that each player has, with some randomness added.
+ */
+
 namespace CRGames_game
 {
     class CombatEngine
@@ -13,6 +18,7 @@ namespace CRGames_game
         double pvcBonus = 1f; 
 		// Linearly scale the overall damage dealt per turn
         double hiddenDamageModifier = 0.4f;
+        // The RNG to use to add some randomness to combat
 		System.Random rand = new System.Random();
 
 		/// <summary>
@@ -21,7 +27,7 @@ namespace CRGames_game
 		/// <returns>A random factor.</returns>
         public double randomnessFactor()  // 
         {
-			
+			// Generate two random numbers
             double a = 1.0 - rand.NextDouble();
             double b = 1.0 - rand.NextDouble();
 			// Mean of the distribution
@@ -30,7 +36,10 @@ namespace CRGames_game
             double randValue = 1 + 0.2 * randStdNormal;
             return randValue;
         }
-			
+		
+        /// <summary>
+        /// Checks whether any tiles contain the PVC and sets the PVC bonus.
+        /// </summary>
         public void hasPvc()
         {
             if (pvc)
@@ -46,7 +55,7 @@ namespace CRGames_game
 		/// <param name="defend">Defender number of gang members.</param>
 		public int[] Attack(int attack, int defend)
         {
-
+            // Generate a random attack and defence value and clamp these values
             double randomAttack = randomnessFactor();
             double randomDefend = randomnessFactor();
 			double attackDamage = Math.Ceiling(attack * randomAttack * (1 / (1 + (0.15 * levelOfTile))) * pvcBonus * hiddenDamageModifier);
@@ -61,27 +70,36 @@ namespace CRGames_game
 			defend = (resultDefend < 0) ? 0 : (int)resultDefend;
 
 			return new int[] { attack, defend };
-
-//            Console.WriteLine("Turn number " + turn);
-//            Console.WriteLine("RandomnessFactor_x " + rfx);
-//            Console.WriteLine("RandomnessFactor_y " + rfy);
-//            Console.WriteLine("x = " + x);
-//            Console.WriteLine("y = " + y);
-//            Console.WriteLine();
         }
 
+        /// <summary>
+        /// Gets the PVC bonus.
+        /// </summary>
+        /// <returns>The PVC bonus.</returns>
         public double GetPVCBonus(){
             return pvcBonus;
         }
 
+        /// <summary>
+        /// Gets the hidden damage modifier.
+        /// </summary>
+        /// <returns>The hidden damage modifier.</returns>
         public double GetHiddenDamageModifier(){
             return hiddenDamageModifier;
         }
 
+        /// <summary>
+        /// Sets the PVC bonus value.
+        /// </summary>
+        /// <param name="bonus">The value to set as the bonus.</param>
         public void SetPVCBonus(double bonus){
             pvcBonus = bonus;
         }
-
+        
+        /// <summary>
+        /// Sets the hidden damage modifier value.
+        /// </summary>
+        /// <param name="modifier">The value to set as the hidden damage modifier.</param>
         public void SetHiddenDamageModifier(double modifier){
             hiddenDamageModifier = modifier;
         }

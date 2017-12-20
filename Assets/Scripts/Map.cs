@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+/*
+    CLASS: Map
+    FUNCTION: Holds information about the game map
+ */
+
 namespace CRGames_game
 {
     public class Map
@@ -11,29 +16,39 @@ namespace CRGames_game
         // Store the tile prefab to istantiate
         public GameObject tilePrefab;
 
+        // Store the GameObjects associated with tiles on the map
         public GameObject[] tileObjects;
-  
+
+        // The Sprite to use to represent gang members
         public GameObject gangMemberSprite;
 
 
         // Array of tiles
         Tile[] tiles;
+
         // Maximum number of tiles the Map can contain
         int size;
         int width;
         int height;
         
-        // Creates a Map of given size and populates it with Tiles and a random PVCTile
+        /// <summary>
+        /// Creates a Map of given size and populates it with Tiles and a random PVCTile.
+        /// </summary>
+        /// <param name="width">The width of the map.</param>
+        /// <param name="height">The height of the map.</param>
+        /// <param name="sprites">The sprites to draw the map with.</param>
+        /// <param name="tilePrefab">The prefab to use for creating tiles as GameObjects.</param>
+        /// <param name="gangMemberSprite">The sprite to use to represent gang members.</param>
         public Map(int width, int height, Sprite[] sprites, GameObject tilePrefab, GameObject gangMemberSprite)
         {   
             // Initialise the map
             this.tilePrefab = tilePrefab;
             this.size = width * height;
             this.gangMemberSprite = gangMemberSprite;
-            
             this.width = width;
             this.height = height;
-
+            
+            // Create the arrays to store the Tiles and correponding GameObjects
             tiles = new Tile[size];
             tileObjects = new GameObject[size];
 
@@ -70,10 +85,12 @@ namespace CRGames_game
                     tiles[x + (y * width)] = tile;
                     tileObjects[x + (y * width)] = gob;
 
+                    // Set the tile property of the TileInteraction component
                     interact.tile = tile;
                 }
             }
 
+            // Set the maximum width and height positions of the camera
             GameObject.FindGameObjectWithTag("MainCamera").transform.parent.gameObject.GetComponent<MapCamera>().SetMaxCoord(0.75f * width, 0.75f * height);
 
             // Create a PVC tile
@@ -81,50 +98,59 @@ namespace CRGames_game
         }
         
         /// <summary>
-        /// Returns a Tile with a given ID
+        /// Returns a Tile with a given ID.
         /// </summary>
-        /// <returns>The Tile with the given ID</returns>
+        /// <param name="id">The ID of the tile to retrieve.</param>
+        /// <returns>The Tile with the given ID.</returns>
 		public Tile getTileByID(int id){
 			return tiles [id];
 		}
 
         /// <summary>
-        /// Returns a Tile at a given position
+        /// Returns a Tile at a given position.
         /// </summary>
-        /// <returns>The Tile at the given position</returns>
+        /// <param name="x">The x position of the Tile.</param>
+        /// <param name="y">The y position of the Tile.</param>
+        /// <returns>The Tile at the given position.</returns>
         public Tile getTileAtPosition(int x, int y){
             return tiles[x + (y * width)];
         }
 
         /// <summary>
-        /// Returns the ID of a given Tile
+        /// Returns the ID of a given Tile.
         /// </summary>
-        /// <returns>The ID of the given Tile</returns>
+        /// <param name="tile">The Tile to get the ID of.</param>
+        /// <returns>The ID of the given Tile.</returns>
         public int getTileId(Tile tile) {
             return tile.getID();
         }
 
         /// <summary>
-        /// Returns the gang strength of a given Tile
+        /// Returns the gang strength of a given Tile.
         /// </summary>
-        /// <returns>The gang strength of a given Tile</returns>
+        /// <param name="tile">The tile to get the gang strength of.</param>
+        /// <returns>The gang strength of a given Tile.</returns>
         public int getGangStrength(Tile tile)
         {
             return tile.getGangStrength();
         }
 
         /// <summary>
-        /// Moves all gang members from a location Tile to a destination Tile. Returns false if no gang members at location
+        /// Moves all gang members from a location Tile to a destination Tile. Returns false if no gang members at location.
         /// </summary>
-        /// <returns>True if movement is successful, False otherwise</returns>
+        /// <param name="location">The tile to move gang members from.</param>
+        /// <param name="destination">The tile to move gang members to.</params>
+        /// <returns>True if movement is successful, False otherwise.</returns>
         public bool moveGangMember(Tile location, Tile destination)
         {
+            // If the original tile hasn't got gang members to move return false
             if (location.getGangStrength() == 0)
             {
                 return false;
             }
             else
             {
+                // Move gang members and return true
                 destination.setGangStrength(destination.getGangStrength() + location.getGangStrength());
                 location.setGangStrength(0);
                 return true;
@@ -132,25 +158,20 @@ namespace CRGames_game
         }
 
         /// <summary>
-        /// Generates a PVC tile in a random location in the map
+        /// Generates a PVC tile at a random location in the map.
         /// </summary>
         public void generatePVC() {
+            // Create a new random number generator and generate a random number
             System.Random rng = new System.Random();
             int rand = rng.Next(size);
+
+            // Create a new PVC tile and set its properties
 			PVCTile tile = new PVCTile(tiles[rand].getID(), tiles[rand].GetObject());
             tile.x = tiles[rand].x;
             tile.y = tiles[rand].y;
-            tiles[rand] = tile;
-        }
-        
-        public bool save(String fileName)
-        {
-            return false;
-        }
 
-        public bool load(String fileName)
-        {
-            return false;
+            // Add the new PVCTile to the tiles array
+            tiles[rand] = tile;
         }
 
 		/// <summary>
@@ -164,9 +185,9 @@ namespace CRGames_game
 		}
 
         /// <summary>
-        /// Resets all tiles
+        /// Resets all tiles.
         /// </summary>
-        /// <returns>True if reset is successful, False otherwise</returns>
+        /// <returns>True if reset is successful, False otherwise.</returns>
         public bool reset()
         {
             for (int i = 0; i < size; i++)
@@ -177,19 +198,21 @@ namespace CRGames_game
         }
 
         /// <summary>
-        /// Gets the number of Tiles in the Map
+        /// Gets the number of Tiles in the Map.
         /// </summary>
-        /// <returns>Number of Tiles in the Map</returns>
+        /// <returns>Number of Tiles in the Map.</returns>
 		public int getNumberOfTiles(){
 			return tiles.Length;
 		}
 
         /// <summary>
-        /// Set a Tile at a given ID to a given Tile
+        /// Set a Tile at a given ID to a given Tile.
         /// </summary>
+        /// <param name="id">The ID of the tile to update.</param>
+        /// <param name="tile">The updated tile.</param>
         public void setTile(int id, Tile tile){
             // TODO search for the array location based on ID,
-            // seeing as IDs may change
+            // seeing as IDs may change in future
             tiles[id] = tile;
         }
 
@@ -197,9 +220,11 @@ namespace CRGames_game
 		/// Returns an array of tiles adjacent to the location tile. Null elements are outside of the map.
 		/// </summary>
 		/// <returns>The adjacent tiles, or null.</returns>
-		/// <param name="location">Location.</param>
+		/// <param name="location">The tile to use as the initial location.</param>
+        /// <returns>An array of Tiles adjacent to the initial Tile.</returns>
 		public Tile[] getAdjacent(Tile location)
 		{
+            // Create an array of Tiles to return
 			Tile[] adjacents = new Tile[4];
 
 			// Ensures edges do not have adjacent tiles out of bounds
@@ -246,6 +271,10 @@ namespace CRGames_game
 			}
 		}
 
+        /// <summary>
+        /// Gets the width of the map.
+        /// </summary>
+        /// <returns>The map width.</returns>
         public int getWidth(){
             return this.width;
         }

@@ -7,6 +7,23 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
+/*
+    CLASS: GameManager
+    FUNCTION: The game manager sets up the game, loads and saves game data, and handles transitions between turns.
+				Clicking on a tile in game also reports the click to the game manager, which handles the click action.
+				The game manager also sends attack events on to the combat engine.
+ */
+
+ /*
+	ENUM: colleges
+	FUNCTION: Keeps a list of all playable colleges.
+  */
+
+/*
+	ENUM: MoveTypes
+	FUNCTION: Keeps a list of all valid types of moves, used by the game manager to evaluate whether a move is valid and what action to carry out.
+ */
+
 namespace CRGames_game
 {
     enum colleges
@@ -27,7 +44,8 @@ namespace CRGames_game
 	{
 		Invalid,
 		TakeOver,
-		Attack
+		Attack,
+		Move
 	}
 
     class GameManager : MonoBehaviour
@@ -128,30 +146,39 @@ namespace CRGames_game
 
         void Update()
         {
+			// If a player has clicked on a tile, display information about that tile on the UI
 			if (lastClickedTile != null) {
 				uiManager.RefreshTileMenu (lastClickedTile, lookupCollege (lastClickedTile.getCollege ()));
 			}
         }
 
 		/// <summary>
-		/// Returns the string value of a college corresponding to its enum value
+		/// Returns the string value of a college corresponding to its enum value.
 		/// </summary>
 		/// <param name="college">College.</param>
 		public string lookupCollege(int college) {
 			return collegeLookupTable[college];
 		}
 
+		/// <summary>
+		/// Gets the array of college colour.
+		/// </summary>
+		/// <returns>Array of college colours.</returns>
 		public Color[] getCollegeColours() {
 			return collegeColours;
 		}
 
+		/// <summary>
+		/// Gets the last tile that was clicked on.
+		/// </summary>
+		/// <returns>The last tile that was clicked on.</returns>
 		public Tile getLastClickedTile()
 		{
 			return lastClickedTile;
 		}
 
 		/// <summary>
-		/// Generates the Map object
+		/// Generates the Map object.
 		/// </summary>
 		void GenerateMap(){
 			map = new Map(24, 13, mapSprites, tilePrefab, gangMemberSprite);
@@ -161,23 +188,27 @@ namespace CRGames_game
 		/// Moves the game to the next turn.
 		/// </summary>
 		public void NextTurn(){
-
+			// Reset the colours of the map
 			map.resetColours(collegeColours);
 
+			// Increment the current turn and current player
             currentTurn++;
             currentPlayer++;
 
+			// Wrap back to the first player if currentPlayer is too large
             if (currentPlayer > players1.Count - 1) {
 				currentPlayer = 0;
 			}
 
-            
-
-            players1[currentPlayer].allocateGangMembers(); // alocates the gang members to an attribute in Player
+			// Allocate more gang members to the next player
+            players1[currentPlayer].allocateGangMembers();
+			// Alert the next player that it's their turn, AI players will then calculate their turn
             players1[currentPlayer].AlertItsMyTurn ();
 
+			// Reset the lastClickedTile variable
 			lastClickedTile = null;
 
+			// Update the UI
             uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());       
         }
 
@@ -198,16 +229,24 @@ namespace CRGames_game
 			// Extract the saved Map from the gameState
 			Map loadMap = new Map(gameState.map.width, gameState.map.height, mapSprites, tilePrefab, gangMemberSprite);
 
+			// Set the PVC bonus to the loaded value
 			combatEngine.SetPVCBonus(gameState.combatEngine.pvcBonus);
+			// Set the hidden damage modifier to the loaded value
 			combatEngine.SetHiddenDamageModifier(gameState.combatEngine.hiddenDamageModifier);
 			
 			// Initialise each Tile in the saved Map
 			for (int i = 0; i < gameState.map.tiles.Length; i++){
+				// Create a new tile to store data
 				Tile loadTile = new Tile(gameState.map.tiles[i].tileID, map.tileObjects[gameState.map.tiles[i].x + (gameState.map.tiles[i].y * map.getWidth())]);
+				// Set the gang strength
 				loadTile.setGangStrength(gameState.map.tiles[i].gangStrength);
+				// Set the college
 				loadTile.setCollege(gameState.map.tiles[i].college);
+				// Set the position of the tile
 				loadTile.x = gameState.map.tiles[i].x;
 				loadTile.y = gameState.map.tiles[i].y;
+
+				// Update the map with the new tile
 				loadMap.setTile(gameState.map.tiles[i].positionInArray, loadTile);
 			}
 
@@ -222,6 +261,7 @@ namespace CRGames_game
 				players1.Add(loadPlayer);
 			}
 
+			// Load the college colours
 			for (int i = 0; i < gameState.collegeColours.Length; i++){
 				collegeColours[i].r = gameState.collegeColours[i].r;
 				collegeColours[i].g = gameState.collegeColours[i].g;
@@ -229,7 +269,7 @@ namespace CRGames_game
 				collegeColours[i].a = gameState.collegeColours[i].a;
 			}
 
-			// Finalise loading
+			// Finalise loading by assigning loaded values to the current game state
 			map = loadMap;
 			players = loadPlayers;
 			currentTurn = gameState.currentTurn;
@@ -240,7 +280,7 @@ namespace CRGames_game
 		}
 
 		/// <summary>
-		/// Saves the game
+		/// Saves the game.
 		/// </summary>
 		/// <returns>Success of saving the game.</returns>
 		bool SaveGame(){
@@ -252,28 +292,41 @@ namespace CRGames_game
 			ColourJSON[] colourJson = new ColourJSON[collegeColours.Length];
 			CombatEngineJSON combatEngineJson = new CombatEngineJSON();
 
+			// Get the PVC bonus from the combat engine
 			combatEngineJson.pvcBonus = combatEngine.GetPVCBonus();
+			// Get the hidden damage modifier from the combat engine
 			combatEngineJson.hiddenDamageModifier = combatEngine.GetHiddenDamageModifier();
 
-			// Save every Player's data as a JSON object
+			// Store every Player's data as a JSON object
 			for (int i = 0; i < players.Length; i++) {
+				// Create a new Player JSON representation
 				playersJson[i] = new PlayerJSON();
+
+				// Save the player college and name
 				playersJson [i].college = players [i].GetCollege ();
 				playersJson [i].name = players [i].GetName ();
+
+				// Save the position of the player in the players array to preserve turn ordering
 				playersJson[i].positionInArray = i;
 			}
 
 			// Store each Tile's data as a JSON object
 			for (int i = 0; i < map.getNumberOfTiles(); i++) {
+				// Create a new Tile JSON representation
 				tileJson[i] = new TileJSON();
+				
+				// Save the tileId, gangStrength, college, and positionInArray
 				tileJson[i].tileID = i;
 				tileJson[i].gangStrength = map.getGangStrength (map.getTileByID(i));
 				tileJson[i].college = map.getTileByID (i).getCollege ();
 				tileJson[i].positionInArray = i;
+
+				// Store the tile position
 				tileJson[i].x = map.getTileByID(i).x;
 				tileJson[i].y = map.getTileByID(i).y;
 			}
 
+			// Store each college colour as a JSON object
 			for (int i = 0; i < collegeColours.Length; i++){
 				colourJson[i].r = collegeColours[i].r;
 				colourJson[i].g = collegeColours[i].g;
@@ -309,47 +362,60 @@ namespace CRGames_game
 			// If we made it this far, saving was successful
 			return true;
 		}
-
-		/// <summary>
-		/// Ends the turn.
-		/// </summary>
-		/// <returns>The turn.</returns>
 	
 		/// <summary>
 		/// Works out what to do when a tile has been clicked on (e.g. move, attack).
 		/// </summary>
+		/// <param name="tile">The tile that was clicked on.</param>
 		public void TileClicked(Tile tile)
 		{
-
+			// Show information relating to the tile that was clicked on
             uiManager.showTileInfo();
 
+			// If a tile has been clicked on previously, move or attack, otherwise pick the tile that was clicked on
 			if (lastClickedTile != null) {
+				// Evaluate the type of move that we will be making
 				int move = EvaluateMove(lastClickedTile, tile);
 
 				switch (move)
 				{
+					// If the tile does not contain any gang members, take over
 					case (int)MoveTypes.TakeOver:
+						// Move a gang member
 						MoveGangMember(lastClickedTile, tile);
 
+						// Set the college of the tile
 						tile.setCollege(lastClickedTile.getCollege());
 
+						// Reset the tile that was last clicked on
 						lastClickedTile = null;
 
+						// Tell the tile to update its colour
 						tile.resetColor(collegeColours);
 						break;
-					case (int)MoveTypes.Attack:
+
+					// If the tile is owned by the player that clicked it, move a gang member to that tile
+					case (int)MoveTypes.Move:
+						// Move a gang member
 						MoveGangMember(lastClickedTile, tile);
 
+						// Reset the tile that was last clicked on
 						lastClickedTile = null;
 
+						// Update the tile's colour
 						tile.resetColor(collegeColours);
 						break;
+
+					// If the move was invalid, reset the tile that was last clicked on
 					default:
 						lastClickedTile = null;
 						break;
 				}
-			}else if (tile.getGangStrength() > 0 && (tile.getCollege() == (int)colleges.Unknown || tile.getCollege() == players1[currentPlayer].GetCollege())) { // Highlights in red the available targets from the clicked on tile
+			}else if (tile.getGangStrength() > 0 && (tile.getCollege() == (int)colleges.Unknown || tile.getCollege() == players1[currentPlayer].GetCollege())) {
+				// Get the tiles adjacent to this one
 				Tile[] adjacents = map.getAdjacent(tile);
+
+				// Highlight all of the adjacent tiles red
 				for (int i = 0; i < 4; i++) {
 					if (adjacents [i] != null) {
 						if (adjacents[i].getCollege() != tile.getCollege ()) {
@@ -358,10 +424,16 @@ namespace CRGames_game
 					}
 				}
 
+				// Set the lastClickedTile to the tile that was clicked on
 				lastClickedTile = tile;
 			}
 		}
 
+		/// <summary>
+		/// Moves a gang member from one tile to another.
+		/// </summary>
+		/// <param name="from">The tile to move from.</param>
+		/// <param name="to">The tile to move to.</param>
 		void MoveGangMember(Tile from, Tile to){
 			to.setGangStrength(to.getGangStrength() + 1);
 			from.setGangStrength(from.getGangStrength() - 1);
@@ -369,32 +441,22 @@ namespace CRGames_game
 
 
         public void ReinforceTile(String noOfGangMembers)
-
         {
-
             if (getLastClickedTile() == null)
             {   
-
-                // checks a tile has been clicked on else, show the user a warning
+                // Checks a tile has been clicked on else, show the user a warning
                 uiManager.showTileWarning();
-            }
+            }else{
 
-
-            else
-            {
-
-                // variables holding the previous gangmember strengths
-
+                // Variables holding the previous gangmember strengths
                 int previousTileStrength = getLastClickedTile().getGangStrength();
                 int previousPlayersGangMembers = players1[currentPlayer].GetNumberOfGangMembers();
 
-                // try and parse the input and place result in j, if the input is not a valid integer then nothing will happen
+                // Try and parse the input and place result in j, if the input is not a valid integer then nothing will happen
                 int j;
                 if (Int32.TryParse(noOfGangMembers, out j))
                 {
-
-                    //checks the player has the right amount of gangmembers
-
+                    // Checks the player has the right amount of gangmembers
                     if (previousPlayersGangMembers >= j)
                     {
                         getLastClickedTile().setGangStrength(j + previousTileStrength);
@@ -413,46 +475,60 @@ namespace CRGames_game
 		/// <param name="tile">Tile to attack.</param>
 		public void requestAttack(Tile tile)
 		{
+			// If two tiles have been clicked on in total, and they belong to two different colleges
 			if (lastClickedTile != null && lastClickedTile.getCollege() != tile.getCollege()) {
+				// If the two tiles that have been clicked on are adjacent to each other
 				if (map.isAdjacent(lastClickedTile, tile)) {
+					// Create an array to store the new gang strenghts of each tile
 					int[] newStrengths = new int[2];
+					// Calculate the new strengths by evaluating the attack in the combat engine
 					newStrengths = combatEngine.Attack(lastClickedTile.getGangStrength(), tile.getGangStrength());
+					
+					// Set the new strengths
 					lastClickedTile.setGangStrength(newStrengths[0]);
 					tile.setGangStrength(newStrengths[1]);
 
+					// Get the tiles adjacent to the previously selected tile
 					Tile[] adjacents = map.getAdjacent (lastClickedTile);
 			
-					// Stops highlighting targets from the previously clicked on tile
+					// Stop highlighting targets from the previously clicked on tile
 					for (int i = 0; i < 4; i++) {
 						if (adjacents[i] != null) {
 							adjacents[i].resetColor(collegeColours);
 						}
 					}
 
+					// Reset the tile that was last clicked on
 					lastClickedTile = null;
 				}
 			}
 		}
 
+		/// <summary>
+		/// Evaluate whether a move is valid, and what type of move it is.
+		/// <summary>
+		/// <param name="from">The tile the action is being performed from.</param>
+		/// <param name="to">The tile the action is being perfromed to.</param>
+		/// <returns>A move type from the MoveTypes enum</returns>
 		int EvaluateMove(Tile from, Tile to){
-			// If moving to an empty tile, TakeOver
-			// If moving to occupied, Attack
-
+			// Get the adjacent tiles
 			Tile[] adjacents = map.getAdjacent (from);
 			
-			// Stops highlighting targets from the previously clicked on tile
+			// Stop highlighting targets from the previously clicked on tile
 			for (int i = 0; i < 4; i++) {
 				if (adjacents[i] != null) {
 					adjacents[i].resetColor(collegeColours);
 				}
 			}
 
+			// Check if the two tiles are adjactent to each other if not then the move is not valid
 			if (adjacents.Contains(to)){
+				// If there are no gang members on a tile, this is a takeover
 				if (to.getGangStrength() == 0){
 					return (int)MoveTypes.TakeOver;
-				}else if(from.getCollege() == to.getCollege()){
-					return (int)MoveTypes.Attack;
-				}else{
+				}else if(from.getCollege() == to.getCollege()){ // If the two tiles are owned by the same college, we are moving a gang member
+					return (int)MoveTypes.Move;
+				}else{ // Otherwise, the move is invalid
 					return (int)MoveTypes.Invalid;
 				}
 			}else{
@@ -460,37 +536,36 @@ namespace CRGames_game
 			}
 		}
 
-
-
+		// Sets up some test players
         public void setupTest()
         {
-            currentPlayer = 0; // sets inital player to player 1
-            currentTurn = 1;   //sets the inital turn to 1
+			// Set the inital player to player 1
+            currentPlayer = 0;
+			// Set the inital turn to 1
+            currentTurn = 1;
 
-            players1.Add(new Player(1, "Sally"));  // tests to be removed
+			// Create a player called Sally and give them some tiles
+            players1.Add(new Player(1, "Sally"));
             players1[0].AddOwnedTiles(map.getTileAtPosition(0, 0));
             players1[0].AddOwnedTiles(map.getTileAtPosition(1, 0));
-
             map.getTileAtPosition(0, 0).setCollege(1);
             map.getTileAtPosition(1, 0).setCollege(1);
 
 
-            // set player 1 gang members
-            map.getTileAtPosition(0, 0).setGangStrength(5);
-            map.getTileAtPosition(1, 0).setGangStrength(5);
+            // Set player 1 gang members
+            map.getTileAtPosition(0, 0).setGangStrength(2);
+            map.getTileAtPosition(1, 0).setGangStrength(2);
 
-
-
+			// Create a player called Bob and give them some tiles
             players1.Add(new Player(2, "Bob"));
             players1[1].AddOwnedTiles(map.getTileAtPosition(2, 0));
             players1[1].AddOwnedTiles(map.getTileAtPosition(2, 1));
-
             map.getTileAtPosition(2, 0).setCollege(2);
             map.getTileAtPosition(2, 1).setCollege(2);
 
-            // set player2 gangmembers
-            map.getTileAtPosition(2, 0).setGangStrength(5);
-            map.getTileAtPosition(2, 1).setGangStrength(5);
+            // Set player2 gangmembers
+            map.getTileAtPosition(2, 0).setGangStrength(2);
+            map.getTileAtPosition(2, 1).setGangStrength(2);
         }
     }
 }
