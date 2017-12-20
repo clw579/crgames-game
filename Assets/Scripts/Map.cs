@@ -138,8 +138,8 @@ namespace CRGames_game
         /// <summary>
         /// Moves all gang members from a location Tile to a destination Tile. Returns false if no gang members at location.
         /// </summary>
-        /// <param name="location">The tile to move gang members from."</param>
-        /// <param name="destination">The tile to move gang members to."</params>
+        /// <param name="location">The tile to move gang members from.</param>
+        /// <param name="destination">The tile to move gang members to.</params>
         /// <returns>True if movement is successful, False otherwise.</returns>
         public bool moveGangMember(Tile location, Tile destination)
         {

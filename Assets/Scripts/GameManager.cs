@@ -188,11 +188,10 @@ namespace CRGames_game
 		/// Moves the game to the next turn.
 		/// </summary>
 		public void NextTurn(){
-			
-			// Increment the current turn and current player
-
+			// Reset the colours of the map
 			map.resetColours(collegeColours);
 
+			// Increment the current turn and current player
             currentTurn++;
             currentPlayer++;
 
@@ -367,6 +366,7 @@ namespace CRGames_game
 		/// <summary>
 		/// Works out what to do when a tile has been clicked on (e.g. move, attack).
 		/// </summary>
+		/// <param name="tile">The tile that was clicked on.</param>
 		public void TileClicked(Tile tile)
 		{
 			// Show information relating to the tile that was clicked on
@@ -441,32 +441,22 @@ namespace CRGames_game
 
 
         public void ReinforceTile(String noOfGangMembers)
-
         {
-
             if (getLastClickedTile() == null)
             {   
-
-                // checks a tile has been clicked on else, show the user a warning
+                // Checks a tile has been clicked on else, show the user a warning
                 uiManager.showTileWarning();
-            }
+            }else{
 
-
-            else
-            {
-
-                // variables holding the previous gangmember strengths
-
+                // Variables holding the previous gangmember strengths
                 int previousTileStrength = getLastClickedTile().getGangStrength();
                 int previousPlayersGangMembers = players1[currentPlayer].GetNumberOfGangMembers();
 
-                // try and parse the input and place result in j, if the input is not a valid integer then nothing will happen
+                // Try and parse the input and place result in j, if the input is not a valid integer then nothing will happen
                 int j;
                 if (Int32.TryParse(noOfGangMembers, out j))
                 {
-
-                    //checks the player has the right amount of gangmembers
-
+                    // Checks the player has the right amount of gangmembers
                     if (previousPlayersGangMembers >= j)
                     {
                         getLastClickedTile().setGangStrength(j + previousTileStrength);

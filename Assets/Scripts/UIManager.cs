@@ -70,6 +70,9 @@ namespace CRGames_game
             showButton.SetActive(false);
         }
 
+        /// <summary>
+        /// Show the warning tile.
+        /// </summary>
         public void showTileWarning()
         {
    
@@ -77,7 +80,11 @@ namespace CRGames_game
             StartCoroutine(FadeTextToZeroAlpha(2.5f,  noTileWarning.GetComponent<Text>() ));
         }
         
-
+        /// <summary>
+        /// Fade text out over time.
+        /// </summary>
+        /// <param name="t">The time to fade over.</param>
+        /// <param name="i">The text to fade.</param>
         public IEnumerator FadeTextToZeroAlpha(float t, Text i)
         {
             i.color = new Color(i.color.r, i.color.g, i.color.b, 1);

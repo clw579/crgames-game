@@ -106,14 +106,13 @@ namespace CRGames_game
             return noOfGangMembers;
         }
 
+        /// <summmary>
+        /// Set the gang strength of the player.
+        /// </summary>
+        /// <param name="noOfGangMembers">The strength to set.</param>
         public void setGangStrength(int noOfGangMembers)
         {
             this.noOfGangMembers = noOfGangMembers;
         }
-        
-      
-        
-
-
     }
 }
