@@ -93,8 +93,8 @@ namespace CRGames_game
             // Move the poisiton on the sprites
             member.transform.localPosition = new Vector3(0.0f, -0.1f, -5.0f);
             
-            // Play the gangMembers animation
-            anim.Play("gooseAnimation", -1, 0.0f);
+            // play the gangMembers animation
+            anim.Play("gooseAnimation");
 
             // Update the gangmembers
             myGangMember = member;

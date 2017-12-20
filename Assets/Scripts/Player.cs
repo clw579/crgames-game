@@ -105,5 +105,15 @@ namespace CRGames_game
             this.noOfGangMembers += ownedTiles.Count;
             return noOfGangMembers;
         }
+
+        public void setGangStrength(int noOfGangMembers)
+        {
+            this.noOfGangMembers = noOfGangMembers;
+        }
+        
+      
+        
+
+
     }
 }

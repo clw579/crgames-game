@@ -174,6 +174,16 @@ namespace CRGames_game
             tiles[rand] = tile;
         }
 
+		/// <summary>
+		/// Resets the colours of all the tiles.
+		/// </summary>
+		public void resetColours(Color[] collegeColours) {
+			for (int i = 0; i < size; i++)
+			{
+				tiles[i].resetColor(collegeColours);
+			}
+		}
+
         /// <summary>
         /// Resets all tiles.
         /// </summary>

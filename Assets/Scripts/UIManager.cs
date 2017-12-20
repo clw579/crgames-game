@@ -15,6 +15,7 @@ namespace CRGames_game
 		// Text Elements of UI
 		public Text college, gangMembers, tileLevel, pvc;
         public Text playersCollege, playersGangMembers, name;
+        public GameObject noTileWarning;
         public GameObject tileMenu, showButton;
 
         void Update()
@@ -68,5 +69,26 @@ namespace CRGames_game
             tileMenu.SetActive(true);
             showButton.SetActive(false);
         }
+
+        public void showTileWarning()
+        {
+   
+            noTileWarning.SetActive(true);
+            StartCoroutine(FadeTextToZeroAlpha(2.5f,  noTileWarning.GetComponent<Text>() ));
+        }
+        
+
+        public IEnumerator FadeTextToZeroAlpha(float t, Text i)
+        {
+            i.color = new Color(i.color.r, i.color.g, i.color.b, 1);
+            while (i.color.a > 0.0f)
+            {
+                i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a - (Time.deltaTime / t));
+                yield return null;
+            }
+        }
+
+
+
     }
 }
