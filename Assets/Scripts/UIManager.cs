@@ -14,7 +14,7 @@ namespace CRGames_game
     {
 		// Text Elements of UI
 		public Text college, gangMembers, tileLevel, pvc;
-        public Text playersCollege, playersGangMembers, name;
+        public Text playersCollege, playersGangMembers, playersName;
         public GameObject noTileWarning;
         public GameObject tileMenu, showButton;
 
@@ -53,12 +53,12 @@ namespace CRGames_game
         /// </summary>
         /// <param name="playersCollege">The college of the player.</param>
         /// <param name="noOfGangMembers">The number of gang members that the player owns.</param>
-        /// <param name="name">The name of the player.</param>
-        public void RefreshCurrentPlayerInfo(string playersCollege, int noOfGangMembers, string name)
+        /// <param name="playersName">The name of the player.</param>
+        public void RefreshCurrentPlayerInfo(string playersCollege, int noOfGangMembers, string playersName)
         {
             this.playersCollege.text = playersCollege;
             this.playersGangMembers.text = noOfGangMembers.ToString();
-            this.name.text = name;
+            this.playersName.text = playersName;
         }
 
         /// <summary>

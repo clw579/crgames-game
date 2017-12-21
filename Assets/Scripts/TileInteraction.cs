@@ -17,8 +17,6 @@ namespace CRGames_game
 
 		// The GameManager
 		GameManager manager;
-		// The renderer attached to this tile
-		SpriteRenderer myRenderer;
 		// The gang member sprite
         GameObject gangMemberSprite;
 		// Gang member displayed on tile
@@ -32,9 +30,7 @@ namespace CRGames_game
 			// Find the GameManager
 			manager = GameObject.FindWithTag("MainCamera").GetComponent<GameManager>();
 
-			// Get the SpriteRenderer attached to this tile
-			myRenderer = gameObject.GetComponent<SpriteRenderer>();
-
+    
 			// Reset the colour of this tile
 			tile.resetColor(manager.getCollegeColours());
 
@@ -83,19 +79,12 @@ namespace CRGames_game
             // Instantiate a copy of the gang member sprite
             GameObject member = Instantiate<GameObject>(gangMemberSprite) as GameObject;
 
-            // Assgin the spriteRender and animtor components
-            SpriteRenderer rend = member.GetComponent<SpriteRenderer>() as SpriteRenderer;
-            Animator anim = member.GetComponent<Animator>() as Animator;
-
 			// Set gang member's parent to the tile
 			member.transform.parent = transform;
 
             // Move the poisiton on the sprites
             member.transform.localPosition = new Vector3(0.0f, -0.1f, -5.0f);
-            
-            // play the gangMembers animation
-            anim.Play("gooseAnimation");
-
+    
             // Update the gangmembers
             myGangMember = member;
 		}

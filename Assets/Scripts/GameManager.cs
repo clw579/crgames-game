@@ -70,11 +70,8 @@ namespace CRGames_game
 		// Array of Sprites that make up the Map
 		public Sprite[] mapSprites;
 		// Sprite to use to represent gang members
-
         public GameObject gangMemberSprite;
-        // Store the Map's width and height
-        public int mapWidth;
-		public int mapHeight;
+     
 		// Gang colours
 		public Color ColourAlcuin;
 		public Color ColourGoodricke;
@@ -89,17 +86,13 @@ namespace CRGames_game
 		// Gang colour array
 		Color[] collegeColours;
 
-		// Path of the current save file
-		private String savePath = "gamestates.json";
-
 		// The current turn number
 		private int currentTurn;
 		// The index of the current Player
 		private int currentPlayer;
 
 		// Array of Players in the game
-		private Player[] players = new Player[10];
-        private List<Player> players1 = new List<Player>();     // a dynamic list version of players, its easier to use
+        private List<Player> players1 = new List<Player>();     
 		// The Map
 		private Map map;
 
@@ -212,156 +205,7 @@ namespace CRGames_game
             uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());       
         }
 
-		/// <summary>
-		/// Loads the game.
-		/// </summary>
-		/// <returns>Success of loading game.</returns>
-		bool LoadGame(){
-			// Read the save game file (currently only allows for one saved game)
-			string filePath = Path.Combine(Application.dataPath, savePath);
-			StreamReader reader = new StreamReader(filePath);
-        	string loadJson = reader.ReadToEnd();
-        	reader.Close();
 
-			// Translate the loaded data into a GameState JSON object
-			GameStateJSON gameState = JsonUtility.FromJson<GameStateJSON>(loadJson);
-
-			// Extract the saved Map from the gameState
-			Map loadMap = new Map(gameState.map.width, gameState.map.height, mapSprites, tilePrefab, gangMemberSprite);
-
-			// Set the PVC bonus to the loaded value
-			combatEngine.SetPVCBonus(gameState.combatEngine.pvcBonus);
-			// Set the hidden damage modifier to the loaded value
-			combatEngine.SetHiddenDamageModifier(gameState.combatEngine.hiddenDamageModifier);
-			
-			// Initialise each Tile in the saved Map
-			for (int i = 0; i < gameState.map.tiles.Length; i++){
-				// Create a new tile to store data
-				Tile loadTile = new Tile(gameState.map.tiles[i].tileID, map.tileObjects[gameState.map.tiles[i].x + (gameState.map.tiles[i].y * map.getWidth())]);
-				// Set the gang strength
-				loadTile.setGangStrength(gameState.map.tiles[i].gangStrength);
-				// Set the college
-				loadTile.setCollege(gameState.map.tiles[i].college);
-				// Set the position of the tile
-				loadTile.x = gameState.map.tiles[i].x;
-				loadTile.y = gameState.map.tiles[i].y;
-
-				// Update the map with the new tile
-				loadMap.setTile(gameState.map.tiles[i].positionInArray, loadTile);
-			}
-
-			// Create an array of Players to store the loaded Player values
-			Player[] loadPlayers = new Player[gameState.numberOfPlayers];
-			players1 = new List<Player>();
-			
-			// Initialise each saved Player
-			for (int i = 0; i < gameState.numberOfPlayers; i++){
-				Player loadPlayer = new Player(gameState.players[i].college, gameState.players[i].name);
-				loadPlayers[gameState.players[i].positionInArray] = loadPlayer;
-				players1.Add(loadPlayer);
-			}
-
-			// Load the college colours
-			for (int i = 0; i < gameState.collegeColours.Length; i++){
-				collegeColours[i].r = gameState.collegeColours[i].r;
-				collegeColours[i].g = gameState.collegeColours[i].g;
-				collegeColours[i].b = gameState.collegeColours[i].b;
-				collegeColours[i].a = gameState.collegeColours[i].a;
-			}
-
-			// Finalise loading by assigning loaded values to the current game state
-			map = loadMap;
-			players = loadPlayers;
-			currentTurn = gameState.currentTurn;
-			currentPlayer = gameState.currentPlayer;
-
-			// If we made it this far, loading was successful
-			return true;
-		}
-
-		/// <summary>
-		/// Saves the game.
-		/// </summary>
-		/// <returns>Success of saving the game.</returns>
-		bool SaveGame(){
-			// Create JSON representations of the data needing to be stored
-			GameStateJSON gameStateJson = new GameStateJSON ();
-			PlayerJSON[] playersJson = new PlayerJSON[players.Length];
-			MapJSON mapJson = new MapJSON ();
-			TileJSON[] tileJson = new TileJSON[map.getNumberOfTiles()];
-			ColourJSON[] colourJson = new ColourJSON[collegeColours.Length];
-			CombatEngineJSON combatEngineJson = new CombatEngineJSON();
-
-			// Get the PVC bonus from the combat engine
-			combatEngineJson.pvcBonus = combatEngine.GetPVCBonus();
-			// Get the hidden damage modifier from the combat engine
-			combatEngineJson.hiddenDamageModifier = combatEngine.GetHiddenDamageModifier();
-
-			// Store every Player's data as a JSON object
-			for (int i = 0; i < players.Length; i++) {
-				// Create a new Player JSON representation
-				playersJson[i] = new PlayerJSON();
-
-				// Save the player college and name
-				playersJson [i].college = players [i].GetCollege ();
-				playersJson [i].name = players [i].GetName ();
-
-				// Save the position of the player in the players array to preserve turn ordering
-				playersJson[i].positionInArray = i;
-			}
-
-			// Store each Tile's data as a JSON object
-			for (int i = 0; i < map.getNumberOfTiles(); i++) {
-				// Create a new Tile JSON representation
-				tileJson[i] = new TileJSON();
-				
-				// Save the tileId, gangStrength, college, and positionInArray
-				tileJson[i].tileID = i;
-				tileJson[i].gangStrength = map.getGangStrength (map.getTileByID(i));
-				tileJson[i].college = map.getTileByID (i).getCollege ();
-				tileJson[i].positionInArray = i;
-
-				// Store the tile position
-				tileJson[i].x = map.getTileByID(i).x;
-				tileJson[i].y = map.getTileByID(i).y;
-			}
-
-			// Store each college colour as a JSON object
-			for (int i = 0; i < collegeColours.Length; i++){
-				colourJson[i].r = collegeColours[i].r;
-				colourJson[i].g = collegeColours[i].g;
-				colourJson[i].b = collegeColours[i].b;
-				colourJson[i].a = collegeColours[i].a;
-			}
-
-			// Store Map data as a JSON object
-			mapJson.numberOfTiles = tileJson.Length;
-			mapJson.tiles = tileJson;
-			mapJson.width = mapWidth;
-			mapJson.height = mapHeight;
-
-			// Store game state related values as JSON
-			gameStateJson.numberOfPlayers = playersJson.Length;
-			gameStateJson.map = mapJson;
-			gameStateJson.players = playersJson;
-			gameStateJson.combatEngine = combatEngineJson;
-			gameStateJson.collegeColours = colourJson;
-			gameStateJson.currentTurn = currentTurn;
-			gameStateJson.currentPlayer = currentPlayer;
-
-			// Stringify JSON
-			string saveJson = JsonUtility.ToJson(gameStateJson);
-			
-			// Build the path to the save file
-			string filePath = Path.Combine(Application.dataPath, savePath);
-
-			// Write the JSON string to the save file
-			File.WriteAllText(filePath, saveJson); 
-
-
-			// If we made it this far, saving was successful
-			return true;
-		}
 	
 		/// <summary>
 		/// Works out what to do when a tile has been clicked on (e.g. move, attack).
