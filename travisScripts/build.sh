@@ -10,18 +10,12 @@ echo "Running editor unit tests for $project"
 	-logFile $(pwd)/unity.log \
 	-runTests \
 	-projectPath $(pwd) \
-	-testResults $(pwd)/test.xml \
+	-testResults /Users/travis/build/thomasslee97/crgames-game/test.xml \
 	-quit
 
-echo "test outputs"
-cat $(pwd)/test.xml
 
-
-rc0=$?
 echo "Unit test logs"
 cat $(pwd)/test.xml
-# exit if tests failed
-if [ $rc0 -ne 0 ]; then { echo "Failed unit tests"; exit $rc0; } fi
 
 echo "Attempting to build $project for Windows"
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
