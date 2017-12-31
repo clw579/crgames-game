@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace CRGames_game
 {
-    class CombatEngine
+    public class CombatEngine
     {
 		// Level of tile being attacked, between 0 - 3 for balance
         double levelOfTile = 0f;
