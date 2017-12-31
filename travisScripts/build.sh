@@ -8,10 +8,14 @@ echo "Running editor unit tests for $project"
 	-nographics \
 	-silent-crashes \
 	-logFile $(pwd)/unity.log \
+	-runTests \
 	-projectPath $(pwd) \
-	-runEditorTests \
-	-editorTestsResultFile $(pwd)/test.xml \
+	-testResults $(pwd)/test.xml \
 	-quit
+
+echo "test outputs"
+cat $(pwd)/test.xml
+
 
 rc0=$?
 echo "Unit test logs"
