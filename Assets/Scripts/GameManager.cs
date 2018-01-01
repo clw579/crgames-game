@@ -48,7 +48,7 @@ namespace CRGames_game
 		Move
 	}
 
-    class GameManager : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
 		// Lookup table for enum colleges
 		private string[] collegeLookupTable = new string[]
@@ -411,5 +411,7 @@ namespace CRGames_game
             map.getTileAtPosition(2, 0).setGangStrength(2);
             map.getTileAtPosition(2, 1).setGangStrength(2);
         }
+
+      
     }
 }

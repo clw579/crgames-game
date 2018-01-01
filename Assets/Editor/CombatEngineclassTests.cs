@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine.TestTools;
 using NUnit.Framework;
+using NSubstitute;
 using System.Collections;
 namespace CRGames_game
 {
@@ -43,5 +44,40 @@ namespace CRGames_game
             combatEngine.SetHiddenDamageModifier(3);
             Assert.AreEqual(3, combatEngine.GetHiddenDamageModifier());
         }
+
+
+        [Test]
+        public void TestAttack()
+        {
+            
+            CombatEngine combatEngineTest = new CombatEngine();
+            var random = NSubstitute.Substitute.For<System.Random>();
+            //uses constant random factor of 0.5 for testing
+            random.NextDouble().Returns(0.5);
+            combatEngineTest.setRandom(random);
+
+
+            //Assign a attack with equal gangMember Strengths
+            int[] results = combatEngineTest.Attack(5, 5);
+           
+            Assert.AreEqual(results[0], 2);
+            Assert.AreEqual(results[1], 2);
+
+            //Assign a attack where results should be 0
+            results = combatEngineTest.Attack(1, 1);
+
+            Assert.AreEqual(results[0], 0);
+            Assert.AreEqual(results[1], 0);
+
+
+
+
+        }
+
+
+
+
+
+
     }
 }

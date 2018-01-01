@@ -103,5 +103,10 @@ namespace CRGames_game
         public void SetHiddenDamageModifier(double modifier){
             hiddenDamageModifier = modifier;
         }
+
+        public void setRandom(System.Random random)
+        {
+            this.rand = random ;
+        }
     }
 }
