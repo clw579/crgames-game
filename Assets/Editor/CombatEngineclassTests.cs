@@ -57,8 +57,9 @@ namespace CRGames_game
             combatEngineTest.setRandom(random);
 
 
-            //Assign a attack with equal gangMember Strengths
+            //Assign a attack with equal gangMember Strengths and both results should be 2
             int[] results = combatEngineTest.Attack(5, 5);
+           
            
             Assert.AreEqual(results[0], 2);
             Assert.AreEqual(results[1], 2);

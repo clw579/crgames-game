@@ -26,7 +26,7 @@ namespace CRGames_game
 		// The tile's text object
 		GameObject textObject;
 
-		void Start(){
+		public void Start(){
 			// Find the GameManager
 			manager = GameObject.FindWithTag("MainCamera").GetComponent<GameManager>();
 
@@ -46,7 +46,7 @@ namespace CRGames_game
 		}
 
 		// Update is called once per frame
-		void Update () {
+		public void Update () {
 			// If the tile has at least one gang member, set the counter on the tile to the number of gang members
 			if (tile.getGangStrength() > 0){
 				// Show the counter label
@@ -74,7 +74,7 @@ namespace CRGames_game
 		/// <summary>
 		/// Creates a gang member on the tile.
 		/// </summary>
-		void CreateGangMember(){
+		public void CreateGangMember(){
 
             // Instantiate a copy of the gang member sprite
             GameObject member = Instantiate<GameObject>(gangMemberSprite) as GameObject;
@@ -84,6 +84,7 @@ namespace CRGames_game
 
             // Move the poisiton on the sprites
             member.transform.localPosition = new Vector3(0.0f, -0.1f, -5.0f);
+            
     
             // Update the gangmembers
             myGangMember = member;
