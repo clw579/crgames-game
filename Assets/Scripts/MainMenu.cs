@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 /*
     CLASS: MainMenu
@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour
     public void PlayGame()
     {
         // Load the next scene in the scene manager
-        EditorSceneManager.LoadScene(EditorSceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("main");
     }
 
     /// <summary>
