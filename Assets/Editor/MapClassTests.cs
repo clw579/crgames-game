@@ -104,27 +104,40 @@ namespace CRGames_game {
 			// get gameManager from the camera
 			GameManager manager = GameObject.FindWithTag("MainCamera").GetComponent<GameManager>();
 			// get the correct college colours from the game manager
-			Color[] collegeColours = manager.getCollegeColours();
-			// create a new test map and 2 new test tiles
-			Map testMap = new Map(2, 2);
+            Color[] collegeColours = new Color[6];
+            collegeColours[0] = Color.blue;
+            collegeColours[1] = Color.red;
+
+            // create a new test map and 2 new test tiles
+            Map testMap = new Map(1, 2);
 			Tile testTile = new Tile(0, new GameObject());
 			Tile testTile2 = new Tile(1, new GameObject());
-			// add the tiles to the map
-			testMap.addTile(testTile);
+
+            GameObject testTileObject = new GameObject();
+            GameObject testTileObject2 = new GameObject();
+
+            testTileObject.AddComponent<SpriteRenderer>();
+            testTileObject2.AddComponent<SpriteRenderer>();
+
+            testTile.SetObject(testTileObject);
+            testTile2.SetObject(testTileObject2);
+       
+            // add the tiles to the map
+            testMap.addTile(testTile);
 			testMap.addTile(testTile2);
 
 			//Action
 			// set the colleges for the test tiles
-			testTile.setCollege(1);
-			testTile2.setCollege(2);
+			testTile.setCollege(0);
+			testTile2.setCollege(1);
 			// change the colours on the test tiles
-			testTile.setColor(Color.red);
-			testTile2.setColor(Color.yellow);
+			testTile.setColor(Color.yellow);
+			testTile2.setColor(Color.green);
 			// reset the colours on the tiles in the map to the college colours defined in GameManager
 			testMap.resetColours(collegeColours);
 
-			Assert.AreEqual(collegeColours[1], testTile.getColor());
-			Assert.AreEqual(collegeColours[2], testTile2.getColor());
+			Assert.AreEqual(collegeColours[0], testTile.getColor());
+			Assert.AreEqual(collegeColours[1], testTile2.getColor());
 		}
 
 		[Test]
