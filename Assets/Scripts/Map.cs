@@ -30,6 +30,13 @@ namespace CRGames_game
         int size;
         int width;
         int height;
+
+		public Map(int width, int height) {
+			this.width = width;
+			this.height = height;
+			this.size = width * height;
+			tiles = new Tile[size];
+		}
         
         /// <summary>
         /// Creates a Map of given size and populates it with Tiles and a random PVCTile.
@@ -96,6 +103,14 @@ namespace CRGames_game
             // Create a PVC tile
             generatePVC();
         }
+
+		/// <summary>
+		/// Adds a tile to the Map tile array in the location of the tile id.
+		/// </summary>
+		/// <param name="tile">Tile.</param>
+		public void addTile(Tile tile) {
+			tiles [tile.getID ()] = tile;
+		}
         
         /// <summary>
         /// Returns a Tile with a given ID.
@@ -262,7 +277,6 @@ namespace CRGames_game
 		/// <param name="destination">Destination.</param>
 		public bool isAdjacent(Tile location, Tile destination)
 		{
-			//TODO integrate with getAdjacent()
 			if (((location.x == destination.x) && (location.y == destination.y + 1 || location.y == destination.y - 1)) ||
 			    ((location.y == destination.y) && (location.x == destination.x + 1 || location.x == destination.x - 1))) {
 				return true;

@@ -133,7 +133,11 @@ namespace CRGames_game
         /// <param name="color">The colour to set the tile to.</param>
 		public void setColor(Color color) {
         
-			gameObject.GetComponent<SpriteRenderer>().color = color;;
+			gameObject.GetComponent<SpriteRenderer>().color = color;
+		}
+
+		public Color getColor() {
+			return gameObject.GetComponent<SpriteRenderer>().color;
 		}
 
         /// <summary>
