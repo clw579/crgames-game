@@ -52,8 +52,8 @@ namespace CRGames_game {
 			testMap.addTile(testTile2);
 
 			//Assert
-			Assert.AreEqual(0, testMap.getTileId(testMap.getTileAtPosition(0, 0)));
-			Assert.AreEqual(1, testMap.getTileId(testMap.getTileAtPosition(1, 0)));
+			Assert.AreEqual(0, testMap.getTileId(testTile));
+			Assert.AreEqual(1, testMap.getTileId(testTile2));
 		}
 
 		[Test]
@@ -71,8 +71,8 @@ namespace CRGames_game {
 			testMap.addTile(testTile2);
 
 			//Assert
-			Assert.AreEqual(3, testMap.getGangStrength(testMap.getTileAtPosition(0, 0)));
-			Assert.AreEqual(100, testMap.getGangStrength(testMap.getTileAtPosition(1, 0)));
+			Assert.AreEqual(3, testMap.getGangStrength(testTile));
+			Assert.AreEqual(100, testMap.getGangStrength(testTile2));
 		}
 
 		[Test]
@@ -94,8 +94,8 @@ namespace CRGames_game {
 			testMap.moveGangMember(testTile, testTile2);
 
 			//Assert
-			Assert.AreEqual(0, testMap.getGangStrength(testMap.getTileAtPosition(0, 0)));
-			Assert.AreEqual(103, testMap.getGangStrength(testMap.getTileAtPosition(1, 0)));
+			Assert.AreEqual(0, testMap.getGangStrength(testTile));
+			Assert.AreEqual(103, testMap.getGangStrength(testTile2));
 		}
 
 		[Test]
