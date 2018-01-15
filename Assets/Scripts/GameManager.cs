@@ -51,8 +51,7 @@ namespace CRGames_game
     public class GameManager : MonoBehaviour
     {
 		// Lookup table for enum colleges
-		private string[] collegeLookupTable = new string[]
-		{
+		private string[] collegeLookupTable = new string[] {
 			"Unknown",
 			"Alcuin",
 			"Goodricke",
@@ -64,6 +63,9 @@ namespace CRGames_game
 			"James",
 			"Wentworth",
 		};
+
+		// Height and Width of map in tiles
+		private const int MAP_HEIGHT = 13, MAP_WIDTH = 24;
 
 		// Prefab of the Tile GameObject
 		public GameObject tilePrefab;
@@ -174,7 +176,7 @@ namespace CRGames_game
 		/// Generates the Map object.
 		/// </summary>
 		void GenerateMap(){
-			map = new Map(24, 13, mapSprites, tilePrefab, gangMemberSprite);
+			map = new Map(MAP_WIDTH, MAP_HEIGHT, mapSprites, tilePrefab, gangMemberSprite);
 		}
 
 		/// <summary>
