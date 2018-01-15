@@ -62,3 +62,7 @@ Thumbs.db
 
 
 Library/
+
+ProjectSettings/ProjectSettings\.asset
+
+ProjectSettings/ProjectVersion\.txt

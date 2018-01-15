@@ -390,26 +390,10 @@ namespace CRGames_game
 
 			// Create a player called Sally and give them some tiles
             players1.Add(new Player(1, "Sally"));
-            players1[0].AddOwnedTiles(map.getTileAtPosition(0, 0));
-            players1[0].AddOwnedTiles(map.getTileAtPosition(1, 0));
-            map.getTileAtPosition(0, 0).setCollege(1);
-            map.getTileAtPosition(1, 0).setCollege(1);
-
-
-            // Set player 1 gang members
-            map.getTileAtPosition(0, 0).setGangStrength(2);
-            map.getTileAtPosition(1, 0).setGangStrength(2);
-
-			// Create a player called Bob and give them some tiles
             players1.Add(new Player(2, "Bob"));
-            players1[1].AddOwnedTiles(map.getTileAtPosition(2, 0));
-            players1[1].AddOwnedTiles(map.getTileAtPosition(2, 1));
-            map.getTileAtPosition(2, 0).setCollege(2);
-            map.getTileAtPosition(2, 1).setCollege(2);
 
-            // Set player2 gangmembers
-            map.getTileAtPosition(2, 0).setGangStrength(2);
-            map.getTileAtPosition(2, 1).setGangStrength(2);
+            map.populateRandomGangMembers(players1);
+
         }
 
       

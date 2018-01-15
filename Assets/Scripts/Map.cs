@@ -102,7 +102,7 @@ namespace CRGames_game
 
             // Create a PVC tile
             generatePVC();
-			populateRandomGangMembers();
+		
         }
 
 		/// <summary>
@@ -294,13 +294,31 @@ namespace CRGames_game
             return this.width;
         }
 
-		public void populateRandomGangMembers() {
-			for (int i = 0; i < size; i++) {
-				tiles[i].setCollege(UnityEngine.Random.Range (1, 3));
-				if (tiles[i].getCollege () != 0) {
-					tiles[i].setGangStrength(UnityEngine.Random.Range (1, 6));
-				}
-			}
+        /// <summary>
+        /// Gives each of the players a random spot on the map
+        /// </summary>
+		public void populateRandomGangMembers(List<Player> playersList) {
+			foreach(Player player in playersList) {
+
+                int x = UnityEngine.Random.Range(0, 23);
+                int y = UnityEngine.Random.Range(0, 12);
+
+                this.getTileAtPosition(x,y).setCollege(player.GetCollege());
+                this.getTileAtPosition(x +1, y).setCollege(player.GetCollege());
+                this.getTileAtPosition(x, y+1).setCollege(player.GetCollege());
+                this.getTileAtPosition(x-1, y).setCollege(player.GetCollege());
+                this.getTileAtPosition(x, y -1).setCollege(player.GetCollege());
+
+                player.AddOwnedTiles(this.getTileAtPosition(x, y));
+                player.AddOwnedTiles(this.getTileAtPosition(x +1, y));
+                player.AddOwnedTiles(this.getTileAtPosition(x, y +1));
+                player.AddOwnedTiles(this.getTileAtPosition(x-1, y));
+                player.AddOwnedTiles(this.getTileAtPosition(x, y-1));
+
+                this.getTileAtPosition(x, y).setGangStrength(2);
+
+
+            }
 		}
     }
 }
