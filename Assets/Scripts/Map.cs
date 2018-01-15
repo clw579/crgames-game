@@ -102,6 +102,7 @@ namespace CRGames_game
 
             // Create a PVC tile
             generatePVC();
+			populateRandomGangMembers();
         }
 
 		/// <summary>
@@ -292,5 +293,14 @@ namespace CRGames_game
         public int getWidth(){
             return this.width;
         }
+
+		public void populateRandomGangMembers() {
+			for (int i = 0; i < size; i++) {
+				tiles[i].setCollege(UnityEngine.Random.Range (1, 3));
+				if (tiles[i].getCollege () != 0) {
+					tiles[i].setGangStrength(UnityEngine.Random.Range (1, 6));
+				}
+			}
+		}
     }
 }
