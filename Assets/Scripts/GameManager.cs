@@ -217,6 +217,7 @@ namespace CRGames_game
 		{
 			// Show information relating to the tile that was clicked on
             uiManager.showTileInfo();
+            
 
 			// If a tile has been clicked on previously, move or attack, otherwise pick the tile that was clicked on
 			if (lastClickedTile != null) {

@@ -14,11 +14,11 @@ namespace CRGames_game
     class HumanPlayer : Player
     {
         // The amount of currency that this player has
-        int currency = 0;
+        private int currency = 0;
         // The number of research points that this player has
-        int researchPoints = 0;
+        private int researchPoints = 0;
         // Whether this player has the PVC
-        bool hasPVC = false;
+        private bool hasPVC = false;
 
         /// <summary>
         /// Initialises the HumanPlayer.

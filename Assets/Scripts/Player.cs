@@ -28,9 +28,7 @@ namespace CRGames_game
         /// Initialises the player with only a college.
         /// </summary>
         /// <param name="college">The player's college.</param>
-		public Player(int college){
-
-		}
+		
 
         /// <summary>
         /// Initialises the player with both a college and a name.
