@@ -44,8 +44,16 @@ namespace CRGames_game
         /// <param name="tileCollege">College tile belongs to.</param>
         public void RefreshTileMenu(Tile currentTile, string tileCollege)
 		{
-			college.text = tileCollege;
-			gangMembers.text = currentTile.getGangStrength().ToString();
+            if (currentTile != null)
+            {
+                college.text = tileCollege;
+                gangMembers.text = currentTile.getGangStrength().ToString();
+            }
+            else
+            {
+                college.text = "";
+                gangMembers.text = "";
+            }
 		}
 
         /// <summary>

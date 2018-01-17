@@ -141,10 +141,7 @@ namespace CRGames_game
 
         void Update()
         {
-			// If a player has clicked on a tile, display information about that tile on the UI
-			if (lastClickedTile != null) {
-				uiManager.RefreshTileMenu (lastClickedTile, lookupCollege (lastClickedTile.getCollege ()));
-			}
+            
         }
 
 		/// <summary>
@@ -215,12 +212,12 @@ namespace CRGames_game
 		/// <param name="tile">The tile that was clicked on.</param>
 		public void TileClicked(Tile tile)
 		{
-			// Show information relating to the tile that was clicked on
-            uiManager.showTileInfo();
-            
+            // Show information relating to the tile that was clicked on
+            uiManager.RefreshTileMenu(tile, lookupCollege(tile.getCollege()));
 
-			// If a tile has been clicked on previously, move or attack, otherwise pick the tile that was clicked on
-			if (lastClickedTile != null) {
+
+            // If a tile has been clicked on previously, move or attack, otherwise pick the tile that was clicked on
+            if (lastClickedTile != null) {
 				// Evaluate the type of move that we will be making
 				int move = EvaluateMove(lastClickedTile, tile);
 
@@ -271,10 +268,10 @@ namespace CRGames_game
 					}
 				}
 
-				// Set the lastClickedTile to the tile that was clicked on
-				lastClickedTile = tile;
-			}
-		}
+                // Set the lastClickedTile to the tile that was clicked on
+                lastClickedTile = tile;
+            }
+        }
 
 		/// <summary>
 		/// Moves a gang member from one tile to another.

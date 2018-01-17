@@ -25,7 +25,7 @@ namespace CRGames_game
 		/// Generates random numbers that follow a normal distribution.
 		/// </summary>
 		/// <returns>A random factor.</returns>
-        public double randomnessFactor()  // 
+        private double randomnessFactor()  // 
         {
 			// Generate two random numbers
             double a = 1.0 - rand.NextDouble();
