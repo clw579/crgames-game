@@ -92,6 +92,7 @@ namespace CRGames_game
 		private int currentTurn;
 		// The index of the current Player
 		private int currentPlayer;
+        private Player currentPlayerObject;
 
 		// Array of Players in the game
         private List<Player> players1 = new List<Player>();     
@@ -134,9 +135,10 @@ namespace CRGames_game
             
             //sets the inital number of gang members for player1, from here after they are allocated by the nextTurn function
             players1[currentPlayer].setGangStrength(players1[currentPlayer].GetOwnedTiles().Count);
+            this.currentPlayerObject = players1[currentPlayer];
            
             // set intial UI elements for the first player
-            uiManager.initialiseUI(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());
+            uiManager.initialiseUI(collegeLookupTable[this.currentPlayerObject.GetCollege()], this.currentPlayerObject.GetNumberOfGangMembers(), this.currentPlayerObject.GetName());
         }
 
         void Update()
@@ -196,12 +198,14 @@ namespace CRGames_game
             players1[currentPlayer].allocateGangMembers();
 			// Alert the next player that it's their turn, AI players will then calculate their turn
             players1[currentPlayer].AlertItsMyTurn ();
+            this.currentPlayerObject = players1[currentPlayer];
 
-			// Reset the lastClickedTile variable
-			lastClickedTile = null;
+            // Reset the lastClickedTile variable
+            lastClickedTile = null;
+
 
 			// Update the UI
-            uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[players1[currentPlayer].GetCollege()], players1[currentPlayer].GetNumberOfGangMembers(), players1[currentPlayer].GetName());       
+            uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[this.currentPlayerObject.GetCollege()], this.currentPlayerObject.GetNumberOfGangMembers(), this.currentPlayerObject.GetName());       
         }
 
 
@@ -215,11 +219,13 @@ namespace CRGames_game
             // Show information relating to the tile that was clicked on
             uiManager.RefreshTileMenu(tile, lookupCollege(tile.getCollege()));
 
-
+  
             // If a tile has been clicked on previously, move or attack, otherwise pick the tile that was clicked on
             if (lastClickedTile != null) {
-				// Evaluate the type of move that we will be making
-				int move = EvaluateMove(lastClickedTile, tile);
+             
+                // Evaluate the type of move that we will be making
+                int move = EvaluateMove(lastClickedTile, tile);
+                
 
 				switch (move)
 				{
@@ -302,9 +308,13 @@ namespace CRGames_game
                 {
                     // Checks the player has the right amount of gangmembers
                     if (previousPlayersGangMembers >= j)
+
                     {
+
                         getLastClickedTile().setGangStrength(j + previousTileStrength);
                         players1[currentPlayer].setGangStrength(previousPlayersGangMembers - j);
+
+                        uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[this.currentPlayerObject.GetCollege()], this.currentPlayerObject.GetNumberOfGangMembers(), this.currentPlayerObject.GetName());
                     }
                 }
 
@@ -357,18 +367,17 @@ namespace CRGames_game
 		int EvaluateMove(Tile from, Tile to){
 			// Get the adjacent tiles
 			Tile[] adjacents = map.getAdjacent (from);
-			
 			// Stop highlighting targets from the previously clicked on tile
 			for (int i = 0; i < 4; i++) {
 				if (adjacents[i] != null) {
 					adjacents[i].resetColor(collegeColours);
 				}
 			}
-
-			// Check if the two tiles are adjactent to each other if not then the move is not valid
-			if (adjacents.Contains(to)){
-				// If there are no gang members on a tile, this is a takeover
-				if (to.getGangStrength() == 0){
+         
+            // Check if the two tiles are adjactent to each other if not then the move is not valid
+            if (adjacents.Contains(to)){
+                // If there are no gang members on a tile, this is a takeover
+                if (to.getGangStrength() == 0){
 					return (int)MoveTypes.TakeOver;
 				}else if(from.getCollege() == to.getCollege()){ // If the two tiles are owned by the same college, we are moving a gang member
 					return (int)MoveTypes.Move;

@@ -101,7 +101,7 @@ namespace CRGames_game
             GameObject.FindGameObjectWithTag("MainCamera").transform.parent.gameObject.GetComponent<MapCamera>().SetMaxCoord(0.75f * width, 0.75f * height);
 
             // Create a PVC tile
-            generatePVC();
+            //generatePVC();
 		
         }
 
@@ -185,7 +185,8 @@ namespace CRGames_game
 			PVCTile tile = new PVCTile(tiles[rand].getID(), tiles[rand].GetObject());
             tile.x = tiles[rand].x;
             tile.y = tiles[rand].y;
-
+            tile.setColor(Color.yellow);
+                
             // Add the new PVCTile to the tiles array
             tiles[rand] = tile;
         }
@@ -267,6 +268,8 @@ namespace CRGames_game
 			} else {
 				adjacents [3] = null;
 			}
+
+       
 			return adjacents;
 		}
 
@@ -300,8 +303,8 @@ namespace CRGames_game
 		public void populateRandomGangMembers(List<Player> playersList) {
 			foreach(Player player in playersList) {
 
-                int x = UnityEngine.Random.Range(0, 23);
-                int y = UnityEngine.Random.Range(0, 12);
+                int x = UnityEngine.Random.Range(1, 22);
+                int y = UnityEngine.Random.Range(1, 11);
 
                 this.getTileAtPosition(x,y).setCollege(player.GetCollege());
                 this.getTileAtPosition(x +1, y).setCollege(player.GetCollege());
