@@ -104,6 +104,10 @@ namespace CRGames_game
             hiddenDamageModifier = modifier;
         }
 
+        /// <summary>
+        /// Sets the random number generator to use.
+        /// </summary>
+        /// <param name="random">The random number generator to use.</param>
         public void setRandom(System.Random random)
         {
             this.rand = random ;
