@@ -95,7 +95,7 @@ namespace CRGames_game
         private Player currentPlayerObject;
 
 		// Array of Players in the game
-        private List<Player> players1 = new List<Player>();     
+        private List<Player> players = new List<Player>();     
 		// The Map
 		private Map map;
 
@@ -134,8 +134,8 @@ namespace CRGames_game
             setupTest();
             
             //sets the inital number of gang members for player1, from here after they are allocated by the nextTurn function
-            players1[currentPlayer].setGangStrength(players1[currentPlayer].GetOwnedTiles().Count);
-            this.currentPlayerObject = players1[currentPlayer];
+            players[currentPlayer].setGangStrength(players[currentPlayer].GetOwnedTiles().Count);
+            this.currentPlayerObject = players[currentPlayer];
            
             // set intial UI elements for the first player
             uiManager.initialiseUI(collegeLookupTable[this.currentPlayerObject.GetCollege()], this.currentPlayerObject.GetNumberOfGangMembers(), this.currentPlayerObject.GetName());
@@ -190,15 +190,15 @@ namespace CRGames_game
             currentPlayer++;
 
 			// Wrap back to the first player if currentPlayer is too large
-            if (currentPlayer > players1.Count - 1) {
+            if (currentPlayer > players.Count - 1) {
 				currentPlayer = 0;
 			}
 
 			// Allocate more gang members to the next player
-            players1[currentPlayer].allocateGangMembers();
+            players[currentPlayer].allocateGangMembers();
 			// Alert the next player that it's their turn, AI players will then calculate their turn
-            players1[currentPlayer].AlertItsMyTurn ();
-            this.currentPlayerObject = players1[currentPlayer];
+            players[currentPlayer].AlertItsMyTurn ();
+            this.currentPlayerObject = players[currentPlayer];
 
             // Reset the lastClickedTile variable
             lastClickedTile = null;
@@ -261,7 +261,7 @@ namespace CRGames_game
 						lastClickedTile = null;
 						break;
 				}
-			}else if (tile.getGangStrength() > 0 && (tile.getCollege() == (int)colleges.Unknown || tile.getCollege() == players1[currentPlayer].GetCollege())) {
+			}else if (tile.getGangStrength() > 0 && (tile.getCollege() == (int)colleges.Unknown || tile.getCollege() == players[currentPlayer].GetCollege())) {
 				// Get the tiles adjacent to this one
 				Tile[] adjacents = map.getAdjacent(tile);
 
@@ -289,7 +289,10 @@ namespace CRGames_game
 			from.setGangStrength(from.getGangStrength() - 1);
 		}
 
-
+		/// <summary>
+		/// Reinforces a tile by adding a specified number of gang members.
+		/// </summary>
+		/// <param name="noOfGangMembers">The number of gang members to add.</param>
         public void ReinforceTile(String noOfGangMembers)
         {
             if (getLastClickedTile() == null)
@@ -300,7 +303,7 @@ namespace CRGames_game
 
                 // Variables holding the previous gangmember strengths
                 int previousTileStrength = getLastClickedTile().getGangStrength();
-                int previousPlayersGangMembers = players1[currentPlayer].GetNumberOfGangMembers();
+                int previousPlayersGangMembers = players[currentPlayer].GetNumberOfGangMembers();
 
                 // Try and parse the input and place result in j, if the input is not a valid integer then nothing will happen
                 int j;
@@ -308,11 +311,9 @@ namespace CRGames_game
                 {
                     // Checks the player has the right amount of gangmembers
                     if (previousPlayersGangMembers >= j)
-
                     {
-
                         getLastClickedTile().setGangStrength(j + previousTileStrength);
-                        players1[currentPlayer].setGangStrength(previousPlayersGangMembers - j);
+                        players[currentPlayer].setGangStrength(previousPlayersGangMembers - j);
 
                         uiManager.RefreshCurrentPlayerInfo(collegeLookupTable[this.currentPlayerObject.GetCollege()], this.currentPlayerObject.GetNumberOfGangMembers(), this.currentPlayerObject.GetName());
                     }
@@ -389,7 +390,9 @@ namespace CRGames_game
 			}
 		}
 
-		// Sets up some test players
+		/// <summary>
+		/// Sets up some test players
+		/// </summary>
         public void setupTest()
         {
 			// Set the inital player to player 1
@@ -398,13 +401,11 @@ namespace CRGames_game
             currentTurn = 1;
 
 			// Create a player called Sally and give them some tiles
-            players1.Add(new Player(1, "Sally"));
-            players1.Add(new Player(2, "Bob"));
+            players.Add(new Player(1, "Sally"));
+            players.Add(new Player(2, "Bob"));
 
-            map.populateRandomGangMembers(players1);
-
-        }
-
-      
+			// Populate the map randomly with gang members
+            map.populateRandomGangMembers(players);
+        }      
     }
 }

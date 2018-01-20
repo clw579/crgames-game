@@ -298,29 +298,32 @@ namespace CRGames_game
         }
 
         /// <summary>
-        /// Gives each of the players a random spot on the map
+        /// Gives each of the players ownership of a random area of the map.
         /// </summary>
+        /// <param name="playersList">The list of players to place on the map.</param>
 		public void populateRandomGangMembers(List<Player> playersList) {
+            // Iterate through all players
 			foreach(Player player in playersList) {
-
+                // Generate a random x and y position
                 int x = UnityEngine.Random.Range(1, 22);
                 int y = UnityEngine.Random.Range(1, 11);
 
+                // Set the ownership of all tiles at the generated position in a cross pattern
                 this.getTileAtPosition(x,y).setCollege(player.GetCollege());
                 this.getTileAtPosition(x +1, y).setCollege(player.GetCollege());
                 this.getTileAtPosition(x, y+1).setCollege(player.GetCollege());
                 this.getTileAtPosition(x-1, y).setCollege(player.GetCollege());
                 this.getTileAtPosition(x, y -1).setCollege(player.GetCollege());
 
+                // Add all of the assigned tiles to the player's list of owned tiles
                 player.AddOwnedTiles(this.getTileAtPosition(x, y));
                 player.AddOwnedTiles(this.getTileAtPosition(x +1, y));
                 player.AddOwnedTiles(this.getTileAtPosition(x, y +1));
                 player.AddOwnedTiles(this.getTileAtPosition(x-1, y));
                 player.AddOwnedTiles(this.getTileAtPosition(x, y-1));
 
+                // Set the gang strength of the central tile to 2
                 this.getTileAtPosition(x, y).setGangStrength(2);
-
-
             }
 		}
     }

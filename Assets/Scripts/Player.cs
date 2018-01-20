@@ -22,13 +22,7 @@ namespace CRGames_game
         // The tiles that the player owns
         private List<Tile> ownedTiles;
         // The number of gang members that this player owns
-        private int noOfGangMembers;
-       
-        /// <summary>
-        /// Initialises the player with only a college.
-        /// </summary>
-        /// <param name="college">The player's college.</param>
-		
+        private int noOfGangMembers;		
 
         /// <summary>
         /// Initialises the player with both a college and a name.
